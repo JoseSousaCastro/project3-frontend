@@ -1,0 +1,84 @@
+<!--
+    linha 42 - alterar para o first name do utilizador
+    linha 75 - depois de criar o fichero js, alterar para o nome desse ficheiro
+-->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="edit-profile">Edit profile</title>
+    <link  type="text/css" rel="stylesheet" href="main.css">
+    <link rel="icon" href="multimedia/favicon.png" type="image/x-icon">
+</head>
+<body>
+    <div id="cancel-modal" class="modal">
+        <div class="modal-content">
+            <p>Cancel changes?</p>
+            <button class="modal-button" id="confirm-cancel-button">Yes</button>
+            <button class="modal-button" id="continue-editing-button">No</button>
+        </div>
+    </div>
+    <header>
+        <img src="multimedia/logo-scrum-05.png" id="logo-header" height="50">
+        <nav class="nav-menu-left">
+            <ul>
+                <li id="nav-home"><a href="home.html">My Scrum</a></li>
+                <li id="nav-retro"><a href="retrospectives-list.html">Retrospectives</a></li>
+            </ul>
+        </nav>
+        <div class="nav-menu-right">
+            <img src="multimedia/JSC_close up.png" id="profile-pic">
+            <a href="edit-profile.html" id="first-name-label"></a>
+            <button class="logout-button" id="logout-button-header">
+                <img src="multimedia/logout.png" alt="Logout Icon">
+                Logout
+            </button>
+        </div>
+    </header>
+    <main class="main-editProfile">
+        <div class="details-editProfile">
+            <label id="username-title-editProfile">Username</label> <!--Alterar para o first name do utilizador-->
+            <form class="editProfile-register" id="edit-profile-form">
+                <div class="editProfile-fieldsContainer">
+                    <div class="left-fields-editProfile">
+                        <label class="labels-edit-profile" id="currentPass-editProfile-label">Current password (non-editable)</label>
+                        <input type="password" class="editProfile-fields" id="currentPass-editProfile" name="currentPassword" required readonly>
+                        <label class="labels-edit-profile" id="newPass-editProfile-label">New password</label>
+                        <input type="password" class="editProfile-fields" id="newPassword-editProfile" name="newPassword">
+                        <label class="labels-edit-profile" id="newPassConfirm-editProfile-label">Confirm new password</label>
+                        <input type="password" class="editProfile-fields" id="newPasswordConfirm-editProfile" name="nemPasswordConfirm">
+                        <label class="labels-edit-profile" id="email-editProfile-label">Email</label>
+                        <input type="email" class="editProfile-fields" id="email-editProfile" name="email" placeholder="" >
+                    </div>
+                    <div class="right-fields-editProfile">
+                        <label class="labels-edit-profile" id="firstName-editProfile-label">First Name</label>
+                        <input type="text" class="editProfile-fields" id="firstName-editProfile" name="firstName" placeholder="" >
+                        <label class="labels-edit-profile" id="lastName-editProfile-label">Last Name</label>
+                        <input type="text" class="editProfile-fields" id="lastName-editProfile" name="lastName" placeholder="" >
+                        <label class="labels-edit-profile" id="phone-editProfile-label">Phone</label>
+                        <input type="text" class="editProfile-fields" id="phone-editProfile" name="phone" placeholder="" >
+                        <label class="labels-edit-profile" id="photoURL-editProfile-label">Photo URL</label>
+                        <input type="url" class="editProfile-fields" id="photoURL-editProfile" name="photoURL" placeholder="" >
+                    </div>
+                </div>
+                <div class="editProfile-submitButton">
+                        <button type="submit" id="profile-save-button">Save</button>
+                </div>
+            </form>
+        </div>
+    </main>
+    <footer>
+        <div class="footer-content">
+            <div class="label-left">&copy; João Luís</div>
+            <div class="label-right">Programação Avançada em Java</div>
+            <div class="label-left">&copy; José Sousa Castro</div>
+            <div class="label-right">Projeto 2</div>
+            <div class="label-left">&copy; Pedro Domingos</div>
+        </div>
+    </footer>
+    <script src="edit-profile.js" defer></script>
+</body>
+</html>

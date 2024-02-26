@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="tasktitle">Task</title>
+    <link  type="text/css" rel="stylesheet" href="main.css">
+    <link rel="icon" href="multimedia/favicon.png" type="image/x-icon">
+</head>
+<body>
+    <div id="cancel-modal" class="modal">
+        <div class="modal-content">
+            <p>Cancel changes?</p>
+            <button class="modal-button" id="confirm-cancel-button">Yes</button>
+            <button class="modal-button" id="continue-editing-button">No</button>
+        </div>
+    </div>
+    <header>
+        <img src="multimedia/logo-scrum-05.png" id="logo-header" height="50">
+        <nav class="nav-menu-left">
+            <ul>
+                <li id="nav-home"><a href="home.html">My Scrum</a></li>
+                <li id="nav-retro"><a href="retrospectives-list.html">Retrospectives</a></li>
+            </ul>
+        </nav>
+        <div class="nav-menu-right">
+            <img src="multimedia/JSC_close up.png" id="profile-pic">
+            <a href="edit-profile.html" id="first-name-label">Profile</a>
+            <button class="logout-button" id="logout-button-header">
+                <img src="multimedia/logout.png" alt="Logout Icon">
+                Logout
+            </button>
+        </div>
+    </header>
+    <main class="main-task">
+        <div class="detalhes-task">
+            <div>
+                <textarea id="titulo-task">Task 1</textarea>
+            </div>
+            <div>
+                <textarea class="text-task" id="descricao-task"></textarea>
+            </div>
+            <p id="warningMessage3"></p>
+            <div class="task-save">
+                <button class="save-button" id="save-button">Save</button>
+                <button class="cancel-button" id="cancel-button">Cancel</button>
+            </div>
+        </div>
+        <div class="task-buttons">
+            <div class="status-and-priority">
+                <div class="task-status">
+                    <h4 class="taskH4">status</h4>
+                    <div class="status-buttons">
+                        <button class="status-button todo" id="todo-button">To do</button>
+                        <button class="status-button doing" id="doing-button">Doing</button>
+                        <button class="status-button done" id="done-button">Done</button>
+                    </div>
+                </div>
+                <div class="task-priority">
+                    <h4 class="taskH4">priority</h4>
+                    <div class="priority-buttons">
+                        <button class="priority-button low" id="low-button">Low</button>
+                        <button class="priority-button medium" id="medium-button">Medium</button>
+                        <button class="priority-button high" id="high-button">High</button>
+                    </div>
+                </div>
+                <div class="startDateDiv">
+                    <label for="startDate-editTask">Start date: <input type="text" id="startDate-editTask" readonly></label> <!-- This label will be updated on JavaScript with the start date -->
+                </div>
+                <div class="endDateDiv">
+                    <label for="endDate-editTask">End date: <input type="text" id="endDate-editTask" readonly></label> <!-- This label will be updated on JavaScript with the end date -->
+                </div>
+            </div>
+        </div>
+    </main>
+    <footer>
+        <div class="footer-content">
+            <div class="label-left">&copy; João Luís</div>
+            <div class="label-right">Programação Avançada em Java</div>
+            <div class="label-left">&copy; José Sousa Castro</div>
+            <div class="label-right">Projeto 2</div>
+            <div class="label-left">&copy; Pedro Domingos</div>
+        </div>
+    </footer>
+    <script src="task.js" defer></script>
+</body>
+</html>

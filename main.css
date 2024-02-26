@@ -1,0 +1,1407 @@
+:root {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+  --white: #f9f9f9;
+  --light-grey: #c8e4e7;
+  --grey: grey;
+  --green1: #2CCCD3;
+  --green2: #21979c;
+  --green3: #223C4A;
+  --black: #0e1a21;
+  --overlay: #223c4aab;
+
+  --todo: #cffdffd7;
+  --doing: #9cfaffd5;
+  --done: #2cccd4d7;
+
+  --warningMessages: #9C3B21;
+
+  margin: 0;
+  padding: 0;
+  background-color: var(--black);
+  position: relative;
+}
+
+/* Video em background da página index (página index.html) */
+.video-container {
+  z-index: 0;
+  position: relative;
+  height: 100vh;
+  overflow: hidden;
+}
+#background-video {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  min-width: 100%;
+  min-height: 100%;
+  width: auto;
+  height: auto;
+  z-index: -1;
+}
+/* Overlay para aproximar a cor do vídeo com a palete de cores */
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--overlay);
+}
+
+/* Definições do painel de login */
+.center-container-login {
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  opacity: 0;
+  animation: fadeIn 1s ease-in-out 0.5s forwards;
+}
+.loginpanel {
+  z-index: 3;
+  padding: 20px;
+  font-size: 15px;
+  text-align: center;
+  color: var(--green3);
+  background-color: color-mix(in srgb, var(--light-grey), transparent 10%);
+  border-radius: 10px;
+  height: 400px;
+  width: 330px;
+}
+#logo-login,
+#logo-register {
+  margin-block: 20px;
+  max-width: 250px;
+  width: auto;
+}
+#logo-register {
+  padding-bottom: 20px;
+}
+#username,
+#password {
+  margin-bottom: 15px;
+  padding-left: 5px;
+  width: 220px;
+  height: 25px;
+  border: var(--green3) 1px solid;
+  border-top-right-radius: 5px;
+  border-top-left-radius: 5px;
+}
+#username {
+  margin-top: 20px;
+}
+#password {
+  margin-bottom: 20px;
+}
+.loginpanel ::placeholder {
+  color: var(--green2);
+}
+.loginpanel :focus::placeholder {
+  opacity: 0.5;
+}
+.loginpanel input[type="text"] {
+  color: var(--green3);
+}
+#loginButton,
+#registerButton {
+  display: block;
+  margin: 15px auto;
+  width: 150px;
+  height: 32px;
+  text-transform: uppercase;
+  font-size: 12px;
+  font-weight: bold;
+  background-color: var(--done);
+  color: var(--green3);
+  border-radius: 5px;
+  transition: background-color 0.3s, color 0.3s;
+  cursor: pointer;
+}
+#loginButton:hover,
+#registerButton:hover {
+  background-color: var(--green3);
+  color: var(--green1);
+}
+#warningMessage {
+  color: var(--warningMessages);
+  font-size: 14px;
+  margin-top: 20px;
+}
+/* Animação fade in para o container de login */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+/* Definições do painel de registo */
+.center-container-register {
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+.registerPanel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 3;
+  padding: 20px;
+  font-size: 15px;
+  text-align: center;
+  color: var(--green3);
+  background-color: color-mix(in srgb, var(--light-grey), transparent 10%);
+  border-radius: 10px;
+  max-width: 500px;
+  width: 100%;
+  max-height: 500px;
+  height: 100%;
+}
+#logo-register {
+  margin-bottom: 20px;
+  max-height: 150px;
+  width: auto;
+}
+.inputs-register {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.left-inputs,
+.right-inputs {
+    width: 200px;
+    margin: 0 10px;
+}
+
+.inputRegister-fields {
+  margin-bottom: 15px;
+  padding: 5px;
+  width: 100%;
+  height: 25px;
+  border: var(--green3) 1px solid;
+  border-top-right-radius: 5px;
+  border-top-left-radius: 5px;
+}
+.submitButton {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+#registerButton-register {
+  width: 150px;
+  height: 32px;
+  text-transform: uppercase;
+  font-size: 12px;
+  font-weight: bold;
+  background-color: var(--done);
+  color: var(--green3);
+  border-radius: 5px;
+  transition: background-color 0.3s, color 0.3s;
+  cursor: pointer;
+}
+#registerButton-register:hover {
+  background-color: var(--green3);
+  color: var(--green1);
+}
+.registerPanel ::placeholder {
+  color: var(--green2);
+}
+.registerPanel :focus::placeholder {
+  opacity: 0.5;
+}
+.registerPanel input[type="text"] {
+  color: var(--green3);
+}
+#backToLoginLink {
+  margin-top: 20px;
+  color: var(--green3);
+  text-decoration: underline;
+  cursor: pointer;
+}
+#warningMessage4 {
+  color: var(--warningMessages);
+  font-size: 14px;
+  margin-top: 20px;
+}
+/* Definições do header na página home.html */
+header {
+  width: auto;
+  height: 80px;
+  color: white;
+  background-color: var(--green3);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+#logo-header {
+  margin-left: 90px;
+}
+/* Definições do relógio 
+.container.clock {
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+.display-date,
+.display-time {
+  font-size: 1rem;
+  font-weight: 600;
+  -webkit-box-reflect: below 2px
+  linear-gradient(transparent, rgba(255, 255, 255, 0.05));
+  color: var(--light-grey);
+}
+.display-date {
+  text-align: center;
+}
+.display-time {
+  display: flex;
+  margin-left: 0px;
+  transition: ease-in-out 0.1s;
+  transition-property: background, box-shadow, color;
+}*/
+.nav-menu-left {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  font-size: 20px;
+  color: var(--light-grey);
+  cursor: pointer;
+}
+.nav-menu-right {
+  margin-right: 100px;
+}
+.nav-menu-left ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  overflow: hidden;
+  background-color: var(--green3);
+}
+.nav-menu-left li {
+  display:inline;
+  margin-right: 40px;
+  font-size: 20px;
+  color: var(--light-grey);
+  cursor: pointer;
+}
+.nav-menu-left a,
+.nav-menu-right a {
+  text-decoration: var(--green2);
+  color: var(--light-grey);
+  font-size: 17px;
+}
+.nav-menu-left a:hover,
+.nav-menu-right a:hover {
+  color: var(--doing);
+}
+.nav-menu-right {
+  display: flex;
+  align-items: center;
+}
+
+#profile-pic {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin: 0 30px;
+}
+
+/* Username */
+#username-header {
+  color: var(--light-grey);
+  font-weight: bold;
+}
+/* Logout button */
+.logout-button {
+  margin-right: 50px;
+  margin-left: 100px;
+  background-color: var(--green3);
+  color: var(--light-grey);
+  border: none;
+  padding: 10px 15px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  font-size: 17px;
+  border-radius: 5px;
+}
+.logout-button img {
+  width: 19px;
+  height: 20px;
+  margin-right: 9px;
+}
+/* Definições do link de logout no header (default e hover) */
+.logout-link {
+  margin-right: 100px;
+  color: var(--green2);
+}
+.logout-button:hover {
+  background-color: var(--light-grey);
+  color: var(--green2);
+}
+.logout-button:hover img {
+  content: url("multimedia/logout_hover.png");
+}
+
+
+/* Definições do container que inclui o aside e o main da página home.html */
+.container {
+  display: flex;
+  justify-content: space-between;
+}
+/* Definições da barra lateral aside */
+aside {
+  max-width: 300px;
+  height: 720px;
+  float: left;
+  background-color: var(--light-grey);
+  text-align: center;
+}
+/* Logo */
+.logo img {
+  padding-block: 25px;
+  max-height: 150px;
+  width: auto;
+}
+/* Título */
+aside h3 {
+  text-align: center;
+  color: var(--green3);
+  text-transform: uppercase;
+  font-size: 20px;
+}
+/* Campos para adicionar task */
+#addTask-h3 {
+  margin-top: 60px;
+}
+
+#taskName,
+#taskDescription,
+#taskDescription-retro,
+#commentDescription-retro,
+#name-addMember,
+#retroTitle {
+  padding-left: 10px;
+  width: 170px;
+  background-color: var(--white);
+  font-size: 12px;
+  border-top-left-radius: 7px;
+  border-top-right-radius: 7px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+#taskName,
+#name-addMember,
+#retroTitle {
+  height: 20px;
+}
+#retroTitle {
+  margin-bottom: 20px;
+}
+#retroTitle::placeholder {
+  text-align: center;
+}
+#taskDescription,
+#taskDescription-retro,
+#commentDescription-retro {
+  resize: none;
+  padding-top: 10px;
+  height: 200px;
+  line-height: 1.4;
+}
+/* Quando a task description não está selecionada mantém a border */
+#taskDescription:not(:focus),
+#taskDescription-retro:not(:focus),
+#commentDescription-retro:not(:focus) {
+  border: var(--green3) 2px solid;
+}
+#taskDescription::placeholder,
+#taskDescription-retro::placeholder,
+#commentDescription-retro::placeholder {
+  font-size: 12px;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  width: 140px;
+}
+/* Botões de priority no home.html */
+.task-buttons-home {
+    display: flex;
+    flex-direction: column;
+  }
+  .priority-buttons-home {
+    justify-content: center;
+    display: flex;
+    gap: 8px;
+  }
+  .priority-button-home {
+    --button-shadow-color: #c3c3c3;
+    margin-top: 15px;
+    margin-bottom: 30px;
+    width: 56px;
+    height: 30px;
+    text-align: center;
+    text-transform: uppercase;
+    text-rendering: optimizeLegibility;
+    font-size: 10px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0px 4px 8px var(--button-shadow-color);
+    border-top-right-radius: 8px;
+    border-top-left-radius: 8px;
+    background-color: var(--grey);
+    transition: box-shadow 0.3s ease;
+  }
+  .priority-button-home {
+    border-color: var(--black);
+    color: var(--green3);
+  }
+  .priority-button-home.low {
+    --grey: #a8db27;
+  }
+  .priority-button-home.medium {
+    --grey: #ffd549;
+  }
+  .priority-button-home.high {
+    --grey: #FF3232;
+    color: color-mix(in srgb, var(--white), var(--white) 95%);
+  }  
+  .priority-button-home:hover {
+    background-color: color-mix(in srgb, var(--grey), white 25%);
+    transition: background-color 0.3s ease;
+  }
+  .priority-button-home.selected {
+    background-color: color-mix(in srgb, var(--grey), white 10%) !important;
+    border-width: 2px !important;
+    border-color: #97A7B0 !important;
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.5);
+    transition: box-shadow 0.8s ease;
+    transform: translateY(4px);
+  }
+/* Definições do botão de adicionar task */
+#label-startDate,
+#label-limitDate {
+  margin-block: 20px;
+  margin-inline: 60px;
+  text-align: center;
+  color: var(--green3);
+  font-size: 13px;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+/* merdas e cenas */
+
+#task-startDate,
+#task-limitDate {
+    margin-inline: 20px;
+    text-align: center;
+    margin-block: 10px;
+    width: 180px;
+    height: 25px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    font-weight: lighter;
+    color: color-mix(in srgb, var(--green3), var(--white) 40%);
+    font-size: 14px;
+}
+/* Botão add task */
+#addTask {
+  text-align: center;
+  margin-top: 25px;
+  width: 120px;
+  height: 32px;
+  text-transform: uppercase;
+  font-size: 12px;
+  font-weight: bold;
+  background-color: var(--done);
+  color: var(--green3);
+  border-radius: 5px;
+  transition: background-color 0.3s, color 0.3s;
+  cursor: pointer;
+}
+#addTask:hover {
+  background-color: var(--green3);
+  color: var(--green1);
+}
+/* Mensagem de erro por não preenchimento de 1 dos 2 campos, ou do botão de priority */
+#warningMessage2 {
+  color: var(--warningMessages);
+  font-size: 14px;
+  margin-top: 17px;
+  text-align: center;
+}
+
+/* Definições do painel main, onde estao as secções do Scrum (To do, Doing, Done) */
+/* Definições gerais de ambos os main (home.html e task.html) */
+main {
+  width: calc(100% - 300px);
+  padding-left: 30px;
+  padding-right: 30px;
+  height: 720px;
+  background-color: var(--white);
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+/* Definições do main home.html */
+.titulo-main,
+.titulo-retro {
+  flex: 1;
+}
+.main-home,
+.sci-title {
+  text-align: center;
+  color: var(--green3);
+  text-transform: uppercase;
+  font-size: 20px;
+  padding-top: 40px;
+  padding-bottom: 10px;
+}
+/* Definições gerais dos painéis To do, Doing e Done & strengths, Challenges e Improvements */
+.panel,
+.panel-strengths,
+.panel-challenges,
+.panel-improvements {
+  flex: 1;
+  height: 500px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  margin-top: 20px;
+  margin-right: 50px;
+  margin-left: 50px;
+  margin-bottom: 40px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  padding-left: 40px;
+  border: 2px solid var(--green3);
+  overflow: auto;
+  /* Estilos da scroll bar */
+  scrollbar-width: thin;
+  scrollbar-color: var(--green2) var(--white);
+}
+/* Cor de fundo de cada painel */
+#todo,
+#strengths {
+  background-color: var(--todo);
+}
+#doing,
+#challenges {
+  background-color: var(--doing);
+}
+#done,
+#improvements {
+  background-color: var(--done);
+}
+/* Estilos da scroll bar (painéis da home.html e da task no task.html) */
+/* Tamanho da barra */
+.panel::-webkit-scrollbar,
+.text-task::-webkit-scrollbar,
+.panel-strengths::-webkit-scrollbar,
+.panel-challenges::-webkit-scrollbar,
+.panel-improvements::-webkit-scrollbar,
+.table-container::-webkit-scrollbar {
+  width: 13px;
+}
+/* Cor da barra */
+.panel::-webkit-scrollbar-thumb,
+.text-task::-webkit-scrollbar-thumb,
+.panel-strengths::-webkit-scrollbar-thumb,
+.panel-challenges::-webkit-scrollbar-thumb,
+.panel-improvements::-webkit-scrollbar-thumb,
+.table-container::-webkit-scrollbar-thumb {
+  background-color: var(--green2);
+  border-top-right-radius: 8px;
+}
+/* Distância à direita a que a barra fica da border, cor do trilho e arredondamento para fazerstrengths
+match ao arredondamento do painel (home.html) */
+.panel::-webkit-scrollbar-track,
+.text-task::-webkit-scrollbar-track,
+.panel-strengths::-webkit-scrollbar-track,
+.panel-challenges::-webkit-scrollbar-track,
+.panel-improvements::-webkit-scrollbar-track,
+.table-container::-webkit-scrollbar-track {
+  margin-right: 1px;
+  background-color: var(--white);
+  border-top-right-radius: 9px;
+}
+/* Altura da scroll bar */
+.panel::-webkit-scrollbar,
+.text-task::-webkit-scrollbar,
+.panel-strengths::-webkit-scrollbar,
+.panel-challenges::-webkit-scrollbar,
+.panel-improvements::-webkit-scrollbar,
+.table-container::-webkit-scrollbar {
+  height: calc(100% - 2px);
+  padding-right: 1px;
+}
+/* Definições das tasks no home.html */
+.task {
+  position: relative;
+  width: 190px;
+  height: 50px; /* tamanho do espaço em que é inserido cada post-it (inclui espaçamento entre post-its) */
+  margin-top: 20px;
+  background-color: var(--grey);
+  margin-top: 30px;
+  margin-bottom: 30px;
+  border-top-right-radius: 10px;
+  border-top-left-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+  cursor: pointer;
+  transition: all 0.5s ease-in-out;
+}
+/* Esconde o texto da description */
+.post-it-text {
+  max-height: 0;
+  transition: all 0.5s ease;
+  overflow: hidden;
+}
+/* Definições do conteúdo de cada post-it */
+.post-it {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  text-align: left;
+}
+.post-it h3 {
+  font-size: 15px;
+  text-transform: uppercase;
+  padding-left: 13px;
+}
+.post-it p {
+  font-size: 0.825rem;
+  padding-inline: 13px;
+  overflow: hidden;
+  opacity: 1;
+  display: -webkit-box; /* Define o display como flexível */
+  -webkit-line-clamp: 6; /* número de linhas que o texto vai mostrar */
+  -webkit-box-orient: vertical;
+  margin: 0;
+}
+/* Cores dos post-it de acordo com a prioridade */
+.task.low {
+  --grey: #a8db27;
+}
+.task.medium {
+  --grey: #ffd549;
+}
+.task.high {
+  --grey: #FF3232;
+  color: color-mix(in srgb, var(--white), var(--white) 95%);
+}
+/* Expansão de cada task para mostrar description e cruz de apagar */
+/* Dimensão da janela do post-it totalmente expandida */
+.task:hover {
+  height: 190px;
+  transition: all 0.5s ease-in-out;
+}
+/* Faz o texto do post-it aparecer */
+.task:hover .post-it-text {
+  max-height: 190px;
+  transition: all 0.5s ease;
+}
+/* Dragging de cada tarefa */
+.task.dragging {
+  opacity: 0.5;
+}
+.task:hover {
+  background-color: color-mix(in srgb, var(--grey), white 25%);
+  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+  transition: box-shadow 0.3s ease;
+}
+/* Definições da cruz que apaga a task */
+/* Não mostra na mini-janela do post-it */
+.task .apagarButton {
+  opacity: 0;
+  transition: all 0.5s ease-in-out;
+}
+/* Mostra na mini-janela do post-it */
+.task:hover .apagarButton {
+  opacity: 1;
+  transition: all 0.5s ease-in-out;
+}
+/* Posição do botão apagar */
+.apagarButton {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  max-width: 17px;
+  aspect-ratio: 1;
+  cursor: pointer;
+  transition: ease-on 0.01s;
+}
+/* Animação do botão apagar */
+.apagarButton:hover {
+  rotate: 360deg;
+  transition: ease 0.01s;
+}
+/* Modal para confirmações - apagar tarefa no home.html, cancelar as alterações no task.html */
+.modal {
+  bottom: 0;
+  height: 100%;
+  left: 0;
+  position: fixed;
+  right: 0;
+  text-align: center;
+  top: 0;
+  white-space: nowrap;
+  background-color: rgb(0 0 0 / 80%);
+  backdrop-filter: blur(5px);
+  display: none;
+  place-items: center;
+  z-index: 1;
+}
+.modal-content {
+  padding: 2rem 3rem;
+  background-color: white;
+  border: var(--warningMessages) 2px solid;
+  max-width: 25%;
+  border-radius: 5px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  pointer-events: all;
+}
+.modal button {
+  text-align: center;
+  margin: 0 auto;
+  width: 100px;
+  height: 32px;
+  text-transform: uppercase;
+  font-size: 12px;
+  font-weight: bold;
+  background-color: var(--done);
+  color: var(--green3);
+  border-radius: 5px;
+  transition: background-color 0.3s, color 0.3s;
+  cursor: pointer;
+}
+.modal button:hover {
+  background-color: var(--green3);
+  color: var(--green1);
+}
+.modal p {
+  color: var(--warningMessages);
+  font-weight: bold;
+  text-align: center;
+  grid-column: 1 / 3;
+}
+/* Media para ecrãs pequenos */
+@media (max-width: 768px) {
+  main {
+    flex-direction: column;
+  }
+  .panel {
+    flex: none;
+    width: calc(100% - 100px);
+    margin: 20px auto;
+  }
+}
+
+/* Definições do main na task.html */
+.main-task {
+  width: auto;
+  margin: auto;
+  display: flex;
+  justify-content: flex-start;
+  background-image: url("multimedia/bg_02.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+/* Media para ecrãs pequenos */
+@media (max-width: 768px) {
+  .main-task {
+    flex-direction: column;
+  }
+}
+/* Definições da task */
+.detalhes-task {
+  margin-top: 90px;
+  margin-right: 30px;
+  margin-left: 20px;
+  align-items: center;
+  text-align: center;
+}
+#task-bc {
+  text-transform: uppercase;
+}
+.main-task #titulo-task,
+.main-task #descricao-task {
+  margin-left: 80px;
+  width: 500px;
+  padding: 20px;
+  resize: none;
+  background-color: color-mix(in srgb, var(--todo), transparent 75%);
+  color: var(--green3);
+  border-top-right-radius: 10px;
+  border-top-left-radius: 10px;
+  border-color: var(--green3);
+  border-width: 2px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+.main-task #titulo-task {
+  margin-top: 14px;
+  margin-bottom: 20px;
+  height: 25px;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  font-size: 20px;
+  font-weight: 500;
+}
+.main-task #descricao-task {
+  height: 260px;
+  font-size: 14px;
+  line-height: 1.4;
+}
+.text-task {
+  scrollbar-color: var(--green2) var(--white);
+}
+/* Definições dos botões save e cancel */
+.task-save {
+  justify-content: center;
+  margin-left: 80px;
+  margin-top: 50px;
+  display: flex;
+  gap: 30px;
+  text-transform: uppercase;
+  font-size: 12px;
+  font-weight: bold;
+  cursor: pointer;
+}
+#save-button,
+#cancel-button {
+  width: 150px;
+  height: 45px;
+  padding: 10px;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0px 4px 8px var(--grey);
+  border-top-right-radius: 8px;
+  border-top-left-radius: 8px;
+}
+#save-button:hover,
+#cancel-button:hover {
+  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.5);
+  transition: box-shadow 0.8s ease;
+  transform: translateY(4px);
+}
+#save-button {
+  background-color: var(--black);
+  color: var(--green1);
+  border-color: var(--todo);
+}
+#cancel-button {
+  background-color: var(--todo);
+  color: var(--black);
+  border-color: var(--black);
+}
+#warningMessage3 {
+  color: var(--warningMessages);
+  font-size: 16px;
+  font-weight: bold;
+  margin-top: 25px;
+  margin-left: 80px;
+  text-align: center;
+}
+
+/* Definições gerais de status e priority */
+.status-and-priority {
+  margin-left: 100px;
+  margin-top: 90px;
+  width: 520px;
+  height: 393px;
+  background-color: color-mix(in srgb, var(--todo), transparent 75%);
+  border: 2px solid var(--green3);
+  border-top-right-radius: 8px;
+  border-top-left-radius: 8px;
+}
+.task-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.task-buttons .taskH4 {
+  text-align: center;
+  margin-top: 20px;
+  margin-bottom: 15px;
+  padding-top: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-size: 18px;
+  color: var(--green3);
+}
+
+/* Definições dos botões de status e priority */
+.task-status .status-buttons,
+.task-priority .priority-buttons {
+  justify-content: center;
+  display: flex;
+  gap: 35px;
+}
+.status-button,
+.priority-button {
+  --button-shadow-color: #c3c3c3;
+  width: 90px;
+  height: 35px;
+  padding: 8px;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0px 4px 8px var(--button-shadow-color);
+  border-top-right-radius: 8px;
+  border-top-left-radius: 8px;
+  background-color: var(--grey);
+  transition: box-shadow 0.3s ease;
+}
+.status-button:hover,
+.priority-button:hover {
+  --button-shadow-color: #808080;
+  transition: box-shadow 0.3s ease;
+}
+/* Definições dos botões de status */
+.status-button {
+  border-color: var(--black);
+  color: var(--green3);
+}
+.status-button.todo {
+  --grey: var(--todo);
+}
+.status-button.doing {
+  --grey: var(--doing);
+}
+.status-button.done {
+  --grey: var(--done);
+}
+.status-button:hover {
+  background-color: color-mix(in srgb, var(--grey), var(--black) 25%);
+  transition: background-color 0.3s ease;
+}
+/* Definições dos botões de priority */
+.priority-button {
+  border-color: var(--black);
+  color: var(--green3);
+}
+.priority-button.low {
+  --grey: #a8db27;
+}
+.priority-button.medium {
+  --grey: #ffd549;
+}
+.priority-button.high {
+  --grey: #FF3232;
+  color: color-mix(in srgb, var(--white), var(--white) 95%);
+}
+.priority-button:hover {
+  background-color: color-mix(in srgb, var(--grey), white 25%);
+  transition: background-color 0.3s ease;
+}
+/* Definições dos botões de status e priority quando selecionados */
+.status-button.selected, 
+.priority-button.selected {
+  border-color: #97A7B0 !important;
+  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.5);
+  transition: box-shadow 0.8s ease;
+  transform: translateY(4px);
+}
+.status-button.selected {
+    background-color: color-mix(in srgb, var(--green3), white 10%) !important;
+    border-width: 2px !important;
+    color: #8AD6FF !important;
+}
+.priority-button.selected {
+  background-color: color-mix(in srgb, var(--grey), white 30%) !important;
+}
+.startDateDiv,
+.updateDateDiv,
+.endDateDiv {
+  margin-top: 20px;
+  letter-spacing: 0.5px;
+  font-style: italic;
+  font-size: 15px;
+  font-weight: bold;
+  color: var(--green3);
+  text-align: center;
+}
+.startDateDiv {
+  margin-top: 40px;
+}
+
+/* Definições do footer */
+footer {
+  width: auto;
+  padding-block: 20px;
+  background-color: var(--black);
+  color: var(--light-grey);
+  text-align: center;
+}
+.footer-content {
+  padding-block: 20px;
+  font-size: 17px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  column-gap: 80px;
+  row-gap: 12px;
+}
+.label-left {
+  padding-left: 600px;
+  text-align: left;
+}
+.label-right {
+  text-align: left;
+}
+
+/* Definições do retro-each.html */
+aside h3 {
+  margin-top: 40px;
+  margin-bottom: 20px;
+  text-align: center;
+  color: var(--green3);
+  text-transform: uppercase;
+  font-size: 20px;
+}
+#retro-title-aside {
+  margin-top: 60px;
+  margin-bottom: 20px;
+  text-align: center;
+  color: var(--green3);
+  text-transform: uppercase;
+  font-size: 17px;
+}
+#retro-date-each {
+  margin-top: 20px;
+  text-align: center;
+  color: var(--green3);
+  font-size: 15px;
+}
+#retro-date-each {
+  color: var(--green2);
+  font-weight: normal;
+  font-size: 17px;
+  font-weight: bold;
+}
+#retroDate {
+  margin-bottom: 20px;
+  width: 180px;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  font-weight: lighter;
+  color: color-mix(in srgb, var(--green3), var(--white) 40%);
+  font-size: 14px;
+  text-align: center;
+}
+#retro-date-each {
+  margin-top: 10px;
+}
+#retroTitle,
+#retroDate {
+  height: 25px;
+}
+#p-members {
+  margin-top: 10px;
+  margin-inline: 40px;
+  color: var(--green3);
+  font-size: 15px;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+#view-members {
+  margin-bottom: 20px;
+  margin-inline: 40px;
+  color: var(--green3);
+  font-size: 13px;
+}
+
+#horizontalLine {
+  margin-block: 40px;
+  margin-inline: 40px;
+  border: 1px solid var(--green2);
+}
+#addComment {
+  margin-inline: 60px;
+  color: var(--green3);
+  font-size: 15px;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+#max-length {
+  margin-top: 15px;
+  margin-inline: 40px;
+  color: var(--green3);
+  font-size: 11px;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+#name-addMember {
+  margin-top: 15px;
+}
+#taskDescription,
+#taskDescription-retro,
+#commentDescription-retro {
+  margin-top: 20px;
+  padding: 10px;
+  width: 180px;
+  height: 150px;
+  font-size: 12.5px;
+}
+#taskDescription-retro,
+#commentDescription-retro {
+  margin-top: 15px;
+}
+#dropdown-categories,
+#dropdown-users {
+  margin-top: 20px;
+  width: 190px;
+  padding: 3px;
+  margin-inline: 40px;
+  color: var(--green3);
+  font-size: 13px;
+  border: 2px solid var(--green3);
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
+#dropdown-users {
+  background-color: var(--todo);
+}
+#addCommentBTN,
+#addRetroBTN {
+  margin-top: 30px;
+  width: 150px;
+  height: 32px;
+  text-transform: uppercase;
+  font-size: 12px;
+  font-weight: bold;
+  background-color: var(--done);
+  color: var(--green3);
+  border-radius: 5px;
+  transition: background-color 0.3s, color 0.3s;
+  cursor: pointer;
+}
+#addRetroBTN {
+  margin-top: 15px;
+}
+#addCommentBTN:hover,
+#addRetroBTN:hover {
+  background-color: var(--green3);
+  color: var(--green1);
+}
+
+.table-container{
+  margin-top: 50px;
+  margin-inline: 100px;
+  max-height: 600px;
+  overflow-y: auto;
+  border: 2px solid var(--green3);
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+.retros-table {
+  width: fit-content;
+  height: fit-content;
+  border-collapse: collapse;
+  padding: 5px;
+  border-collapse: separate;
+}
+.retros-table-header {
+  background-color: var(--green3);
+  color: var(--white);
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 17px;
+  font-weight: bold;
+  text-transform: uppercase;
+  height: 40px;
+  position: sticky;
+  top: 0;
+}
+.table-header {
+  text-align: center;
+  padding: 5px;
+  width: 700px;
+  letter-spacing: 1px;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
+.retros-table-body {
+  color: var(--green3);
+  font-size: 13px;
+  text-align: center;
+  padding: 5px;
+  width: 700px;
+  height: 30px;
+}
+.retros-table-body tr {
+  font-size: 15px;
+  line-height: 1.5;
+  height: 30px;
+}
+.retros-table-body tr:nth-child(even) {
+  background-color: #c8e4e77c;
+}
+.retros-table-body tr:nth-child(odd) {
+  background-color: var(--white);
+}
+
+/* Definições edit-profile.html */
+
+.main-editProfile {
+  width: auto;
+  background-image: url("multimedia/bg_01.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.details-editProfile {
+  margin-top: 150px;
+  margin-right: 30px;
+  margin-left: 20px;
+  align-items: center;
+}
+#username-title-editProfile {
+  margin-left: 260px;
+  color: var(--green3);
+  font-size: 20px;
+  font-weight: bold;
+}
+.editProfile-register {
+  margin-left: 210px;
+  margin-top: 40px;
+  display: flex;
+  flex-direction: column;
+}
+.editProfile-fieldsContainer {
+  display: flex;
+  justify-content: space-between;
+}
+.left-fields-editProfile,
+.right-fields-editProfile {
+  display: flex;
+  flex-direction: column;
+  padding-top: 20px;
+  margin-left: 50px;
+  font-size: 15px;
+  width: 300px;
+}
+.editProfile-fields {
+  margin-bottom: 15px;
+  padding: 5px;
+  width: 100%;
+  height: 25px;
+  border: var(--green2) 2px solid;
+  border-top-right-radius: 7px;
+  border-top-left-radius: 7px;
+}
+.labels-edit-profile {
+  font-size: 13px;
+  padding-left: 5px;
+  padding-bottom: 5px;
+  color: var(--green3);
+}
+.editProfile-fields:focus::placeholder {
+  opacity: 0.5;
+}
+.editProfile-submitButton {
+  margin-top: 50px;
+  margin-left: 60px;
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  text-transform: uppercase;
+  font-size: 12px;
+  font-weight: bold;
+  cursor: pointer;
+  align-items: center;
+}
+#profile-save-button,
+#profile-cancel-button {
+  width: 150px;
+  height: 45px;
+  padding: 10px;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0px 4px 8px var(--grey);
+  border-top-right-radius: 8px;
+  border-top-left-radius: 8px;
+}
+#profile-save-button:hover,
+#profile-cancel-button:hover {
+  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.5);
+  transition: box-shadow 0.8s ease;
+  transform: translateY(4px);
+}
+#profile-save-button {
+  background-color: var(--black);
+  color: var(--green1);
+  border-color: var(--green1);
+}
+#profile-cancel-button {
+  background-color: var(--green1);
+  color: var(--black);
+  border-color: var(--black);
+}
+
+
+
+/* Divisoes da pagina home e task */
+@media (max-width: 1024px) {
+  body {
+    background-color: #cccccc;
+  }
+  header,
+  footer {
+    width: 100%;
+  }
+  aside {
+    width: 100%;
+    float: none;
+  }
+  main {
+    width: 100%;
+    margin: 0;
+  }
+}
+@media (min-width: 768px) {
+  body {
+    background-color: #cccccc;
+  }
+
+  header,
+  footer {
+    width: 100%;
+  }
+
+  aside {
+    width: 100%;
+    float: none;
+  }
+
+  main {
+    width: 100%;
+    margin: 0;
+  }
+}

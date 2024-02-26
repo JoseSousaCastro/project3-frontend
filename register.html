@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <link  type="text/css" rel="stylesheet" href="main.css">
+    <link rel="icon" href="multimedia/favicon.png" type="image/x-icon">
+</head>
+<body>
+    <div class="video-container">
+        <video autoplay muted loop id="background-video">
+            <source src="multimedia/loop_video_final.mp4" type="video/mp4">
+            Your browser does not support video tag.
+        </video>
+        <div class="overlay"></div>
+        <div class="center-container-register">
+            <div class="registerPanel">
+                <img id="logo-register" src="multimedia/logo-scrum-01.png" id="logo-register" width="250">
+                <form id="registrationForm" class="inputs-register">
+                    <div class="right-inputs">
+                        <input type="text" class="inputRegister-fields" id="username-register" name="username" placeholder="Username" required>
+                        <input type="password" class="inputRegister-fields" id="password-register" name="password" placeholder="Password" required>
+                        <input type="password" class="inputRegister-fields" id="passwordConfirm-register" name="passwordConfirm" placeholder="Confirm Password" required>
+                        <input type="email" class="inputRegister-fields" id="email-register" name="email" placeholder="Email" required>
+                    </div>
+                    <div class="left-inputs">
+                        <input type="text" class="inputRegister-fields" id="firstName-register" name="firstName" placeholder="First Name" required>
+                        <input type="text" class="inputRegister-fields" id="lastName-register" name="lastName" placeholder="Last Name" required>
+                        <input type="text" class="inputRegister-fields" id="phone-register" name="phone" placeholder="Phone" required>
+                        <input type="url" class="inputRegister-fields" id="photoURL-register" name="photoURL" placeholder="Photo URL" required>
+                    </div>
+                    <div class="submitButton">
+                        <button type="submit" id="registerButton-register">Register</button>
+                    </div>
+                </form>
+                <a id="backToLoginLink" href="index.html">Login</a>
+                <p id="warningMessage4"></p>
+            </div>
+        </div>
+    </div>
+    <script src="register.js"></script>
+</body>
+</html>
