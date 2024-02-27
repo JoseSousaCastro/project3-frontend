@@ -6,9 +6,9 @@ body {
   --white: #f9f9f9;
   --light-grey: #c8e4e7;
   --grey: grey;
-  --green1: #2CCCD3;
+  --green1: #2cccd3;
   --green2: #21979c;
-  --green3: #223C4A;
+  --green3: #223c4a;
   --black: #0e1a21;
   --overlay: #223c4aab;
 
@@ -16,7 +16,7 @@ body {
   --doing: #9cfaffd5;
   --done: #2cccd4d7;
 
-  --warningMessages: #9C3B21;
+  --warningMessages: #9c3b21;
 
   margin: 0;
   padding: 0;
@@ -180,8 +180,8 @@ body {
 }
 .left-inputs,
 .right-inputs {
-    width: 200px;
-    margin: 0 10px;
+  width: 200px;
+  margin: 0 10px;
 }
 
 .inputRegister-fields {
@@ -291,7 +291,7 @@ header {
   background-color: var(--green3);
 }
 .nav-menu-left li {
-  display:inline;
+  display: inline;
   margin-right: 40px;
   font-size: 20px;
   color: var(--light-grey);
@@ -355,7 +355,6 @@ header {
 .logout-button:hover img {
   content: url("multimedia/logout_hover.png");
 }
-
 
 /* Definições do container que inclui o aside e o main da página home.html */
 .container {
@@ -438,58 +437,58 @@ aside h3 {
 }
 /* Botões de priority no home.html */
 .task-buttons-home {
-    display: flex;
-    flex-direction: column;
-  }
-  .priority-buttons-home {
-    justify-content: center;
-    display: flex;
-    gap: 8px;
-  }
-  .priority-button-home {
-    --button-shadow-color: #c3c3c3;
-    margin-top: 15px;
-    margin-bottom: 30px;
-    width: 56px;
-    height: 30px;
-    text-align: center;
-    text-transform: uppercase;
-    text-rendering: optimizeLegibility;
-    font-size: 10px;
-    font-weight: bold;
-    cursor: pointer;
-    box-shadow: 0px 4px 8px var(--button-shadow-color);
-    border-top-right-radius: 8px;
-    border-top-left-radius: 8px;
-    background-color: var(--grey);
-    transition: box-shadow 0.3s ease;
-  }
-  .priority-button-home {
-    border-color: var(--black);
-    color: var(--green3);
-  }
-  .priority-button-home.low {
-    --grey: #a8db27;
-  }
-  .priority-button-home.medium {
-    --grey: #ffd549;
-  }
-  .priority-button-home.high {
-    --grey: #FF3232;
-    color: color-mix(in srgb, var(--white), var(--white) 95%);
-  }  
-  .priority-button-home:hover {
-    background-color: color-mix(in srgb, var(--grey), white 25%);
-    transition: background-color 0.3s ease;
-  }
-  .priority-button-home.selected {
-    background-color: color-mix(in srgb, var(--grey), white 10%) !important;
-    border-width: 2px !important;
-    border-color: #97A7B0 !important;
-    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.5);
-    transition: box-shadow 0.8s ease;
-    transform: translateY(4px);
-  }
+  display: flex;
+  flex-direction: column;
+}
+.priority-buttons-home {
+  justify-content: center;
+  display: flex;
+  gap: 8px;
+}
+.priority-button-home {
+  --button-shadow-color: #c3c3c3;
+  margin-top: 15px;
+  margin-bottom: 30px;
+  width: 56px;
+  height: 30px;
+  text-align: center;
+  text-transform: uppercase;
+  text-rendering: optimizeLegibility;
+  font-size: 10px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0px 4px 8px var(--button-shadow-color);
+  border-top-right-radius: 8px;
+  border-top-left-radius: 8px;
+  background-color: var(--grey);
+  transition: box-shadow 0.3s ease;
+}
+.priority-button-home {
+  border-color: var(--black);
+  color: var(--green3);
+}
+.priority-button-home.low {
+  --grey: #a8db27;
+}
+.priority-button-home.medium {
+  --grey: #ffd549;
+}
+.priority-button-home.high {
+  --grey: #ff3232;
+  color: color-mix(in srgb, var(--white), var(--white) 95%);
+}
+.priority-button-home:hover {
+  background-color: color-mix(in srgb, var(--grey), white 25%);
+  transition: background-color 0.3s ease;
+}
+.priority-button-home.selected {
+  background-color: color-mix(in srgb, var(--grey), white 10%) !important;
+  border-width: 2px !important;
+  border-color: #97a7b0 !important;
+  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.5);
+  transition: box-shadow 0.8s ease;
+  transform: translateY(4px);
+}
 /* Definições do botão de adicionar task */
 #label-startDate,
 #label-limitDate {
@@ -505,16 +504,16 @@ aside h3 {
 
 #task-startDate,
 #task-limitDate {
-    margin-inline: 20px;
-    text-align: center;
-    margin-block: 10px;
-    width: 180px;
-    height: 25px;
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
-    font-weight: lighter;
-    color: color-mix(in srgb, var(--green3), var(--white) 40%);
-    font-size: 14px;
+  margin-inline: 20px;
+  text-align: center;
+  margin-block: 10px;
+  width: 180px;
+  height: 25px;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  font-weight: lighter;
+  color: color-mix(in srgb, var(--green3), var(--white) 40%);
+  font-size: 14px;
 }
 /* Botão add task */
 #addTask {
@@ -699,7 +698,7 @@ match ao arredondamento do painel (home.html) */
   --grey: #ffd549;
 }
 .task.high {
-  --grey: #FF3232;
+  --grey: #ff3232;
   color: color-mix(in srgb, var(--white), var(--white) 95%);
 }
 /* Expansão de cada task para mostrar description e cruz de apagar */
@@ -1011,7 +1010,7 @@ match ao arredondamento do painel (home.html) */
   --grey: #ffd549;
 }
 .priority-button.high {
-  --grey: #FF3232;
+  --grey: #ff3232;
   color: color-mix(in srgb, var(--white), var(--white) 95%);
 }
 .priority-button:hover {
@@ -1019,17 +1018,17 @@ match ao arredondamento do painel (home.html) */
   transition: background-color 0.3s ease;
 }
 /* Definições dos botões de status e priority quando selecionados */
-.status-button.selected, 
+.status-button.selected,
 .priority-button.selected {
-  border-color: #97A7B0 !important;
+  border-color: #97a7b0 !important;
   box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.5);
   transition: box-shadow 0.8s ease;
   transform: translateY(4px);
 }
 .status-button.selected {
-    background-color: color-mix(in srgb, var(--green3), white 10%) !important;
-    border-width: 2px !important;
-    color: #8AD6FF !important;
+  background-color: color-mix(in srgb, var(--green3), white 10%) !important;
+  border-width: 2px !important;
+  color: #8ad6ff !important;
 }
 .priority-button.selected {
   background-color: color-mix(in srgb, var(--grey), white 30%) !important;
@@ -1208,7 +1207,7 @@ aside h3 {
   color: var(--green1);
 }
 
-.table-container{
+.table-container {
   margin-top: 50px;
   margin-inline: 100px;
   max-height: 600px;
@@ -1365,8 +1364,6 @@ aside h3 {
   border-color: var(--black);
 }
 
-
-
 /* Divisoes da pagina home e task */
 @media (max-width: 1024px) {
   body {
@@ -1403,5 +1400,28 @@ aside h3 {
   main {
     width: 100%;
     margin: 0;
+  }
+
+  /* Adicione isso ao seu arquivo de estilo ou em um bloco de estilo no head do HTML */
+  .table-container {
+    max-height: 300px; /* Ajuste conforme necessário */
+    overflow-y: auto;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px; /* Ajuste conforme necessário */
+  }
+
+  th,
+  td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+  }
+
+  th {
+    background-color: #f2f2f2;
   }
 }
