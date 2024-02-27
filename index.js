@@ -32,8 +32,9 @@ document
       });
 
       if (response.ok) {
-        localStorage.setItem("username", loginValue);
-        localStorage.setItem("password", passwordValue);
+        const token = await response.text();
+
+        sessionStorage.setItem("token", token);
 
         //depois de login com sucesso, apaga os values
 
