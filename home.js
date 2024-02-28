@@ -471,40 +471,58 @@ async function getPhotoUrl(usernameValue, passwordValue) {
     alert("Something went wrong");
   }
 }
-
-document.addEventListener("DOMContentLoaded", function () {
-  // Função para mostrar o conteúdo da lista de usuários
+document.addEventListener("DOMContentLoaded", async function () {
   function showUsersList(array) {
     const mainContainer = document.querySelector("main");
     mainContainer.innerHTML = ""; // Limpa o conteúdo atual
     console.log(array);
 
-    // Carrega o conteúdo da lista de usuários
-    fetch("pages/users-list.html")
-      .then((response) => response.text())
-      .then((html) => {
-        mainContainer.innerHTML = html;
+    const usersTable = document.createElement("table");
+    usersTable.id = "users-table";
 
-        const usersTable = document.getElementById("users-table");
-        const tbody = document.getElementById("users-tbody");
+    const thead = document.createElement("thead");
+    const titlesRow = document.createElement("tr");
+    titlesRow.innerHTML = `
+      <th>Username</th>
+      <th>Role</th>
+      <th>Deleted</th>
+    `;
+    thead.appendChild(titlesRow);
+    usersTable.appendChild(thead);
 
-        array.forEach((user) => {
-          const row = document.createElement("tr");
-          row.innerHTML = `
-            <td>${user.username}</td>
-            <td>${user.email}</td>
-            <td>${user.phone}</td>
-            <td><img src="${user.photo}" alt="${user.username}" /></td>
-          `;
-          tbody.appendChild(row);
-        });
-      })
-      .catch((error) => console.error("Error loading users list:", error));
+    const tbody = document.createElement("tbody");
+    const roleMapping = {
+      100: "DEVELOPER",
+      200: "SCRUM_MASTER",
+      300: "PRODUCT_OWNER",
+    };
+
+    const deletedMapping = {
+      false: "Not deleted",
+      true: "Deleted",
+    };
+
+    array.forEach((user) => {
+      const row = document.createElement("tr");
+      const roleText = roleMapping[user.role] || "Unknown Role";
+      const deletedText = deletedMapping[user.deleted] || "Unknow";
+      row.innerHTML = `
+        <td class="clickable" onclick="showUserDetails(${JSON.stringify(
+          user
+        )})">${user.username}</td>
+        <td>${roleText}</td>
+        <td>${deletedText}</td>
+      `;
+
+      tbody.appendChild(row);
+    });
+
+    usersTable.appendChild(tbody);
+    mainContainer.appendChild(usersTable);
   }
 
-  document
-    .getElementById("openModal")
-    .addEventListener("click", async function () {
+  async function fetchUsers() {
+    try {
       const response = await fetch(
         "http://localhost:8080/proj3_vc_re_jc/rest/users/checkUsers",
         {
@@ -516,6 +534,7 @@ document.addEventListener("DOMContentLoaded", function () {
           },
         }
       );
+
       if (response.ok) {
         const usersArray = await response.json();
         console.log(usersArray);
@@ -524,5 +543,15 @@ document.addEventListener("DOMContentLoaded", function () {
       } else {
         alert(response.status);
       }
-    });
+    } catch (error) {
+      console.error("Error loading users list:", error);
+    }
+  }
+
+  document.getElementById("openModal").addEventListener("click", fetchUsers);
 });
+
+function showUserDetails(user) {
+  // Lógica para mostrar detalhes do usuário, por exemplo, usando um modal
+  alert(`Details for ${user.username}`);
+}

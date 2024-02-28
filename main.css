@@ -500,8 +500,6 @@ aside h3 {
   font-weight: bold;
   text-transform: uppercase;
 }
-/* merdas e cenas */
-
 #task-startDate,
 #task-limitDate {
   margin-inline: 20px;
@@ -1401,27 +1399,49 @@ aside h3 {
     width: 100%;
     margin: 0;
   }
+}
 
-  /* Adicione isso ao seu arquivo de estilo ou em um bloco de estilo no head do HTML */
-  .table-container {
-    max-height: 300px; /* Ajuste conforme necessário */
-    overflow-y: auto;
-  }
+/*--------------NOVO--------------------*/
+th,
+td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
 
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 10px; /* Ajuste conforme necessário */
-  }
+th {
+  background-color: #f2f2f2;
+}
 
-  th,
-  td {
-    border: 1px solid #ddd;
-    padding: 8px;
-    text-align: left;
-  }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  table-layout: fixed;
+}
 
-  th {
-    background-color: #f2f2f2;
-  }
+.clickable {
+  cursor: pointer;
+}
+
+.clickable:hover {
+  text-decoration: underline;
+}
+
+.user-photo img {
+  max-width: 50px;
+  max-height: 50px;
+  border-radius: 50%;
+}
+
+#users-table {
+  background-color: orange;
+  max-height: 100px;
+  overflow-y: auto;
+}
+
+.users-list-container {
+  overflow: auto;
+  max-height: 100px;
+  background-color: yellow;
 }
