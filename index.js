@@ -35,6 +35,7 @@ document
         const token = await response.text();
 
         sessionStorage.setItem("token", token);
+        sessionStorage.setItem("username", username);
 
         //depois de login com sucesso, apaga os values
 

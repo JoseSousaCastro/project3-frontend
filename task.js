@@ -1,28 +1,40 @@
-window.onload = function () {
-  const usernameValue = localStorage.getItem("username");
-  const passwordValue = localStorage.getItem("password");
-  const taskId = sessionStorage.getItem("taskId");
+window.onload = async function () {
+  const tokenValue = sessionStorage.getItem("token");
 
-  if (usernameValue === null || passwordValue === null) {
+  if (tokenValue === null) {
     window.location.href = "index.html";
   } else {
     try {
       getFirstName(usernameValue, passwordValue);
       getPhotoUrl(usernameValue, passwordValue);
-      showTask(taskId);
+      loadTasks();
     } catch (error) {
-        
-        console.error("An error occurred:", error);
-        window.location.href = "index.html";
-        
+      console.error("An error occurred:", error);
     }
-}
+  }
 
+  const response = await fetch(
+    "http://localhost:8080/proj3_vc_re_jc/rest/users/roleByToken",
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "*/*",
+        token: sessionStorage.getItem("token"),
+      },
+    }
+  );
+  if (response.ok) {
+    const data = await response.json();
+    const role = data.role;
+    sessionStorage.setItem("role", role);
+  } else {
+    alert("role not found");
+  }
 };
 
 const usernameValue = localStorage.getItem("username");
 const passwordValue = localStorage.getItem("password");
-const tokenValue = sessionStorage.getItem("token");
 const taskId = sessionStorage.getItem("taskId");
 
 // Definir os botões de status
@@ -61,6 +73,8 @@ async function updateTask() {
           "Content-Type": "application/JSON",
           Accept: "*/*",
           token: sessionStorage.getItem("token"),
+          userRole: sessionStorage.getItem("role"),
+          username: sessionStorage.getItem("username"),
         },
         body: JSON.stringify(task),
       }
@@ -128,7 +142,7 @@ async function getPhotoUrl(usernameValue, passwordValue) {
   }
 }
 
-async function getAllTasks(token) {
+async function getAllTasks() {
   let getTasks = `http://localhost:8080/proj3_vc_re_jc/rest/tasks/all`;
 
   try {
@@ -137,7 +151,7 @@ async function getAllTasks(token) {
       headers: {
         "Content-Type": "application/JSON",
         Accept: "*/*",
-        token: tokenValue,
+        token: sessionStorage.getItem("token"),
       },
     });
     const message = await response.text();
@@ -238,7 +252,7 @@ function setPriorityButtonSelected(button) {
 
 async function findTaskById(taskId) {
   try {
-    const tasksArray = await getAllTasks(token);
+    const tasksArray = await getAllTasks();
     const task = tasksArray.find((task_1) => task_1.id === taskId);
     return task;
   } catch (error) {
