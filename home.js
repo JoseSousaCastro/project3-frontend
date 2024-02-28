@@ -26,6 +26,7 @@ function cleanAllTaskFields() {
   // Limpar os input fields depois de adicionar a task
   document.getElementById("taskName").value = "";
   document.getElementById("taskDescription").value = "";
+  document.getElementById("taskCategory").value = "";
   document.getElementById("task-startDate").value = "";
   document.getElementById("task-endDate").value = "";
   removeSelectedPriorityButton();
@@ -65,7 +66,7 @@ panels.forEach((panel) => {
   });
 });
 
-async function updateTaskStatus(token, taskId, newStatus) {
+async function updateTaskStatus(taskId, newStatus) {
   const updateTaskUrl = `http://localhost:8080/proj3_vc_re_jc/rest/tasks/status`;
   try {
     const response = await fetch(updateTaskUrl, {
@@ -73,7 +74,7 @@ async function updateTaskStatus(token, taskId, newStatus) {
       headers: {
         "Content-Type": "application/json",
         Accept: "*/*",
-        token: token,
+        token:  sessionStorage.getItem("token"),
         taskId: taskId,
       },
       body: JSON.stringify(newStatus),
@@ -133,7 +134,7 @@ highButton.addEventListener("click", () =>
   setPriorityButtonSelected(highButton, "HIGH_PRIORITY")
 );
 
-async function newTask(token, task) {
+async function newTask(task) {
   let newTask = `http://localhost:8080/proj3_vc_re_jc/rest/tasks/addTask`;
 
   try {
@@ -142,7 +143,7 @@ async function newTask(token, task) {
       headers: {
         "Content-Type": "application/json",
         Accept: "*/*",
-        token: token,
+        token:  sessionStorage.getItem("token"),
       },
       body: JSON.stringify(task),
     });
@@ -162,7 +163,7 @@ async function getAllTasks(token) {
       headers: {
         "Content-Type": "application/JSON",
         Accept: "*/*",
-        token: token,
+        token: sessionStorage.getItem("token"),
       },
     });
 
@@ -195,9 +196,10 @@ function createTask(title, description, priority, startDate, endDate) {
 // Event listener do botão add task para criar uma nova task e colocá-la no painel To Do (default para qualquer task criada)
 document.getElementById("addTask").addEventListener("click", function () {
   console.log("addTask button clicked");
-
-  let description = document.getElementById("taskDescription").value.trim();
+  
   let title = document.getElementById("taskName").value.trim();
+  let description = document.getElementById("taskDescription").value.trim();
+  let category = document.getElementById("taskCategory").value.trim();
   let priority = taskPriority;
   let startDate = document.getElementById("task-startDate").value;
   let endDate = document.getElementById("task-endDate").value;
@@ -205,6 +207,7 @@ document.getElementById("addTask").addEventListener("click", function () {
   if (
     title === "" ||
     description === "" ||
+    category === "" ||
     startDate === "" ||
     endDate === "" ||
     startDate > endDate ||
@@ -214,9 +217,9 @@ document.getElementById("addTask").addEventListener("click", function () {
     document.getElementById("warningMessage2").innerText =
       "Fill in all fields and define a priority";
   } else {
-    let task = createTask(title, description, priority, startDate, endDate);
+    let task = createTask(title, description, category, priority, startDate, endDate);
     
-    const token = getValuesFromLocalStorage()[0]; // Verificar se é Local ou Session storage
+    const token =  sessionStorage.getItem("token");
     newTask(token, task).then(() => {
       removeAllTaskElements();
       loadTasks();
@@ -312,7 +315,7 @@ function loadTasks() {
           console.error("Task element not created for task:", task);
           return;
         }
-        task.stateId = parseStateIdToString(task.stateId);
+        task.stateId = task.stateId.toUpperCase();
         const panel = document.getElementById(task.stateId);
         if (!panel) {
           console.error("Panel not found for stateId:", task.stateId);
@@ -334,32 +337,9 @@ function removeAllTaskElements() {
   tasks.forEach((task) => task.remove());
 }
 
-function parseStateIdToString(stateId) {
-  let newStateId = "";
-  if (stateId === 100) {
-    newStateId = "TODO";
-  } else if (stateId === 200) {
-    newStateId = "DOING";
-  } else if (stateId === 300) {
-    newStateId = "DONE";
-  }
-  return newStateId;
-}
-
-function parseStateIdToInt(stateId) {
-  let newStateId = 0;
-  if (stateId === "TODO") {
-    newStateId = 100;
-  } else if (stateId === "DOING") {
-    newStateId = 200;
-  } else if (stateId === "DONE") {
-    newStateId = 300;
-  }
-  return newStateId;
-}
-
-
 // FALTA ==>> add user role no body
+//let userRole = user.getUserRole
+
 async function deleteTask(id, userRole) {
   let deleteTaskUrl = `http://localhost:8080/proj3_vc_re_jc/rest/tasks/updateDeleted`;
 
@@ -383,7 +363,6 @@ async function deleteTask(id, userRole) {
 
 window.onclose = function () {
   // Guarda as tarefas na local storage quando a página é fechada
-
   localStorage.removeItem("username");
   localStorage.removeItem("password");
 };
