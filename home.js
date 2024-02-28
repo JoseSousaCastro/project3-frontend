@@ -1,4 +1,4 @@
-window.onload = function () {
+window.onload = async function () {
   const tokenValue = sessionStorage.getItem("token");
 
   if (tokenValue === null) {
@@ -11,6 +11,25 @@ window.onload = function () {
     } catch (error) {
       console.error("An error occurred:", error);
     }
+  }
+
+  const response = await fetch(
+    "http://localhost:8080/proj3_vc_re_jc/rest/users/roleByToken",
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "*/*",
+        token: sessionStorage.getItem("token"),
+      },
+    }
+  );
+  if (response.ok) {
+    const data = await response.json();
+    const role = data.role;
+    sessionStorage.setItem("role", role);
+  } else {
+    alert("role not found");
   }
 };
 
@@ -74,7 +93,7 @@ async function updateTaskStatus(taskId, newStatus) {
       headers: {
         "Content-Type": "application/json",
         Accept: "*/*",
-        token:  sessionStorage.getItem("token"),
+        token: sessionStorage.getItem("token"),
         taskId: taskId,
       },
       body: JSON.stringify(newStatus),
@@ -143,7 +162,7 @@ async function newTask(task) {
       headers: {
         "Content-Type": "application/json",
         Accept: "*/*",
-        token:  sessionStorage.getItem("token"),
+        token: sessionStorage.getItem("token"),
       },
       body: JSON.stringify(task),
     });
@@ -182,7 +201,7 @@ async function getAllTasks(token) {
 
 function createTask(title, description, priority, startDate, endDate) {
   // Cria uma nova task com os dados inseridos pelo utilizador
-    
+
   const task = {
     title: title,
     description: description,
@@ -196,7 +215,7 @@ function createTask(title, description, priority, startDate, endDate) {
 // Event listener do botão add task para criar uma nova task e colocá-la no painel To Do (default para qualquer task criada)
 document.getElementById("addTask").addEventListener("click", function () {
   console.log("addTask button clicked");
-  
+
   let title = document.getElementById("taskName").value.trim();
   let description = document.getElementById("taskDescription").value.trim();
   let category = document.getElementById("taskCategory").value.trim();
@@ -217,9 +236,16 @@ document.getElementById("addTask").addEventListener("click", function () {
     document.getElementById("warningMessage2").innerText =
       "Fill in all fields and define a priority";
   } else {
-    let task = createTask(title, description, category, priority, startDate, endDate);
-    
-    const token =  sessionStorage.getItem("token");
+    let task = createTask(
+      title,
+      description,
+      category,
+      priority,
+      startDate,
+      endDate
+    );
+
+    const token = sessionStorage.getItem("token");
     newTask(token, task).then(() => {
       removeAllTaskElements();
       loadTasks();
@@ -281,7 +307,6 @@ document.addEventListener("click", function (event) {
     const taskId = event.target.dataset.taskId;
     // VERIFICAR AQUI!!!
     const userRole = localStorage.getItem("userRole");
-    
 
     const deletemodal = document.getElementById("delete-modal");
     deletemodal.style.display = "grid";
@@ -305,9 +330,7 @@ document.addEventListener("click", function (event) {
 
 // Carrega as tarefas guardadas na local storage
 function loadTasks() {
-  getAllUsersTasks(
-    getValuesFromLocalStorage()[0]
-  )
+  getAllUsersTasks(getValuesFromLocalStorage()[0])
     .then((tasksArray) => {
       tasksArray.forEach((task) => {
         const taskElement = createTaskElement(task);
