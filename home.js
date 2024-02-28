@@ -46,8 +46,8 @@ function cleanAllTaskFields() {
   document.getElementById("taskName").value = "";
   document.getElementById("taskDescription").value = "";
   document.getElementById("taskCategory").value = "";
-  document.getElementById("task-startDate").value = "";
-  document.getElementById("task-endDate").value = "";
+  document.getElementById("taskStartDate").value = "";
+  document.getElementById("taskEndDate").value = "";
   removeSelectedPriorityButton();
   taskPriority = null;
 }
@@ -72,7 +72,7 @@ panels.forEach((panel) => {
     const afterElement = getDragAfterElement(panel, e.clientY);
     const task = document.querySelector(".dragging");
 
-    const panelID = panel.id;
+    const panelID = panel.id.toUpperCase;
 
     if (afterElement == null) {
       panel.appendChild(task);
@@ -173,7 +173,7 @@ async function newTask(task) {
   }
 }
 
-async function getAllTasks(token) {
+async function getAllTasks() {
   let getTasks = `http://localhost:8080/proj3_vc_re_jc/rest/tasks/all`;
 
   try {
@@ -199,13 +199,14 @@ async function getAllTasks(token) {
   }
 }
 
-function createTask(title, description, priority, startDate, endDate) {
+function createTask(title, description, priority, category, startDate, endDate) {
   // Cria uma nova task com os dados inseridos pelo utilizador
 
   const task = {
     title: title,
     description: description,
     priority: priority,
+    category: category,
     startDate: startDate,
     endDate: endDate,
   };
@@ -220,8 +221,8 @@ document.getElementById("addTask").addEventListener("click", function () {
   let description = document.getElementById("taskDescription").value.trim();
   let category = document.getElementById("taskCategory").value.trim();
   let priority = taskPriority;
-  let startDate = document.getElementById("task-startDate").value;
-  let endDate = document.getElementById("task-endDate").value;
+  let startDate = document.getElementById("taskStartDate").value;
+  let endDate = document.getElementById("taskEndDate").value;
 
   if (
     title === "" ||
@@ -231,8 +232,7 @@ document.getElementById("addTask").addEventListener("click", function () {
     endDate === "" ||
     startDate > endDate ||
     document.getElementsByClassName("selected").length === 0
-  ) {
-    console.log("entrou no if para verificar se os campos estão preenchidos");
+   ){
     document.getElementById("warningMessage2").innerText =
       "Fill in all fields and define a priority";
   } else {
@@ -245,8 +245,7 @@ document.getElementById("addTask").addEventListener("click", function () {
       endDate
     );
 
-    const token = sessionStorage.getItem("token");
-    newTask(token, task).then(() => {
+    newTask(task).then(() => {
       removeAllTaskElements();
       loadTasks();
       cleanAllTaskFields();
@@ -305,14 +304,12 @@ document.addEventListener("click", function (event) {
   if (event.target.matches(".apagarButton")) {
     const taskElement = event.target.closest(".task");
     const taskId = event.target.dataset.taskId;
-    // VERIFICAR AQUI!!!
-    const userRole = localStorage.getItem("userRole");
-
+    
     const deletemodal = document.getElementById("delete-modal");
     deletemodal.style.display = "grid";
 
     function deleteButtonClickHandler() {
-      deleteTask(taskId, userRole);
+      deleteTask(taskId);
       taskElement.remove();
       deletemodal.style.display = "none";
       deletebtn.removeEventListener("click", deleteButtonClickHandler);
@@ -330,7 +327,7 @@ document.addEventListener("click", function (event) {
 
 // Carrega as tarefas guardadas na local storage
 function loadTasks() {
-  getAllUsersTasks(getValuesFromLocalStorage()[0])
+  getAllTasks()
     .then((tasksArray) => {
       tasksArray.forEach((task) => {
         const taskElement = createTaskElement(task);
@@ -360,8 +357,8 @@ function removeAllTaskElements() {
   tasks.forEach((task) => task.remove());
 }
 
-// FALTA ==>> add user role no body
-//let userRole = user.getUserRole
+
+let userRole =  sessionStorage.getItem("role");
 
 async function deleteTask(id, userRole) {
   let deleteTaskUrl = `http://localhost:8080/proj3_vc_re_jc/rest/tasks/updateDeleted`;
@@ -373,7 +370,7 @@ async function deleteTask(id, userRole) {
         "Content-Type": "application/json",
         Accept: "*/*",
         token: sessionStorage.getItem("token"),
-        taskId: id,
+        taskId: id
       },
       body: JSON.stringify(userRole),
     });
@@ -385,7 +382,7 @@ async function deleteTask(id, userRole) {
 }
 
 window.onclose = function () {
-  // Guarda as tarefas na local storage quando a página é fechada
+  // Limpa a local storage quando a página é fechada
   localStorage.removeItem("username");
   localStorage.removeItem("password");
 };
