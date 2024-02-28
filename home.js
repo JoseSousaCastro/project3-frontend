@@ -26,8 +26,9 @@ function cleanAllTaskFields() {
   // Limpar os input fields depois de adicionar a task
   document.getElementById("taskName").value = "";
   document.getElementById("taskDescription").value = "";
+  document.getElementById("taskCategory").value = "";
   document.getElementById("task-startDate").value = "";
-  document.getElementById("task-limitDate").value = "";
+  document.getElementById("task-endDate").value = "";
   removeSelectedPriorityButton();
   taskPriority = null;
 }
@@ -61,50 +62,25 @@ panels.forEach((panel) => {
       panel.insertBefore(task, afterElement);
       task.stateId = panelID;
     }
-
-    updateTaskStatus(
-      localStorage.getItem("username"),
-      localStorage.getItem("password"),
-      task.id,
-      panelID
-    );
+    updateTaskStatus(sessionStorage.getItem("token"), task.id, panelID);
   });
 });
 
-async function updateTaskStatus(username, password, taskId, newStatus) {
-  let numericStatus;
-  switch (newStatus) {
-    case "todo":
-      numericStatus = 100;
-      break;
-    case "doing":
-      numericStatus = 200;
-      break;
-    case "done":
-      numericStatus = 300;
-      break;
-    default:
-      console.error("Invalid status:", newStatus);
-      return numericStatus;
-  }
-
-  const updateTaskUrl = `http://localhost:8080/jl_jc_pd_project2_war_exploded/rest/users/${username}/tasks/${taskId}/status`;
+async function updateTaskStatus(taskId, newStatus) {
+  const updateTaskUrl = `http://localhost:8080/proj3_vc_re_jc/rest/tasks/status`;
   try {
     const response = await fetch(updateTaskUrl, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
         Accept: "*/*",
-        username: username,
-        password: password,
+        token:  sessionStorage.getItem("token"),
+        taskId: taskId,
       },
-      body: JSON.stringify(numericStatus),
+      body: JSON.stringify(newStatus),
     });
-    if (response.ok) {
-      console.log("Task status updated successfully");
-    } else {
-      console.error("Error updating task status:", response.statusText);
-    }
+    const message = await response.text();
+    console.log(message);
   } catch (error) {
     console.error("Error updating task status:", error);
   }
@@ -114,7 +90,7 @@ function getDragAfterElement(panel, y) {
   const draggableElements = [...panel.querySelectorAll(".task:not(.dragging)")]; // Dentro da lista de painéis, seleciona todos os elementos com a classe task que nao tenham a classe dragging
   return draggableElements.reduce(
     (closest, child) => {
-      // Retorna o elemento mais próximo do que esáa a ser arrastado e que está a ser comparado
+      // Retorna o elemento mais próximo do que está a ser arrastado e que está a ser comparado
       const box = child.getBoundingClientRect(); // Retorna o tamanho do elemento e a sua posição relativamente ao viewport
       const offset = y - box.top - box.height / 2; // Calcula a distância entre o elemento que está a ser arrastado e o que está a ser comparado
       if (offset < 0 && offset > closest.offset) {
@@ -141,6 +117,7 @@ function setPriorityButtonSelected(button, priority) {
   button.classList.add("selected");
   taskPriority = priority;
 }
+
 function removeSelectedPriorityButton() {
   const buttons = [lowButton, mediumButton, highButton];
   buttons.forEach((btn) => btn.classList.remove("selected"));
@@ -148,18 +125,17 @@ function removeSelectedPriorityButton() {
 
 // Event listeners para os botões priority
 lowButton.addEventListener("click", () =>
-  setPriorityButtonSelected(lowButton, "low")
+  setPriorityButtonSelected(lowButton, "LOW_PRIORITY")
 );
 mediumButton.addEventListener("click", () =>
-  setPriorityButtonSelected(mediumButton, "medium")
+  setPriorityButtonSelected(mediumButton, "MEDIUM_PRIORITY")
 );
 highButton.addEventListener("click", () =>
-  setPriorityButtonSelected(highButton, "high")
+  setPriorityButtonSelected(highButton, "HIGH_PRIORITY")
 );
 
-async function newTask(usernameValue, passwordValue, task) {
-  console.log("In newTask - username: " + usernameValue);
-  let newTask = `http://localhost:8080/jl_jc_pd_project2_war_exploded/rest/users/${usernameValue}/addTask`;
+async function newTask(task) {
+  let newTask = `http://localhost:8080/proj3_vc_re_jc/rest/tasks/addTask`;
 
   try {
     const response = await fetch(newTask, {
@@ -167,27 +143,19 @@ async function newTask(usernameValue, passwordValue, task) {
       headers: {
         "Content-Type": "application/json",
         Accept: "*/*",
-        username: usernameValue,
-        password: passwordValue,
+        token:  sessionStorage.getItem("token"),
       },
       body: JSON.stringify(task),
     });
-
-    if (response.ok) {
-      alert("Task created successfully");
-    } else if (response.status === 401) {
-      alert("Invalid credentials");
-    } else if (response.status === 404) {
-      alert("Impossible to create task. Verify all fields");
-    }
+    const message = await response.text();
+    alert(message);
   } catch (error) {
-    console.error("Error:", error);
-    alert("Task not created. Something went wrong");
+    console.error("Error updating task status:", error);
   }
 }
 
-async function getAllUsersTasks(usernameValue, passwordValue) {
-  let getTasks = `http://localhost:8080/jl_jc_pd_project2_war_exploded/rest/users/${usernameValue}/tasks`;
+async function getAllTasks(token) {
+  let getTasks = `http://localhost:8080/proj3_vc_re_jc/rest/tasks/all`;
 
   try {
     const response = await fetch(getTasks, {
@@ -195,18 +163,16 @@ async function getAllUsersTasks(usernameValue, passwordValue) {
       headers: {
         "Content-Type": "application/JSON",
         Accept: "*/*",
-        username: usernameValue,
-        password: passwordValue,
+        token: sessionStorage.getItem("token"),
       },
     });
 
     if (response.ok) {
       const tasks = await response.json();
       return tasks;
-    } else if (response.status === 401) {
-      alert("Invalid credentials");
-    } else if (response.status === 406) {
-      alert("Unauthorized access");
+    } else {
+      const message = await response.text();
+      alert(message);
     }
   } catch (error) {
     console.error("Error:", error);
@@ -214,17 +180,15 @@ async function getAllUsersTasks(usernameValue, passwordValue) {
   }
 }
 
-function createTask(title, description, priority, startDate, limitDate) {
+function createTask(title, description, priority, startDate, endDate) {
   // Cria uma nova task com os dados inseridos pelo utilizador
-  let todoStateId = "todo";
-  let newPriority = parsePriorityToInt(priority);
+    
   const task = {
     title: title,
     description: description,
-    stateId: parseStateIdToInt(todoStateId),
-    priority: newPriority,
+    priority: priority,
     startDate: startDate,
-    limitDate: limitDate,
+    endDate: endDate,
   };
   return task;
 }
@@ -232,31 +196,31 @@ function createTask(title, description, priority, startDate, limitDate) {
 // Event listener do botão add task para criar uma nova task e colocá-la no painel To Do (default para qualquer task criada)
 document.getElementById("addTask").addEventListener("click", function () {
   console.log("addTask button clicked");
-
-  let description = document.getElementById("taskDescription").value.trim();
+  
   let title = document.getElementById("taskName").value.trim();
+  let description = document.getElementById("taskDescription").value.trim();
+  let category = document.getElementById("taskCategory").value.trim();
   let priority = taskPriority;
   let startDate = document.getElementById("task-startDate").value;
-  let limitDate = document.getElementById("task-limitDate").value;
+  let endDate = document.getElementById("task-endDate").value;
 
   if (
     title === "" ||
     description === "" ||
-    priority === null ||
+    category === "" ||
     startDate === "" ||
-    limitDate === "" ||
-    startDate > limitDate ||
+    endDate === "" ||
+    startDate > endDate ||
     document.getElementsByClassName("selected").length === 0
   ) {
     console.log("entrou no if para verificar se os campos estão preenchidos");
     document.getElementById("warningMessage2").innerText =
       "Fill in all fields and define a priority";
   } else {
-    let task = createTask(title, description, priority, startDate, limitDate);
-    console.log("username no localStorage = " + getValuesFromLocalStorage()[0]);
-    const usernameValue = getValuesFromLocalStorage()[0];
-    const passwordValue = getValuesFromLocalStorage()[1];
-    newTask(usernameValue, passwordValue, task).then(() => {
+    let task = createTask(title, description, category, priority, startDate, endDate);
+    
+    const token =  sessionStorage.getItem("token");
+    newTask(token, task).then(() => {
       removeAllTaskElements();
       loadTasks();
       cleanAllTaskFields();
@@ -270,11 +234,11 @@ function createTaskElement(task) {
   task.priority = parsePriorityToString(task.priority);
   taskElement.priority = task.priority;
   taskElement.classList.add("task");
-  if (task.priority === "low") {
+  if (task.priority === "LOW_PRIORITY") {
     taskElement.classList.add("low");
-  } else if (task.priority === "medium") {
+  } else if (task.priority === "MEDIUM_PRIORITY") {
     taskElement.classList.add("medium");
-  } else if (task.priority === "high") {
+  } else if (task.priority === "HIGH_PRIORITY") {
     taskElement.classList.add("high");
   }
   taskElement.draggable = true;
@@ -315,14 +279,15 @@ document.addEventListener("click", function (event) {
   if (event.target.matches(".apagarButton")) {
     const taskElement = event.target.closest(".task");
     const taskId = event.target.dataset.taskId;
-    const usernameValue = localStorage.getItem("username");
-    const passwordValue = localStorage.getItem("password");
+    // VERIFICAR AQUI!!!
+    const userRole = localStorage.getItem("userRole");
+    
 
     const deletemodal = document.getElementById("delete-modal");
     deletemodal.style.display = "grid";
 
     function deleteButtonClickHandler() {
-      deleteTask(taskId, usernameValue, passwordValue);
+      deleteTask(taskId, userRole);
       taskElement.remove();
       deletemodal.style.display = "none";
       deletebtn.removeEventListener("click", deleteButtonClickHandler);
@@ -341,8 +306,7 @@ document.addEventListener("click", function (event) {
 // Carrega as tarefas guardadas na local storage
 function loadTasks() {
   getAllUsersTasks(
-    getValuesFromLocalStorage()[0],
-    getValuesFromLocalStorage()[1]
+    getValuesFromLocalStorage()[0]
   )
     .then((tasksArray) => {
       tasksArray.forEach((task) => {
@@ -351,7 +315,7 @@ function loadTasks() {
           console.error("Task element not created for task:", task);
           return;
         }
-        task.stateId = parseStateIdToString(task.stateId);
+        task.stateId = task.stateId.toUpperCase();
         const panel = document.getElementById(task.stateId);
         if (!panel) {
           console.error("Panel not found for stateId:", task.stateId);
@@ -373,73 +337,25 @@ function removeAllTaskElements() {
   tasks.forEach((task) => task.remove());
 }
 
-function parseStateIdToString(stateId) {
-  let newStateId = "";
-  if (stateId === 100) {
-    newStateId = "todo";
-  } else if (stateId === 200) {
-    newStateId = "doing";
-  } else if (stateId === 300) {
-    newStateId = "done";
-  }
-  return newStateId;
-}
+// FALTA ==>> add user role no body
+//let userRole = user.getUserRole
 
-function parseStateIdToInt(stateId) {
-  let newStateId = 0;
-  if (stateId === "todo") {
-    newStateId = 100;
-  } else if (stateId === "doing") {
-    newStateId = 200;
-  } else if (stateId === "done") {
-    newStateId = 300;
-  }
-  return newStateId;
-}
-
-function parsePriorityToString(priority) {
-  let newPriority = "";
-  if (priority === 100) {
-    newPriority = "low";
-  } else if (priority === 200) {
-    newPriority = "medium";
-  } else if (priority === 300) {
-    newPriority = "high";
-  }
-  return newPriority;
-}
-
-function parsePriorityToInt(priority) {
-  let newPriority = 0;
-  if (priority === "low") {
-    newPriority = 100;
-  } else if (priority === "medium") {
-    newPriority = 200;
-  } else if (priority === "high") {
-    newPriority = 300;
-  }
-  return newPriority;
-}
-
-async function deleteTask(id, usernameValue, passwordValue) {
-  let deleteTaskUrl = `http://localhost:8080/jl_jc_pd_project2_war_exploded/rest/users/${usernameValue}/${id}`;
+async function deleteTask(id, userRole) {
+  let deleteTaskUrl = `http://localhost:8080/proj3_vc_re_jc/rest/tasks/updateDeleted`;
 
   try {
     const response = await fetch(deleteTaskUrl, {
-      method: "DELETE",
+      method: "PUT",
       headers: {
         "Content-Type": "application/json",
         Accept: "*/*",
-        username: usernameValue,
-        password: passwordValue,
+        token: sessionStorage.getItem("token"),
+        taskId: id,
       },
+      body: JSON.stringify(userRole),
     });
-
-    if (response.ok) {
-      console.log("Task deleted successfully");
-    } else {
-      console.error("Error deleting task:", response.statusText);
-    }
+    const message = await response.text(); // Extract the message from the response
+    console.log(message);
   } catch (error) {
     console.error("Error deleting task:", error);
   }
@@ -447,7 +363,6 @@ async function deleteTask(id, usernameValue, passwordValue) {
 
 window.onclose = function () {
   // Guarda as tarefas na local storage quando a página é fechada
-
   localStorage.removeItem("username");
   localStorage.removeItem("password");
 };

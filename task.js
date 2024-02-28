@@ -22,6 +22,7 @@ window.onload = function () {
 
 const usernameValue = localStorage.getItem("username");
 const passwordValue = localStorage.getItem("password");
+const tokenValue = sessionStorage.getItem("token");
 const taskId = sessionStorage.getItem("taskId");
 
 // Definir os botões de status
@@ -41,13 +42,16 @@ async function updateTask() {
 
   const task = {
     id: taskId,
-    title: document.getElementById("titulo-task").value,
-    description: document.getElementById("descricao-task").value,
+    title: document.getElementById("title-task").value,
+    description: document.getElementById("description-task").value,
+    category: document.getElementById("category-task").value,
     priority: priority,
     stateId: stateId,
+    description: document.getElementById("startDate-editTask").value,
+    category: document.getElementById("endDate-editTask").value,
          
   };
-  let firstNameRequest = `http://localhost:8080/jl_jc_pd_project2_war_exploded/rest/users/${usernameValue}/${taskId}`;
+  let firstNameRequest = `http://localhost:8080/proj3_vc_re_jc/rest/tasks/update`;
   try {
     const response = await fetch(
       firstNameRequest,
@@ -56,22 +60,13 @@ async function updateTask() {
         headers: {
           "Content-Type": "application/JSON",
           Accept: "*/*",
-          username: usernameValue,
-          password: passwordValue,
+          token: sessionStorage.getItem("token"),
         },
         body: JSON.stringify(task),
       }
     );
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    } else if (response.status === 401) {
-      alert("Invalid credentials");
-    } else if (response.status === 404) {
-      alert("Impossible to create task. Verify all fields");
-    } else {
-      console.log("Task updated successfully");
-    }
+    const message = await response.text();
+    alert(message);
   } catch (error) {
     console.error("An error occurred:", error);
     alert("Something went wrong");
@@ -133,8 +128,8 @@ async function getPhotoUrl(usernameValue, passwordValue) {
   }
 }
 
-async function getAllUsersTasks(usernameValue, passwordValue) {
-  let getTasks = `http://localhost:8080/jl_jc_pd_project2_war_exploded/rest/users/${usernameValue}/tasks`;
+async function getAllTasks(token) {
+  let getTasks = `http://localhost:8080/proj3_vc_re_jc/rest/tasks/all`;
 
   try {
     const response = await fetch(getTasks, {
@@ -142,19 +137,11 @@ async function getAllUsersTasks(usernameValue, passwordValue) {
       headers: {
         "Content-Type": "application/JSON",
         Accept: "*/*",
-        username: usernameValue,
-        password: passwordValue,
+        token: tokenValue,
       },
     });
-
-    if (response.ok) {
-      const tasks = await response.json();
-      return tasks;
-    } else if (response.status === 401) {
-      alert("Invalid credentials");
-    } else if (response.status === 406) {
-      alert("Unauthorized access");
-    }
+    const message = await response.text();
+    alert(message);
   } catch (error) {
     alert("Something went wrong");
   }
@@ -163,34 +150,35 @@ async function getAllUsersTasks(usernameValue, passwordValue) {
 async function showTask(taskId) {
   const task = await findTaskById(taskId);
   if (task) {
-    document.getElementById("titulo-task").textContent = task.title; // Colocar o título no input title
-    document.getElementById("descricao-task").textContent = task.description; // Colocar a descrição na text area
+    document.getElementById("title-task").textContent = task.title; // Colocar o título no input title
+    document.getElementById("description-task").textContent = task.description; // Colocar a descrição na text area
+    document.getElementById("category-task").textContent = task.category; // Colocar a descrição na text area
     document.getElementById("tasktitle").innerHTML = task.title; // Colocar o título no título da página
     document.getElementById("startDate-editTask").value = task.startDate;
     document.getElementById("endDate-editTask").value = task.limitDate;
 
     let taskStateId = task.stateId;
   
-    if (taskStateId == 100) {
+    if (taskStateId == TODO) {
       todoButton.classList.add("selected");
       setStatusButtonSelected(todoButton);
-    } else if (taskStateId == 200) {
+    } else if (taskStateId == DOING) {
       doingButton.classList.add("selected");
       setStatusButtonSelected(doingButton);
-    } else if (taskStateId == 300) {
+    } else if (taskStateId == DONE) {
       doneButton.classList.add("selected");
       setStatusButtonSelected(doneButton);
     }
 
     let taskPriority = task.priority;
 
-    if (taskPriority == 100) {
+    if (taskPriority == LOW_PRIORITY) {
       lowButton.classList.add("selected");
       setPriorityButtonSelected(lowButton);
-    } else if (taskPriority == 200) {
+    } else if (taskPriority == MEDIUM_PRIORITY) {
       mediumButton.classList.add("selected");
       setPriorityButtonSelected(mediumButton);
-    } else if (taskPriority == 300) {
+    } else if (taskPriority == HIGH_PRIORITY) {
       highButton.classList.add("selected");
       setPriorityButtonSelected(highButton);
     }
@@ -250,7 +238,7 @@ function setPriorityButtonSelected(button) {
 
 async function findTaskById(taskId) {
   try {
-    const tasksArray = await getAllUsersTasks(usernameValue, passwordValue);
+    const tasksArray = await getAllTasks(token);
     const task = tasksArray.find((task_1) => task_1.id === taskId);
     return task;
   } catch (error) {
@@ -258,34 +246,14 @@ async function findTaskById(taskId) {
   }
 }
 
-function parseStateIdToInt(stateId) {
-  const TODO = 100;
-  const DOING = 200;
-  const DONE = 300;
-
-  let newStateId = 0;
-  if (stateId === "todo" || stateId === "to do") {
-    newStateId = TODO;
-  } else if (stateId === "doing") {
-    newStateId = DOING;
-  } else if (stateId === "done") {
-    newStateId = DONE;
-  }
-  return newStateId;
-}
-
-function parsePriorityToInt(priority) {
-  const LOW = 100;
-  const MEDIUM = 200;
-  const HIGH = 300;
-
-  let newPriority = 0;
+function convertPriorityEnum(priority) {
+  let newPriority;
   if (priority === "low") {
-    newPriority = LOW;
+    newPriority = LOW_PRIORITY;
   } else if (priority === "medium") {
-    newPriority = MEDIUM;
+    newPriority = MEDIUM_PRIORITY;
   } else if (priority === "high") {
-    newPriority = HIGH;
+    newPriority = HIGH_PRIORITY;
   }
   return newPriority;
 }
@@ -298,7 +266,7 @@ function returnPriorityFromSelectedButton() {
       selectedButton = btn;
     }
   });
-  const priorityInt = parsePriorityToInt(selectedButton.innerText.toLowerCase());
+  const priorityInt = convertPriorityEnum(selectedButton.innerText.toLowerCase());
   return priorityInt;
 } 
 
@@ -310,7 +278,7 @@ function returnStateIdFromSelectedButton() {
       selectedButton = btn;
     }
   });
-  const stateIdInt = parseStateIdToInt(selectedButton.innerText.toLowerCase());
+  const stateIdInt = selectedButton.innerText.toUpperCase();
   return stateIdInt;
 }
 

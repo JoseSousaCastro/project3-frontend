@@ -54,12 +54,18 @@
             type="text"
             id="taskName"
             placeholder="Title (required)"
-            maxlength="15"
+            maxlength="19"
           />
           <textarea
             id="taskDescription"
             placeholder="Description (required)"
           ></textarea>
+          <input
+            type="text"
+            id="taskCategory"
+            placeholder="Category (required)"
+            maxlength="19"
+          />
           <div class="priority-buttons-home">
             <button class="priority-button-home low" id="low-button-home">
               Low
@@ -75,8 +81,8 @@
             >Start date</label
           >
           <input type="date" id="task-startDate" required />
-          <label class="labels-task-dates" id="label-limitDate">End date</label>
-          <input type="date" id="task-limitDate" required />
+          <label class="labels-task-dates" id="label-endDate">End date</label>
+          <input type="date" id="task-endDate" required />
           <button id="addTask">Add task</button>
           <p id="warningMessage2"></p>
         </div>
@@ -105,11 +111,11 @@
     </div>
     <footer>
       <div class="footer-content">
-        <div class="label-left">&copy; João Luís</div>
+        <div class="label-left">&copy; Ricardo Elias Luís</div>
         <div class="label-right">Programação Avançada em Java</div>
         <div class="label-left">&copy; José Sousa Castro</div>
         <div class="label-right">Projeto 2</div>
-        <div class="label-left">&copy; Pedro Domingos</div>
+        <div class="label-left">&copy; Vasco Castro</div>
       </div>
     </footer>
     <script src="home.js" defer></script>
