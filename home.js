@@ -514,6 +514,10 @@ document.addEventListener("DOMContentLoaded", async function () {
         <td>${deletedText}</td>
       `;
 
+      row.querySelector(".clickable").addEventListener("dblclick", () => {
+        showUserDetails(user);
+      });
+
       tbody.appendChild(row);
     });
 
@@ -547,11 +551,32 @@ document.addEventListener("DOMContentLoaded", async function () {
       console.error("Error loading users list:", error);
     }
   }
-
   document.getElementById("openModal").addEventListener("click", fetchUsers);
-});
+  function showUserDetails(user) {
+    const modal = document.getElementById("userDetailsModal");
+    const userDetailsContainer = document.getElementById("userDetails");
+    const roleMapping = {
+      100: "DEVELOPER",
+      200: "SCRUM_MASTER",
+      300: "PRODUCT_OWNER",
+    };
 
-function showUserDetails(user) {
-  // Lógica para mostrar detalhes do usuário, por exemplo, usando um modal
-  alert(`Details for ${user.username}`);
+    const deletedMapping = {
+      false: "Not deleted",
+      true: "Deleted",
+    };
+
+    userDetailsContainer.innerHTML = `
+      <p>Username: ${user.username}</p>
+      <p>Role: ${roleMapping[user.role] || "Unknown Role"}</p>
+      <p>Deleted: ${deletedMapping[user.deleted] || "Unknown"}</p>
+      <!-- Adicione mais detalhes conforme necessário -->
+    `;
+
+    modal.style.display = "block";
+  }
+});
+function closeUserDetailsModal() {
+  const modal = document.getElementById("userDetailsModal");
+  modal.style.display = "none";
 }
