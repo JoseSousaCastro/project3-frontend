@@ -12,29 +12,8 @@ window.onload = async function () {
       console.error("An error occurred:", error);
     }
   }
-
-  const response = await fetch(
-    "http://localhost:8080/proj3_vc_re_jc/rest/users/roleByToken",
-    {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "*/*",
-        token: sessionStorage.getItem("token"),
-      },
-    }
-  );
-  if (response.ok) {
-    const data = await response.json();
-    const role = data.role;
-    sessionStorage.setItem("role", role);
-  } else {
-    alert("role not found");
-  }
 };
 
-const usernameValue = localStorage.getItem("username");
-const passwordValue = localStorage.getItem("password");
 const taskId = sessionStorage.getItem("taskId");
 
 // Definir os botões de status
@@ -73,8 +52,6 @@ async function updateTask() {
           "Content-Type": "application/JSON",
           Accept: "*/*",
           token: sessionStorage.getItem("token"),
-          userRole: sessionStorage.getItem("role"),
-          username: sessionStorage.getItem("username"),
         },
         body: JSON.stringify(task),
       }

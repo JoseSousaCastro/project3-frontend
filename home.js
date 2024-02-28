@@ -12,33 +12,7 @@ window.onload = async function () {
       console.error("An error occurred:", error);
     }
   }
-
-  const response = await fetch(
-    "http://localhost:8080/proj3_vc_re_jc/rest/users/roleByToken",
-    {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "*/*",
-        token: sessionStorage.getItem("token"),
-      },
-    }
-  );
-  if (response.ok) {
-    const data = await response.json();
-    const role = data.role;
-    sessionStorage.setItem("role", role);
-  } else {
-    alert("role not found");
-  }
 };
-
-function getValuesFromLocalStorage() {
-  const usernameValue = localStorage.getItem("username");
-  const passwordValue = localStorage.getItem("password");
-  const userValues = [usernameValue, passwordValue];
-  return userValues;
-}
 
 function cleanAllTaskFields() {
   document.getElementById("warningMessage2").innerText = "";
@@ -153,6 +127,19 @@ highButton.addEventListener("click", () =>
   setPriorityButtonSelected(highButton, "HIGH_PRIORITY")
 );
 
+// Cria uma nova task com os dados inseridos pelo utilizador => Input para função newTask
+function createTask(title, description, priority, category, startDate, endDate) {
+  const task = {
+    title: title,
+    description: description,
+    priority: priority,
+    category: category,
+    startDate: startDate,
+    endDate: endDate,
+  };
+  return task;
+}
+
 async function newTask(task) {
   let newTask = `http://localhost:8080/proj3_vc_re_jc/rest/tasks/addTask`;
 
@@ -199,21 +186,7 @@ async function getAllTasks() {
   }
 }
 
-function createTask(title, description, priority, category, startDate, endDate) {
-  // Cria uma nova task com os dados inseridos pelo utilizador
-
-  const task = {
-    title: title,
-    description: description,
-    priority: priority,
-    category: category,
-    startDate: startDate,
-    endDate: endDate,
-  };
-  return task;
-}
-
-// Event listener do botão add task para criar uma nova task e colocá-la no painel To Do (default para qualquer task criada)
+// Event listener do botão add task para criar uma nova task e colocá-la no painel ToDo (default para qualquer task criada)
 document.getElementById("addTask").addEventListener("click", function () {
   console.log("addTask button clicked");
 
@@ -352,15 +325,11 @@ function loadTasks() {
 }
 
 function removeAllTaskElements() {
-  console.log("estou a ser chamada");
   const tasks = document.querySelectorAll(".task");
   tasks.forEach((task) => task.remove());
 }
 
-
-let userRole =  sessionStorage.getItem("role");
-
-async function deleteTask(id, userRole) {
+async function deleteTask(id) {
   let deleteTaskUrl = `http://localhost:8080/proj3_vc_re_jc/rest/tasks/updateDeleted`;
 
   try {
@@ -372,7 +341,6 @@ async function deleteTask(id, userRole) {
         token: sessionStorage.getItem("token"),
         taskId: id
       },
-      body: JSON.stringify(userRole),
     });
     const message = await response.text(); // Extract the message from the response
     console.log(message);
@@ -383,8 +351,7 @@ async function deleteTask(id, userRole) {
 
 window.onclose = function () {
   // Limpa a local storage quando a página é fechada
-  localStorage.removeItem("username");
-  localStorage.removeItem("password");
+  localStorage.removeItem("token");
 };
 
 //LOGOUT
