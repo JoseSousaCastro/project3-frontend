@@ -4,39 +4,40 @@ document.addEventListener("DOMContentLoaded", function () {
 });
   
 async function getCategories() {
-    const categoryId = {
-      // definir médoto para encontrar category ID
-      categoryId: document.getElementById("endDate-editTask").value,
-    };
-    let getCategories = `http://localhost:8080/proj3_vc_re_jc/rest/tasks/category/all`;
+    let getCategories = `http://localhost:8080/project3-backend/rest/tasks/category/all`;
     try {
       const response = await fetch(
         getCategories,
         {
-          method: "PUT",
+          method: "GET",
           headers: {
             "Content-Type": "application/JSON",
             Accept: "*/*",
             token: sessionStorage.getItem("token"),
           },
-          body: JSON.stringify(categoryId),
         }
       );
-      if (response.ok) {
-        const data = await response.text();
-        let categories = data;
-      } else if (!response.ok) {
-        alert(data);
-      }
-    } catch (error) {
-      console.error("An error occurred:", error);
-      throw error; // Propagar o erro para ser tratado no catch do bloco que chamou a função
+      
+    if (response.ok) {
+      const categories = await response.json();
+      showCategoryList(categories);
+    } else {
+      alert(response.status);
     }
+  } catch (error) {
+    console.error("Error loading categories list:", error);
+  }
 }
   
 function showCategoryList(categories) {
     categories.forEach((category) => {
       const row = document.createElement("tr");
+
+      // Criar célula para o Id da categoria
+      const categoryIdCell = document.createElement("td");
+      categoryIdCell.className = "clickable";
+      categoryIdCell.textContent = category.id;
+      categoryIdCell.className = "clickable text-center";
   
       // Criar célula para o nome da categoria
       const categoryNameCell = document.createElement("td");
@@ -45,46 +46,25 @@ function showCategoryList(categories) {
       categoryNameCell.className = "clickable text-center";
     
       // Adicionar as células à linha
-      row.appendChild(categoryNameCell);
+      row.appendChild(categoryIdCell);
+      row.appendChild(categoryNameCell);      
   
       // Adicionar a linha à tabela
       document.querySelector(".category-table-body").appendChild(row);
   
       // Adicionar evento de clique para exibir detalhes do usuário
       categoryNameCell.addEventListener("dblclick", () => {
-        showCategoryDetails(category.id);
+        showCategoryDetails(category.id, category.name);
       });
     });
 }
   
-  async function showCategoryDetail(categoryId) {
-    const category = await findCategoryById(categoryId);
-    if (category) {
-      const modal = document.getElementById("categoryDetailsModal");
-      const categoryDetailContainer = document.getElementById("categoryDetails");
-      document.getElementById("categoryNameInput").value = category.name;  
-      modal.style.display = "block";
-    }
-  }
-  
-  async function findUserById(idUser) {
-    const response = await fetch(
-      "http://localhost:8080/proj3_vc_re_jc/rest/users/userById",
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "*/*",
-          token: tokenValue,
-          id: idUser,
-        },
-      }
-    );
-    if (response.ok) {
-      const user = await response.json();
-      return user;
-    }
+async function showCategoryDetail(categoryId, categoryName) {
+  const modal = document.getElementById("categoryDetailsModal");
+  document.getElementById("categoryNameInput").value = categoryName;  
+  modal.style.display = "block";
 }
+
   
 function closeUserDetailsModal() {
     const modal = document.getElementById("userDetailsModal");
