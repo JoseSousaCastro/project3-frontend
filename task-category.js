@@ -1,32 +1,38 @@
 
-document.addEventListener("DOMContentLoaded", function () {
-    getCategories();
-    let validToken = sessionStorage.getItem("token");
+document.addEventListener("DOMContentLoaded", async function () {
+  try {
+    const allCategories = await getCategories(); // Wait for the categories to be fetched
+    showCategoryList(allCategories);
+  } catch (error) {
+    console.error("Error loading categories:", error);
+    // Handle error loading categories
+  }
 });
-  
+
+
 async function getCategories() {
-    let getCategories = `http://localhost:8080/project3-backend/rest/tasks/category/all`;
-    try {
-      const response = await fetch(
-        getCategories,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/JSON",
-            Accept: "*/*",
-            token: sessionStorage.getItem("token"),
-          },
-        }
-      );
-      
+  let getCategories = `http://localhost:8080/project3-backend/rest/tasks/category/all`;
+  try {
+    const response = await fetch(
+      getCategories,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/JSON",
+          Accept: "*/*",
+          token: sessionStorage.getItem("token"),
+        },
+      }
+    );
     if (response.ok) {
       const categories = await response.json();
-      showCategoryList(categories);
+      return categories; // Return the array of categories
     } else {
-      alert(response.status);
+      throw new Error(`Failed to fetch categories: ${response.text()}`);
     }
   } catch (error) {
     console.error("Error loading categories list:", error);
+    throw error; // Re-throw the error to handle it in the caller function if needed
   }
 }
   
@@ -56,9 +62,9 @@ function showCategoryList(categoriesList) {
   
       // Adicionar evento de clique para exibir detalhes do usuário
       categoryNameCell.addEventListener("dblclick", () => {
-        console.log("Clicou aqui!");
         showCategoryDetails(category.name);
       });
+
     });
 }
   
@@ -73,53 +79,82 @@ function closeCategoryDetailsModal() {
   modal.style.display = "none";
 }
 
-function enableEdit() {
-  document.getElementById("categoryNameInput").removeAttribute("readonly");
-}
-
-function disableEdit() {
-  document.getElementById("categoryNameInput").setAttribute("readonly", true);
-}
-
-const editbutton = document.getElementById("saveEdit");
-editbutton.addEventListener("onclick", () => {
-  console.log("Clicou aqui!");
-  editCategory(category.id);
-});
-
-
-async function editCategory() {
-  const categoryDto = {
-    id: 1,
-    name: document.getElementById("categoryNameInput").value,
-  };
-
-  const response = await fetch(
-    `http://localhost:8080/project3-backend/rest/tasks/category/update`,
-    {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "*/*",
-        token: sessionStorage.getItem("token"),
-      },
-      body: JSON.stringify(categoryDto),
-    }
-  );
-  const message = await response.text(); // Get response body as text
-  if (response.ok) {
-      alert(message);
-      closeModal(); // Close the modal
-      getCategories();
-  } else {
-    alert(message);
-    document.getElementById("categoryNameInput").value = "";
-  }
-}
-
 function closeModal() {
   const modal = document.getElementById("categoryDetailsModal");
   modal.style.display = "none";
+}
+
+let editbutton = document.getElementById("enableEdit");
+let currentCategoryId;
+
+// Event listener for edit button click
+editbutton.addEventListener("click", async () => {
+  // Ensure the list of categories is fetched before proceeding
+  const listCategories = await getCategories();
+  const currentCategoryName = document.getElementById("categoryNameInput").value;
+
+  // Find the category ID based on the current category name
+  listCategories.forEach((category) => {
+    if (category.name === currentCategoryName) {
+      currentCategoryId = category.id;
+    }
+  });
+
+  document.getElementById("categoryNameInput").removeAttribute("readonly");
+});
+
+let saveButton = document.getElementById("saveEdit");
+// Event listener for save button click
+saveButton.addEventListener("click", () => {
+  // Retrieve the new name from the input field
+  const newName = document.getElementById("categoryNameInput").value;
+  // Send both the new name and the ID to the backend endpoint
+  editCategory(currentCategoryId, newName);
+
+  document.getElementById("categoryNameInput").setAttribute("readonly", true);
+});
+
+
+async function editCategory(categoryId, categoryName) {
+  const categoryDto = {
+    id: categoryId,
+    name: categoryName,
+  };
+  try {
+    const response = await fetch(
+      `http://localhost:8080/project3-backend/rest/tasks/category/update`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "*/*",
+          token: sessionStorage.getItem("token"),
+        },
+        body: JSON.stringify(categoryDto),
+      }
+    );
+    const message = await response.text(); // Get response body as text
+    if (response.ok) {
+        alert(message);
+        closeModal(); // Close the modal
+        await refreshCategoryList(); // Refresh the category list
+    } else {
+      throw new Error(message);
+    }
+  } catch (error) {
+    console.error("Error editing category:", error);
+    alert("Error editing category: " + error.message);
+  }
+}
+
+async function refreshCategoryList() {
+  try {
+    const allCategories = await getCategories(); // Wait for the categories to be fetched
+    showCategoryList(allCategories);
+  } catch (error) {
+    console.error("Error loading categories:", error);
+    // Handle error loading categories
+  }
 }
 
 function addCategory() {
@@ -155,7 +190,7 @@ async function submitNewCategory() {
     if (response.ok) {
         alert(message);
         closeAddCategoryModal(); // Close the modal
-        getCategories();
+        await refreshCategoryList(); // Refresh the category list
     } else {
       alert(message);
       document.getElementById("categoryName").value = "";
@@ -199,7 +234,7 @@ async function submitRemoveCategory() {
     if (response.ok) {
         alert(message);
         closeRemoveCategoryModal(); // Close the modal
-        getCategories();
+        await refreshCategoryList(); // Refresh the category list
     } else {
       alert(message);
       document.getElementById("categoryId").value = "";
