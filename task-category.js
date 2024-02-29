@@ -139,13 +139,14 @@ async function submitNewCategory() {
         body: JSON.stringify(ctgDto),
       }
     );
+    const message = await response.text(); // Get response body as text
     if (response.ok) {
-      const message = await response.text(); // Get response body as text
         alert(message);
         closeAddCategoryModal(); // Close the modal
         getCategories();
     } else {
-      throw new Error('Error ' + response.status + " " + message);
+      alert(message);
+      document.getElementById("categoryName").value = "";
     }
   } catch (error) {
     console.error('Error:', error);
@@ -182,16 +183,16 @@ async function submitRemoveCategory() {
         body: JSON.stringify(ctgDto),
       }
     );
+    const message = await response.text(); // Get response body as text
     if (response.ok) {
-      const message = await response.text(); // Get response body as text
         alert(message);
         closeRemoveCategoryModal(); // Close the modal
         getCategories();
     } else {
-      throw new Error('Error ' + response.status + " " + message);
+      alert(message);
+      document.getElementById("categoryId").value = "";
     }
   } catch (error) {
     console.error('Error:', error);
   }
 }
-

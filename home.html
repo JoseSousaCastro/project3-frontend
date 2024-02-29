@@ -52,20 +52,10 @@
         <div class="add-task-container">
           <h3 id="addTask-h3">Add task</h3>
           <label id="task-name-label">Title</label>
-          <input
-            type="text"
-            id="taskName"
-            placeholder="required"
-            maxlength="19"
-          />
+          <input type="text" id="taskName" placeholder="required" maxlength="19"/>
           <label id="task-description-label">Description</label>
           <textarea id="taskDescription" placeholder="required"></textarea>
-          <input
-            type="text"
-            id="taskCategory"
-            placeholder="Category (required)"
-            maxlength="19"
-          />
+          <input type="text" id="taskCategory" placeholder="Category (required)" maxlength="19"/>
           <div class="priority-buttons-home">
             <button class="priority-button-home low" id="low-button-home">
               Low
@@ -77,12 +67,10 @@
               High
             </button>
           </div>
-          <label class="labels-task-dates" id="label-startDate"
-            >Start date</label
-          >
+          <label class="labels-task-dates" id="label-startDate">Start date</label>
           <input type="date" id="task-startDate" required />
-          <label class="labels-task-dates" id="label-endDate">End date</label>
-          <input type="date" id="taskEndDate" required />
+          <label class="labels-task-dates" id="label-limitDate">End date</label>
+          <input type="date" id="task-limitDate" required />
           <button id="addTask">Add task</button>
           <p id="warningMessage2"></p>
         </div>
