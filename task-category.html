@@ -26,6 +26,7 @@
             <a href="retrospectives-list.html">Retrospectives</a>
           </li>
           <li id="users-info"><a href="all-users.html" >Users</a></li>
+          <li id="category-info"><a href="task-category.html" >Task Category</a></li>
         </ul>
       </nav>
       <div class="nav-menu-right">
@@ -48,50 +49,19 @@
     <div class="container">
       <!--Container para o aside e o main-->
       <aside>
-        <div class="add-task-container">
-          <h3 id="addTask-h3">Add task</h3>
-          <input
-            type="text"
-            id="taskName"
-            placeholder="Title (required)"
-            maxlength="19"
-          />
-          <textarea
-            id="taskDescription"
-            placeholder="Description (required)"
-          ></textarea>
-          <input
-            type="text"
-            id="taskCategory"
-            placeholder="Category (required)"
-            maxlength="19"
-          />
-          <div class="priority-buttons-home">
-            <button class="priority-button-home low" id="low-button-home">
-              Low
-            </button>
-            <button class="priority-button-home medium" id="medium-button-home">
-              Medium
-            </button>
-            <button class="priority-button-home high" id="high-button-home">
-              High
-            </button>
-          </div>
-          <label class="labels-task-dates" id="label-startDate"
-            >Start date</label
-          >
-          <input type="date" id="task-startDate" required />
-          <label class="labels-task-dates" id="label-endDate">End date</label>
-          <input type="date" id="task-endDate" required />
-          <button id="addTask">Add task</button>
-          <p id="warningMessage2"></p>
+        <div style="text-align: center; margin-bottom: 20px;">
+          <img src="images/user_png.png" alt="Imagem" style="width: 100px; height: 100px;">
         </div>
+        <button onclick="addCategory()" style="font-size: 18px; padding: 10px 20px;">Add Category</button>
+        <button onclick="removeCategory()" style="font-size: 18px; padding: 10px 20px;">Remove Category</button>
       </aside>
       <main>
+        <!-- Começa aqui a tabela-->
         <div class="table-container-category-tasks">
-          <table class="table-category-tasks"> <!-- Começa aqui a tabela-->
+          <table class="table-category-tasks"> 
             <thead class="table-header-category-tasks">
               <tr>
+                <th class="table-header-category-tasks">Id</th>
                 <th class="table-header-category-tasks">Name</th>
               </tr>
             </thead>
@@ -110,16 +80,31 @@
     </footer>
     <div id="categoryDetailsModal" class="modal-category">
       <div class="modal-content-category">
-        <span class="close" onclick="closeCategoryDetailsModal()">&times;</span>
+        <span class="close" onclick="closeCategoryDetailsModal(); disableEdit()">&times;</span>
         <div id="categoryDetails">
-          <label for="categoryNameInput">Username:</label>
+          <label for="categoryNameInput">Name:</label>
           <input type="text" id="categoryNameInput" class="text-center" readonly>
         </div>
-        <button onclick=enableEdit()>Edit</button>
-        <button>Save</button>
+        <button id="enableEdit">Edit</button>
+        <button id="saveEdit">Save</button>
       </div>
     </div>
-    
+    <div id="addCategoryModal" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="closeAddCategoryModal()">&times;</span>
+        <label for="categoryName">Name:</label>
+        <input type="text" id="categoryName" placeholder="Insert name" required>   
+        <button onclick="submitNewCategory()">Add</button>
+      </div>
+    </div>
+    <div id="removeCategoryModal" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="closeRemoveCategoryModal()">&times;</span>
+        <label for="categoryId">Id:</label>
+        <input type="text" id="categoryId" placeholder="Insert task Id" required>   
+        <button onclick="submitRemoveCategory()">Remove</button>
+      </div>
+    </div>
     <script src="task-category.js" defer></script>
   </body>
 </html>
