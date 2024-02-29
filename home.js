@@ -60,7 +60,7 @@ panels.forEach((panel) => {
 });
 
 async function updateTaskStatus(taskId, newStatus) {
-  const updateTaskUrl = `http://localhost:8080/proj3_vc_re_jc/rest/tasks/status`;
+  const updateTaskUrl = `http://localhost:8080/project3-backend/rest/tasks/status`;
   try {
     const response = await fetch(updateTaskUrl, {
       method: "PUT",
@@ -141,7 +141,7 @@ function createTask(title, description, priority, category, startDate, endDate) 
 }
 
 async function newTask(task) {
-  let newTask = `http://localhost:8080/proj3_vc_re_jc/rest/tasks/addTask`;
+  let newTask = `http://localhost:8080/project3-backend/rest/tasks/addTask`;
 
   try {
     const response = await fetch(newTask, {
@@ -161,7 +161,7 @@ async function newTask(task) {
 }
 
 async function getAllTasks() {
-  let getTasks = `http://localhost:8080/proj3_vc_re_jc/rest/tasks/all`;
+  let getTasks = `http://localhost:8080/project3-backend/rest/tasks/all`;
 
   try {
     const response = await fetch(getTasks, {
@@ -330,7 +330,7 @@ function removeAllTaskElements() {
 }
 
 async function deleteTask(id) {
-  let deleteTaskUrl = `http://localhost:8080/proj3_vc_re_jc/rest/tasks/updateDeleted`;
+  let deleteTaskUrl = `http://localhost:8080/project3-backend/rest/tasks/updateDeleted`;
 
   try {
     const response = await fetch(deleteTaskUrl, {
@@ -359,7 +359,7 @@ document
   .getElementById("logout-button-header")
   .addEventListener("click", async function () {
     let logoutRequest =
-      "http://localhost:8080/proj3_vc_re_jc/rest/users/logout";
+      "http://localhost:8080/project3-backend/rest/users/logout";
 
     try {
       const response = await fetch(logoutRequest, {
