@@ -17,7 +17,7 @@ document
         "Fill in your username and password";
     }
 
-    let loginRequest = "http://localhost:8080/proj3_vc_re_jc/rest/users/login";
+    let loginRequest = "http://localhost:8080/project3-backend/rest/users/login";
     const inputFieldIds = ["username", "password"];
 
     try {

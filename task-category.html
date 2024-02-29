@@ -1,0 +1,125 @@
+<!--
+    linha 33 - código para relógio com data e hora
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Your Scrum</title>
+    <link type="text/css" rel="stylesheet" href="main.css" />
+    <link rel="icon" href="multimedia/favicon.png" type="image/x-icon" />
+  </head>
+  <body>
+    <header>
+      <img
+        src="multimedia/logo-scrum-05.png"
+        id="logo-header"
+        height="50"
+        draggable="false"
+      />
+      <nav class="nav-menu-left">
+        <ul>
+          <li id="nav-home"><a href="home.html">My Scrum</a></li>
+          <li id="nav-retro">
+            <a href="retrospectives-list.html">Retrospectives</a>
+          </li>
+          <li id="users-info"><a href="all-users.html" >Users</a></li>
+        </ul>
+      </nav>
+      <div class="nav-menu-right">
+        <img
+          src="multimedia/prf-img-placeholder.PNG"
+          id="profile-pic"
+          draggable="false"
+        />
+        <a href="edit-profile.html" id="first-name-label" draggable="false"></a>
+        <button
+          class="logout-button"
+          id="logout-button-header"
+          draggable="false"
+        >
+          <img src="multimedia/logout.png" alt="Logout Icon" />
+          Logout
+        </button>
+      </div>
+    </header>
+    <div class="container">
+      <!--Container para o aside e o main-->
+      <aside>
+        <div class="add-task-container">
+          <h3 id="addTask-h3">Add task</h3>
+          <input
+            type="text"
+            id="taskName"
+            placeholder="Title (required)"
+            maxlength="19"
+          />
+          <textarea
+            id="taskDescription"
+            placeholder="Description (required)"
+          ></textarea>
+          <input
+            type="text"
+            id="taskCategory"
+            placeholder="Category (required)"
+            maxlength="19"
+          />
+          <div class="priority-buttons-home">
+            <button class="priority-button-home low" id="low-button-home">
+              Low
+            </button>
+            <button class="priority-button-home medium" id="medium-button-home">
+              Medium
+            </button>
+            <button class="priority-button-home high" id="high-button-home">
+              High
+            </button>
+          </div>
+          <label class="labels-task-dates" id="label-startDate"
+            >Start date</label
+          >
+          <input type="date" id="task-startDate" required />
+          <label class="labels-task-dates" id="label-endDate">End date</label>
+          <input type="date" id="task-endDate" required />
+          <button id="addTask">Add task</button>
+          <p id="warningMessage2"></p>
+        </div>
+      </aside>
+      <main>
+        <div class="table-container-category-tasks">
+          <table class="table-category-tasks"> <!-- Começa aqui a tabela-->
+            <thead class="table-header-category-tasks">
+              <tr>
+                <th class="table-header-category-tasks">Name</th>
+              </tr>
+            </thead>
+            <tbody class="category-table-body"></tbody>
+          </table>
+      </main>
+    </div>
+    <footer>
+      <div class="footer-content">
+        <div class="label-left">&copy; Ricardo Elias</div>
+        <div class="label-right">Programação Avançada em Java</div>
+        <div class="label-left">&copy; José Sousa Castro</div>
+        <div class="label-right">Projeto 2</div>
+        <div class="label-left">&copy; Vasco Castro</div>
+      </div>
+    </footer>
+    <div id="categoryDetailsModal" class="modal-category">
+      <div class="modal-content-category">
+        <span class="close" onclick="closeCategoryDetailsModal()">&times;</span>
+        <div id="categoryDetails">
+          <label for="categoryNameInput">Username:</label>
+          <input type="text" id="categoryNameInput" class="text-center" readonly>
+        </div>
+        <button onclick=enableEdit()>Edit</button>
+        <button>Save</button>
+      </div>
+    </div>
+    
+    <script src="task-category.js" defer></script>
+  </body>
+</html>
