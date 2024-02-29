@@ -247,29 +247,6 @@ header {
 #logo-header {
   margin-left: 90px;
 }
-/* Definições do relógio 
-.container.clock {
-  justify-content: center;
-  align-items: center;
-  gap: 1rem;
-}
-.display-date,
-.display-time {
-  font-size: 1rem;
-  font-weight: 600;
-  -webkit-box-reflect: below 2px
-  linear-gradient(transparent, rgba(255, 255, 255, 0.05));
-  color: var(--light-grey);
-}
-.display-date {
-  text-align: center;
-}
-.display-time {
-  display: flex;
-  margin-left: 0px;
-  transition: ease-in-out 0.1s;
-  transition-property: background, box-shadow, color;
-}*/
 .nav-menu-left {
   display: flex;
   justify-content: center;
@@ -394,6 +371,7 @@ aside h3 {
 #name-addMember,
 #retroTitle {
   padding-left: 10px;
+  margin-bottom: 10px;
   width: 170px;
   background-color: var(--white);
   font-size: 12px;
@@ -412,12 +390,16 @@ aside h3 {
 #retroTitle::placeholder {
   text-align: center;
 }
+#taskDescription {
+  height: 100px;
+}
+
 #taskDescription,
 #taskDescription-retro,
 #commentDescription-retro {
   resize: none;
   padding-top: 10px;
-  height: 200px;
+  height: 150px;
   line-height: 1.4;
 }
 /* Quando a task description não está selecionada mantém a border */
@@ -448,7 +430,7 @@ aside h3 {
 .priority-button-home {
   --button-shadow-color: #c3c3c3;
   margin-top: 15px;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
   width: 56px;
   height: 30px;
   text-align: center;
@@ -493,8 +475,11 @@ aside h3 {
 #label-startDate,
 #label-limitDate,
 #task-name-label,
-#task-description-label {
-  margin-block: 20px;
+#task-description-label, 
+#task-categories-label,
+#choose-user-label,
+#choose-category-label {
+  margin-block: 10px;
   margin-inline: 60px;
   text-align: center;
   color: var(--green3);
@@ -502,13 +487,20 @@ aside h3 {
   font-weight: bold;
   text-transform: uppercase;
 }
-/* merdas e cenas */
+#div-filters {
+  margin-top: 60px;
+  display: flex;
+  flex-direction: column;
+}
+.filters {
+  margin-top: 5px;
+}
 
 #task-startDate,
 #task-limitDate {
   margin-inline: 20px;
   text-align: center;
-  margin-block: 10px;
+  margin-bottom: 5px;
   width: 180px;
   height: 25px;
   border-top-left-radius: 5px;
@@ -518,10 +510,11 @@ aside h3 {
   font-size: 14px;
 }
 /* Botão add task */
-#addTask {
+#addTask,
+#filter-button-users,
+#filter-button-categories {
   text-align: center;
   margin-top: 25px;
-  width: 120px;
   height: 32px;
   text-transform: uppercase;
   font-size: 12px;
@@ -532,7 +525,14 @@ aside h3 {
   transition: background-color 0.3s, color 0.3s;
   cursor: pointer;
 }
-#addTask:hover {
+#filter-button-users,
+#filter-button-categories {
+  width: 80px;
+  margin-bottom: 20px;
+}
+#addTask:hover,
+#filter-button-users:hover,
+#filter-button-categories:hover {
   background-color: var(--green3);
   color: var(--green1);
 }
@@ -1158,7 +1158,7 @@ aside h3 {
 #name-addMember {
   margin-top: 15px;
 }
-#taskDescription,
+
 #taskDescription-retro,
 #commentDescription-retro {
   margin-top: 20px;
@@ -1171,6 +1171,9 @@ aside h3 {
 #commentDescription-retro {
   margin-top: 15px;
 }
+#dropdown-users-select,
+#dropdown-category-select,
+#dropdown-task-categories,
 #dropdown-categories,
 #dropdown-users {
   margin-top: 20px;
@@ -1183,6 +1186,11 @@ aside h3 {
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
 }
+#dropdown-task-categories {
+  margin-top: 5px;
+
+}
+
 #dropdown-users {
   background-color: var(--todo);
 }

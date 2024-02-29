@@ -3,21 +3,7 @@ window.onload = function() {
   const usernameValue = localStorage.getItem('username')
   const passwordValue = localStorage.getItem('password')
 
-  if (usernameValue === null || passwordValue === null) {
-    window.location.href = "index.html";
-} else {
-    try {
-        getFirstName(usernameValue, passwordValue);
-        getPhotoUrl(usernameValue, passwordValue);
-        getRetroList(usernameValue, passwordValue);
-    } catch (error) {
-        
-        console.error("An error occurred:", error);
-        window.location.href = "index.html";
-        
-    }
-}
-
+  
 };
   
 

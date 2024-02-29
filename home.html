@@ -37,7 +37,6 @@
           <input type="text" id="taskName" placeholder="required" maxlength="19" />
           <label id="task-description-label">Description</label>
           <textarea id="taskDescription" placeholder="required"></textarea>
-          <input type="text" id="taskCategory" placeholder="Category (required)" maxlength="19" />
           <div class="priority-buttons-home">
             <button class="priority-button-home low" id="low-button-home">Low</button>
             <button class="priority-button-home medium" id="medium-button-home">Medium</button>
@@ -45,8 +44,15 @@
           </div>
           <label class="labels-task-dates" id="label-startDate">Start date</label>
           <input type="date" id="task-startDate" required />
-          <label class="labels-task-dates" id="label-endDate">End date</label>
-          <input type="date" id="taskEndDate" required />
+          <label class="labels-task-dates" id="label-limitDate">End date</label>
+          <input type="date" id="task-limitDate" required />
+          <label id="task-categories-label">Category</label>
+          <select name="task-categories" id="dropdown-task-categories" required>
+            <option value="" disabled selected hidden>--Choose a category--</option>
+            <option value="option1">Option 1</option>
+            <option value="option2">Option 2</option>
+            <option value="option3">Option 3</option>
+          </select>
           <button id="addTask">Add task</button>
           <p id="warningMessage2"></p>
         </div>
@@ -71,18 +77,40 @@
             <button id="cancel-delete-button">Cancel</button>
           </div>
         </div>
-        <div>
+        <div id="div-filters">
           <div id="user-selection">
-            <label id="choose-user>">Choose user</label>
-            <select id="users-select">
-              <option value="0">--Choose user--</option>
+            <div class="filters">
+            <label id="choose-user-label">Filter tasks by user</label>
+          </div>
+          <div class="filters">
+          <select name="users-list" id="dropdown-users-select">
+              <option value="" disabled selected hidden>--Choose a user--</option>
+              <option value="user1">user 1</option>
+              <option value="user2">user 2</option>
+              <option value="user3">user 3</option>
             </select>
           </div>
+          <div class="filters">
+          <button id="filter-button-users">Filter</button>
+        </div>
+      </div>
           <div id="category-selection">
-            <label id="choose-category">Choose category</label>
-            <select id="category-select">
-              <option value="0">--Choose category--</option>
+            <form id="category-selection-form">
+            <div class="filters">
+              <label id="choose-category-label">Filter tasks by category</label>
+            </div>
+            <div class="filters">
+            <select name="categories-list" id="dropdown-category-select">
+              <option value="" disabled selected hidden>--Choose a category--</option>
+              <option value="category1">category 1</option>
+              <option value="category2">category 2</option>
+              <option value="category3">category 3</option>
             </select>
+          </div>
+          <div class="filters">
+            <button id="filter-button-categories">Filter</button>
+          </div>
+            </form>
           </div>
         </div>
       </main>
