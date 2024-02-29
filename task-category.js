@@ -56,12 +56,13 @@ function showCategoryList(categoriesList) {
   
       // Adicionar evento de clique para exibir detalhes do usuário
       categoryNameCell.addEventListener("dblclick", () => {
+        console.log("Clicou aqui!");
         showCategoryDetails(category.name);
       });
     });
 }
   
-async function showCategoryDetail(categoryName) {
+async function showCategoryDetails(categoryName) {
   const modal = document.getElementById("categoryDetailsModal");
   document.getElementById("categoryNameInput").value = categoryName;  
   modal.style.display = "block";
@@ -80,8 +81,16 @@ function disableEdit() {
   document.getElementById("categoryNameInput").setAttribute("readonly", true);
 }
 
+const editbutton = document.getElementById("saveEdit");
+editbutton.addEventListener("onclick", () => {
+  console.log("Clicou aqui!");
+  editCategory(category.id);
+});
+
+
 async function editCategory() {
   const categoryDto = {
+    id: 1,
     name: document.getElementById("categoryNameInput").value,
   };
 
@@ -97,11 +106,14 @@ async function editCategory() {
       body: JSON.stringify(categoryDto),
     }
   );
-
+  const message = await response.text(); // Get response body as text
   if (response.ok) {
-    await getCategories();
+      alert(message);
+      closeModal(); // Close the modal
+      getCategories();
   } else {
-    alert("ERRO:" + response.status);
+    alert(message);
+    document.getElementById("categoryNameInput").value = "";
   }
 }
 

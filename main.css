@@ -1457,7 +1457,8 @@ table {
 }
 
 /* Estilo para o modal */
-.modal-users {
+.modal-users,
+.modal-category {
   display: none;
   position: fixed;
   top: 50%;
