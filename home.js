@@ -194,8 +194,8 @@ document.getElementById("addTask").addEventListener("click", function () {
   let description = document.getElementById("taskDescription").value.trim();
   let category = document.getElementById("taskCategory").value.trim();
   let priority = taskPriority;
-  let startDate = document.getElementById("taskStartDate").value;
-  let endDate = document.getElementById("taskEndDate").value;
+  let startDate = document.getElementById("task-startDate").value;
+  let endDate = document.getElementById("task-limitDate").value;
 
   if (
     title === "" ||
