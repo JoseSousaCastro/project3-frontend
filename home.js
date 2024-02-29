@@ -1,5 +1,10 @@
 window.onload = async function () {
   const tokenValue = sessionStorage.getItem("token");
+  const UserRole = {
+    DEVELOPER: "DEVELOPER",
+    SCRUM_MASTER: "SCRUM_MASTER",
+    PRODUCT_OWNER: "PRODUCT_OWNER",
+  };
 
   if (tokenValue === null) {
     window.location.href = "index.html";
@@ -11,6 +16,35 @@ window.onload = async function () {
     } catch (error) {
       console.error("An error occurred:", error);
     }
+  }
+  const response = await fetch(
+    "http://localhost:8080/project3-backend/rest/users/roleByToken",
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "*/*",
+        token: sessionStorage.getItem("token"),
+      },
+    }
+  );
+  if (response.ok) {
+    const data = await response.json();
+    const role = data.role;
+    sessionStorage.setItem("role", role);
+  } else {
+    alert("role not found");
+  }
+
+  console.log("Role from sessionStorage:", sessionStorage.getItem("role"));
+  if (
+    sessionStorage.getItem("role") === UserRole.DEVELOPER ||
+    sessionStorage.getItem("role") === UserRole.SCRUM_MASTER
+  ) {
+    console.log("Devia disabled");
+    document.getElementById("users-info").style.display = "none";
+  } else {
+    console.log("HERE");
   }
 };
 
@@ -128,7 +162,14 @@ highButton.addEventListener("click", () =>
 );
 
 // Cria uma nova task com os dados inseridos pelo utilizador => Input para função newTask
-function createTask(title, description, priority, category, startDate, endDate) {
+function createTask(
+  title,
+  description,
+  priority,
+  category,
+  startDate,
+  endDate
+) {
   const task = {
     title: title,
     description: description,
@@ -205,7 +246,7 @@ document.getElementById("addTask").addEventListener("click", function () {
     endDate === "" ||
     startDate > endDate ||
     document.getElementsByClassName("selected").length === 0
-   ){
+  ) {
     document.getElementById("warningMessage2").innerText =
       "Fill in all fields and define a priority";
   } else {
@@ -277,7 +318,7 @@ document.addEventListener("click", function (event) {
   if (event.target.matches(".apagarButton")) {
     const taskElement = event.target.closest(".task");
     const taskId = event.target.dataset.taskId;
-    
+
     const deletemodal = document.getElementById("delete-modal");
     deletemodal.style.display = "grid";
 
@@ -339,7 +380,7 @@ async function deleteTask(id) {
         "Content-Type": "application/json",
         Accept: "*/*",
         token: sessionStorage.getItem("token"),
-        taskId: id
+        taskId: id,
       },
     });
     const message = await response.text(); // Extract the message from the response
