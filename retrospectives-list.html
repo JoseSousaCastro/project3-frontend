@@ -1,55 +1,63 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Retrospectives List</title>
-    <link  type="text/css" rel="stylesheet" href="main.css">
-    <link rel="icon" href="multimedia/favicon.png" type="image/x-icon">
-</head>
-<body>
+    <link type="text/css" rel="stylesheet" href="main.css" />
+    <link rel="icon" href="multimedia/favicon.png" type="image/x-icon" />
+  </head>
+  <body>
     <header>
-        <img src="multimedia/logo-scrum-05.png" id="logo-header" height="50">
-        <nav class="nav-menu-left">
-            <ul>
-                <li id="nav-home"><a href="home.html">My Scrum</a></li>
-                <li id="nav-retro"><a href="retrospectives-list.html">Retrospectives</a></li>
-            </ul>
-        </nav>
-        <div class="nav-menu-right">
-            <img src="multimedia/JSC_close up.png" id="profile-pic">
-            <a href="edit-profile.html" id="first-name-label"></a>
-            <button class="logout-button" id="logout-button-header">
-                <img src="multimedia/logout.png" alt="Logout Icon">
-                Logout
-            </button>
-        </div>
+      <img src="multimedia/logo-scrum-05.png" id="logo-header" height="50" />
+      <nav class="nav-menu-left">
+        <ul>
+          <li id="nav-home"><a href="home.html">My Scrum</a></li>
+          <li id="nav-retro">
+            <a href="retrospectives-list.html">Retrospectives</a>
+          </li>
+        </ul>
+      </nav>
+      <div class="nav-menu-right">
+        <img src="multimedia/JSC_close up.png" id="profile-pic" />
+        <a href="edit-profile.html" id="first-name-label"></a>
+        <button class="logout-button" id="logout-button-header">
+          <img src="multimedia/logout.png" alt="Logout Icon" />
+          Logout
+        </button>
+      </div>
     </header>
-    <div class="container"> <!--Container para o aside e o main-->
-    <aside>
+    <div class="container">
+      <!--Container para o aside e o main-->
+      <aside>
         <div class="add-retro-container">
-            <h3 id="retro-title">Add retrospective</h3>
-            <input type="date" id="retroDate" required>
-            <input type="text" id="retroTitle" placeholder="Title (required)" maxlength="27">
-            <button id="addRetroBTN">Add</button> <!--js para adicionar esta retro à lista, com o status Scheduled-->
-            <p id="warningMessage2"></p>
+          <h3 id="retro-title">Add retrospective</h3>
+          <input type="date" id="retroDate" required />
+          <input
+            type="text"
+            id="retroTitle"
+            placeholder="Title (required)"
+            maxlength="27"
+          />
+          <button id="addRetroBTN">Add</button>
+          <!--js para adicionar esta retro à lista, com o status Scheduled-->
+          <p id="warningMessage2"></p>
         </div>
-    </aside>
-    <main>
+      </aside>
+      <main>
         <div class="table-container">
-            <table class="retros-table">
-                <thead class="retros-table-header">
-                    <tr>
-                        <th class="table-header">Date</th>
-                        <th class="table-header">Title</th>
-                        <th class="table-header">Members</th>
-                    </tr>
-                </thead>
-                <tbody class="retros-table-body">
-                </tbody>
-            </table>
+          <table class="retros-table">
+            <thead class="retros-table-header">
+              <tr>
+                <th class="table-header">Date</th>
+                <th class="table-header">Title</th>
+                <th class="table-header">Members</th>
+              </tr>
+            </thead>
+            <tbody class="retros-table-body"></tbody>
+          </table>
         </div>
-    </main>
+      </main>
     </div>
     <footer>
         <div class="footer-content">
@@ -61,5 +69,5 @@
         </div>
     </footer>
     <script src="retrospectives-list.js" defer></script>
-</body>
+  </body>
 </html>
