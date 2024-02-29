@@ -491,7 +491,9 @@ aside h3 {
 }
 /* Definições do botão de adicionar task */
 #label-startDate,
-#label-limitDate {
+#label-limitDate,
+#task-name-label,
+#task-description-label {
   margin-block: 20px;
   margin-inline: 60px;
   text-align: center;
