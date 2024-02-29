@@ -41,6 +41,7 @@ async function fetchUsers() {
 }
 
 function showUsersList(array) {
+  document.querySelector(".retros-table-body").innerHTML = "";
   array.forEach((user) => {
     const row = document.createElement("tr");
 
@@ -175,4 +176,46 @@ async function editProfile() {
 function closeModal() {
   const modal = document.getElementById("userDetailsModal");
   modal.style.display = "none";
+}
+
+function addNewUser() {
+  const modal = document.getElementById("addUserModal");
+  modal.style.display = "block";
+}
+
+function closeAddUserModal() {
+  const modal = document.getElementById("addUserModal");
+  modal.style.display = "none";
+}
+
+async function submitNewUser() {
+  const newUser = {
+    username: document.getElementById("username").value,
+    password: document.getElementById("password").value,
+    email: document.getElementById("email").value,
+    phone: document.getElementById("phone").value,
+    firstName: document.getElementById("firstName").value,
+    lastName: document.getElementById("lastName").value,
+    role: document.getElementById("role").value,
+    photoURL: document.getElementById("photo").value,
+    deleted: false,
+  };
+  const response = await fetch(
+    "http://localhost:8080/project3-backend/rest/users/createUser",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "*/*",
+        token: tokenValue,
+      },
+      body: JSON.stringify(newUser),
+    }
+  );
+  if (response.ok) {
+    alert("New user created.");
+  } else {
+    alert("ERRO: " + response.status);
+    console.log(newUser.role);
+  }
 }
