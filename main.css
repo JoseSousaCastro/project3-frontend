@@ -1526,3 +1526,8 @@ body.modal-users-open {
   border-radius: 5px;
   cursor: pointer;
 }
+
+input[readonly] {
+  background-color: #f0f0f0;
+  color: #888;
+}

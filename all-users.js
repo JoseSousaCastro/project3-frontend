@@ -17,7 +17,7 @@ document.addEventListener("DOMContentLoaded", function () {
 async function fetchUsers() {
   try {
     const response = await fetch(
-      "http://localhost:8080/proj3_vc_re_jc/rest/users/checkUsers",
+      "http://localhost:8080/project3-backend/rest/users/checkUsers",
       {
         method: "GET",
         headers: {
@@ -30,9 +30,8 @@ async function fetchUsers() {
 
     if (response.ok) {
       const usersArray = await response.json();
-      console.log(usersArray);
+
       showUsersList(usersArray);
-      alert("Users found");
     } else {
       alert(response.status);
     }
@@ -100,7 +99,7 @@ async function showUserDetails(idUser) {
 
 async function findUserById(idUser) {
   const response = await fetch(
-    "http://localhost:8080/proj3_vc_re_jc/rest/users/userById",
+    "http://localhost:8080/project3-backend/rest/users/userById",
     {
       method: "GET",
       headers: {
@@ -124,10 +123,56 @@ function closeUserDetailsModal() {
 
 function enableEdit() {
   document.getElementById("usernameInput").removeAttribute("readonly");
-  document.getElementById("roleInput").removeAttribute("readonly");
-  document.getElementById("deletedInput").removeAttribute("readonly");
+  document.getElementById("roleInput").removeAttribute("disabled");
+  document.getElementById("deletedInput").removeAttribute("disabled");
   document.getElementById("firstNameInput").removeAttribute("readonly");
   document.getElementById("lastNameInput").removeAttribute("readonly");
   document.getElementById("emailInput").removeAttribute("readonly");
   document.getElementById("phoneInput").removeAttribute("readonly");
+}
+
+function disableEdit() {
+  document.getElementById("usernameInput").setAttribute("readonly", true);
+  document.getElementById("roleInput").setAttribute("disabled", true);
+  document.getElementById("deletedInput").setAttribute("disabled", true);
+  document.getElementById("firstNameInput").setAttribute("readonly", true);
+  document.getElementById("lastNameInput").setAttribute("readonly", true);
+  document.getElementById("emailInput").setAttribute("readonly", true);
+  document.getElementById("phoneInput").setAttribute("readonly", true);
+}
+
+async function editProfile() {
+  const userDto = {
+    username: document.getElementById("usernameInput").value,
+    firstName: document.getElementById("firstNameInput").value,
+    lastName: document.getElementById("lastNameInput").value,
+    email: document.getElementById("emailInput").value,
+    phone: document.getElementById("phoneInput").value,
+    deleted: document.getElementById("deletedInput").value,
+    role: document.getElementById("roleInput").value,
+  };
+
+  const response = await fetch(
+    "http://localhost:8080/project3-backend/rest/users/editOtherProfile",
+    {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "*/*",
+        token: tokenValue,
+      },
+      body: JSON.stringify(userDto),
+    }
+  );
+
+  if (response.ok) {
+    await fetchUsers();
+  } else {
+    alert("ERRO:" + response.status);
+  }
+}
+
+function closeModal() {
+  const modal = document.getElementById("userDetailsModal");
+  modal.style.display = "none";
 }
