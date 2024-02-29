@@ -86,7 +86,7 @@ async function showUserDetails(idUser) {
   const user = await findUserById(idUser);
   if (user) {
     const modal = document.getElementById("userDetailsModal");
-    const userDetailsContainer = document.getElementById("userDetails");
+    //const userDetailsContainer = document.getElementById("userDetails");
 
     document.getElementById("usernameInput").value = user.username;
     document.getElementById("roleInput").value =
