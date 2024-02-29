@@ -193,33 +193,89 @@ function closeAddUserModal() {
 }
 
 async function submitNewUser() {
-  const newUser = {
-    username: document.getElementById("username").value,
-    password: document.getElementById("password").value,
-    email: document.getElementById("email").value,
-    phone: document.getElementById("phone").value,
-    firstName: document.getElementById("firstName").value,
-    lastName: document.getElementById("lastName").value,
-    role: document.getElementById("role").value,
-    photoURL: document.getElementById("photo").value,
-    deleted: false,
-  };
-  const response = await fetch(
-    "http://localhost:8080/project3-backend/rest/users/createUser",
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "*/*",
-        token: tokenValue,
-      },
-      body: JSON.stringify(newUser),
-    }
-  );
-  if (response.ok) {
-    alert("New user created.");
+  const username = document
+    .getElementById("username")
+    .value.trim()
+    .replace(/\s+/g, "");
+  const password = document
+    .getElementById("password")
+    .value.trim()
+    .replace(/\s+/g, "");
+  const email = document
+    .getElementById("email")
+    .value.trim()
+    .replace(/\s+/g, "");
+  const phone = document
+    .getElementById("phone")
+    .value.trim()
+    .replace(/\s+/g, "");
+  const firstName = document
+    .getElementById("firstName")
+    .value.trim()
+    .replace(/\s+/g, "");
+  const lastName = document
+    .getElementById("lastName")
+    .value.trim()
+    .replace(/\s+/g, "");
+  const role = document.getElementById("role").value.trim().replace(/\s+/g, "");
+  const photoURL = document
+    .getElementById("photo")
+    .value.trim()
+    .replace(/\s+/g, "");
+
+  // Validação do email com apenas um '@'
+  const atSymbolIndex = email.indexOf("@");
+  const isEmailValid =
+    atSymbolIndex > 0 && email.indexOf("@", atSymbolIndex + 1) === -1;
+
+  // Validação do email com pelo menos um '.'
+  const dotSymbolIndex = email.indexOf(".", atSymbolIndex);
+  const isDotValid = dotSymbolIndex > atSymbolIndex;
+  const isValidPhotoURL = /^(ftp|http|https):\/\/[^ "]+$/.test(photoURL);
+
+  if (
+    !username ||
+    !password ||
+    !isEmailValid ||
+    !isDotValid ||
+    !phone ||
+    !firstName ||
+    !lastName ||
+    !role ||
+    !isValidPhotoURL
+  ) {
+    alert("Invalid inputs");
   } else {
-    alert("ERRO: " + response.status);
-    console.log(newUser.role);
+    const newUser = {
+      username: username,
+      password: password,
+      email: email,
+      phone: phone,
+      firstName: firstName,
+      lastName: lastName,
+      role: role,
+      photoURL: photoURL,
+      deleted: false,
+    };
+    const response = await fetch(
+      "http://localhost:8080/project3-backend/rest/users/createUser",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "*/*",
+          token: tokenValue,
+        },
+        body: JSON.stringify(newUser),
+      }
+    );
+    if (response.ok) {
+      alert("New user created.");
+      fetchUsers();
+      closeAddUserModal();
+    } else {
+      alert("ERRO: " + response.status);
+      console.log(newUser.role);
+    }
   }
 }
