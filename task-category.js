@@ -41,7 +41,7 @@ function showCategoryList(categoriesList) {
   categoriesList.forEach((category) => {
       const row = document.createElement("tr");
   
-      // Criar célula para o nome da categoria
+      // Criar célula para o id da categoria
       const iDCell = document.createElement("td");
       iDCell.className = "clickable";
       iDCell.textContent = category.id;
