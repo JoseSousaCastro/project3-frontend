@@ -12,6 +12,8 @@ const deletedMapping = {
 const tokenValue = sessionStorage.getItem("token");
 
 document.addEventListener("DOMContentLoaded", function () {
+  getPhotoUrl();
+  getFirstName();
   fetchUsers();
 });
 
@@ -70,6 +72,14 @@ function showUsersList(array) {
       row.appendChild(usernameCell);
       row.appendChild(roleCell);
       row.appendChild(deletedCell);
+
+      if (user.role === 100) {
+        row.classList.add("developer-highlight");
+      } else if (user.role === 200) {
+        row.classList.add("scrum-master-highlight");
+      } else if (user.role === 300) {
+        row.classList.add("product-owner-highlight");
+      }
 
       // Adicionar a linha à tabela
       document.querySelector(".retros-table-body").appendChild(row);
@@ -303,3 +313,47 @@ document
       alert("Something went wrong");
     }
   });
+
+async function getPhotoUrl() {
+  const response = await fetch(
+    "http://localhost:8080/project3-backend/rest/users/userByToken",
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "*/*",
+        token: sessionStorage.getItem("token"),
+      },
+    }
+  );
+
+  if (response.ok) {
+    const user = await response.json();
+    console.log(user);
+    console.log(user.photoURL);
+    document.getElementById("profile-pic").src = user.photoURL;
+  } else if (response.stateId === 401) {
+    alert("Invalid credentials");
+  } else if (response.stateId === 404) {
+    alert("teste 404");
+  }
+}
+
+async function getFirstName() {
+  const response = await fetch(
+    "http://localhost:8080/project3-backend/rest/users/userByToken",
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "*/*",
+        token: sessionStorage.getItem("token"),
+      },
+    }
+  );
+
+  if (response.ok) {
+    const user = await response.json();
+    document.getElementById("first-name").innerText = user.firstName;
+  } else if (!response.ok) {
+    alert("Invalid credentials");
+  }
+}
