@@ -164,6 +164,57 @@ function removeSelectedPriorityButton() {
   buttons.forEach((btn) => btn.classList.remove("selected"));
 }
 
+ 
+getCategories().then(categories => {
+  // Get the select element
+  let dropdown = document.getElementById("dropdown-task-categories");
+
+  // Add a placeholder option
+  let placeholderOption = document.createElement("option");
+  placeholderOption.text = "Choose category";
+  placeholderOption.disabled = true;
+  placeholderOption.selected = true;
+  dropdown.add(placeholderOption);
+
+  // Add options for categories
+  categories.forEach(function(category) {
+      let option = document.createElement("option");
+      option.text = category.name;
+      dropdown.add(option);
+  });
+}).catch(error => {
+  console.error('Error fetching categories:', error);
+});
+
+
+async function getCategories() {
+  let getCategories = `http://localhost:8080/project3-backend/rest/tasks/category/all`;
+  try {
+    const response = await fetch(
+      getCategories,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/JSON",
+          Accept: "*/*",
+          token: sessionStorage.getItem("token"),
+        },
+      }
+    );
+    if (response.ok) {
+      const categories = await response.json();
+      return categories; // Return the array of categories
+    } else {
+      throw new Error(`Failed to fetch categories: ${response.text()}`);
+    }
+  } catch (error) {
+    console.error("Error loading categories list:", error);
+    throw error; // Re-throw the error to handle it in the caller function if needed
+  }
+}
+
+
+
 // Event listeners para os botões priority
 lowButton.addEventListener("click", () =>
   setPriorityButtonSelected(lowButton, "LOW_PRIORITY")
