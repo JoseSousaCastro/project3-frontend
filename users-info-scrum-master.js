@@ -62,24 +62,9 @@ function showUsersList(array) {
       roleCell.textContent = roleText;
       roleCell.className = "text-center";
 
-      // Criar célula para o status de exclusão do usuário
-      const deletedCell = document.createElement("td");
-      const deletedText = deletedMapping[user.deleted] || "Unknown";
-      deletedCell.textContent = deletedText;
-      deletedCell.className = "text-center";
-
       // Adicionar as células à linha
       row.appendChild(usernameCell);
       row.appendChild(roleCell);
-      row.appendChild(deletedCell);
-
-      if (user.role === 100) {
-        row.classList.add("developer-highlight");
-      } else if (user.role === 200) {
-        row.classList.add("scrum-master-highlight");
-      } else if (user.role === 300) {
-        row.classList.add("product-owner-highlight");
-      }
 
       // Adicionar a linha à tabela
       document.querySelector(".retros-table-body").appendChild(row);
@@ -95,14 +80,13 @@ function showUsersList(array) {
 async function showUserDetails(idUser) {
   const user = await findUserById(idUser);
   if (user) {
+    console.log(user.firstName);
     const modal = document.getElementById("userDetailsModal");
     //const userDetailsContainer = document.getElementById("userDetails");
 
     document.getElementById("usernameInput").value = user.username;
     document.getElementById("roleInput").value =
       roleMapping[user.role] || "Unknown Role";
-    document.getElementById("deletedInput").value =
-      deletedMapping[user.deleted] || "Unknown";
     document.getElementById("firstNameInput").value = user.firstName;
     document.getElementById("lastNameInput").value = user.lastName;
     document.getElementById("emailInput").value = user.email;
@@ -136,159 +120,11 @@ function closeUserDetailsModal() {
   modal.style.display = "none";
 }
 
-function enableEdit() {
-  document.getElementById("usernameInput").removeAttribute("readonly");
-  document.getElementById("roleInput").removeAttribute("disabled");
-  document.getElementById("deletedInput").removeAttribute("disabled");
-  document.getElementById("firstNameInput").removeAttribute("readonly");
-  document.getElementById("lastNameInput").removeAttribute("readonly");
-  document.getElementById("emailInput").removeAttribute("readonly");
-  document.getElementById("phoneInput").removeAttribute("readonly");
-}
-
-function disableEdit() {
-  document.getElementById("usernameInput").setAttribute("readonly", true);
-  document.getElementById("roleInput").setAttribute("disabled", true);
-  document.getElementById("deletedInput").setAttribute("disabled", true);
-  document.getElementById("firstNameInput").setAttribute("readonly", true);
-  document.getElementById("lastNameInput").setAttribute("readonly", true);
-  document.getElementById("emailInput").setAttribute("readonly", true);
-  document.getElementById("phoneInput").setAttribute("readonly", true);
-}
-
-async function editProfile() {
-  const userDto = {
-    username: document.getElementById("usernameInput").value,
-    firstName: document.getElementById("firstNameInput").value,
-    lastName: document.getElementById("lastNameInput").value,
-    email: document.getElementById("emailInput").value,
-    phone: document.getElementById("phoneInput").value,
-    deleted: document.getElementById("deletedInput").value,
-    role: document.getElementById("roleInput").value,
-  };
-
-  const response = await fetch(
-    "http://localhost:8080/project3-backend/rest/users/editOtherProfile",
-    {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "*/*",
-        token: tokenValue,
-      },
-      body: JSON.stringify(userDto),
-    }
-  );
-
-  if (response.ok) {
-    await fetchUsers();
-  } else {
-    alert("ERRO:" + response.status);
-  }
-}
-
 function closeModal() {
   const modal = document.getElementById("userDetailsModal");
   modal.style.display = "none";
 }
 
-function addNewUser() {
-  const modal = document.getElementById("addUserModal");
-  modal.style.display = "block";
-}
-
-function closeAddUserModal() {
-  const modal = document.getElementById("addUserModal");
-  modal.style.display = "none";
-}
-
-async function submitNewUser() {
-  const username = document
-    .getElementById("username")
-    .value.trim()
-    .replace(/\s+/g, "");
-  const password = document
-    .getElementById("password")
-    .value.trim()
-    .replace(/\s+/g, "");
-  const email = document
-    .getElementById("email")
-    .value.trim()
-    .replace(/\s+/g, "");
-  const phone = document
-    .getElementById("phone")
-    .value.trim()
-    .replace(/\s+/g, "");
-  const firstName = document
-    .getElementById("firstName")
-    .value.trim()
-    .replace(/\s+/g, "");
-  const lastName = document
-    .getElementById("lastName")
-    .value.trim()
-    .replace(/\s+/g, "");
-  const role = document.getElementById("role").value.trim().replace(/\s+/g, "");
-  const photoURL = document
-    .getElementById("photo")
-    .value.trim()
-    .replace(/\s+/g, "");
-
-  // Validação do email com apenas um '@'
-  const atSymbolIndex = email.indexOf("@");
-  const isEmailValid =
-    atSymbolIndex > 0 && email.indexOf("@", atSymbolIndex + 1) === -1;
-
-  // Validação do email com pelo menos um '.'
-  const dotSymbolIndex = email.indexOf(".", atSymbolIndex);
-  const isDotValid = dotSymbolIndex > atSymbolIndex;
-  const isValidPhotoURL = /^(ftp|http|https):\/\/[^ "]+$/.test(photoURL);
-
-  if (
-    !username ||
-    !password ||
-    !isEmailValid ||
-    !isDotValid ||
-    !phone ||
-    !firstName ||
-    !lastName ||
-    !role ||
-    !isValidPhotoURL
-  ) {
-    alert("Invalid inputs");
-  } else {
-    const newUser = {
-      username: username,
-      password: password,
-      email: email,
-      phone: phone,
-      firstName: firstName,
-      lastName: lastName,
-      role: role,
-      photoURL: photoURL,
-      deleted: false,
-    };
-    const response = await fetch(
-      "http://localhost:8080/project3-backend/rest/users/createUser",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "*/*",
-          token: tokenValue,
-        },
-        body: JSON.stringify(newUser),
-      }
-    );
-    if (response.ok) {
-      alert("New user created.");
-      fetchUsers();
-      closeAddUserModal();
-    } else {
-      alert("ERRO: " + response.status);
-      console.log(newUser.role);
-    }
-  }
-}
 document
   .getElementById("logout-button-header")
   .addEventListener("click", async function () {
@@ -337,7 +173,6 @@ async function getPhotoUrl() {
     alert("teste 404");
   }
 }
-
 async function getFirstName() {
   const response = await fetch(
     "http://localhost:8080/project3-backend/rest/users/userByToken",

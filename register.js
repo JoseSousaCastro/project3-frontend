@@ -135,7 +135,7 @@ document
 
     try {
       const response = await fetch(
-        "http://localhost:8080/proj3_vc_re_jc/rest/users/register",
+        "http://localhost:8080/project3-backend/rest/users/register",
         {
           method: "POST",
           headers: {
@@ -211,7 +211,7 @@ function createUserData() {
     lastName: lastName,
     phone: phone,
     photoURL: photoURL,
-    role: 'DEVELOPER',
+    role: "DEVELOPER",
     deleted: deleted,
   };
 }
