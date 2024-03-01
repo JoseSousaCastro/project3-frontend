@@ -1,0 +1,110 @@
+<!--
+    linha 33 - código para relógio com data e hora
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Your Scrum</title>
+    <link type="text/css" rel="stylesheet" href="main.css" />
+    <link rel="icon" href="multimedia/favicon.png" type="image/x-icon" />
+  </head>
+  <body>
+    <header>
+      <img
+        src="multimedia/logo-scrum-05.png"
+        id="logo-header"
+        height="50"
+        draggable="false"
+      />
+      <nav class="nav-menu-left">
+        <ul>
+          <li id="nav-home"><a href="home.html">My Scrum</a></li>
+          <li id="nav-retro">
+            <a href="retrospectives-list.html">Retrospectives</a>
+          </li>
+          <li id="users-info"><a href="all-users.html" >Users</a></li>
+          <li id="category-info"><a href="task-category.html" >Task Category</a></li>
+        </ul>
+      </nav>
+      <div class="nav-menu-right">
+        <img
+          src="multimedia/prf-img-placeholder.PNG"
+          id="profile-pic"
+          draggable="false"
+        />
+        <a href="edit-profile.html" id="first-name-label" draggable="false"></a>
+        <button
+          class="logout-button"
+          id="logout-button-header"
+          draggable="false"
+        >
+          <img src="multimedia/logout.png" alt="Logout Icon" />
+          Logout
+        </button>
+      </div>
+    </header>
+    <div class="container">
+      <!--Container para o aside e o main-->
+      <aside>
+        <div style="text-align: center; margin-bottom: 20px;">
+          <img src="images/user_png.png" alt="Imagem" style="width: 100px; height: 100px;">
+        </div>
+        <button onclick="addCategory()" style="font-size: 18px; padding: 10px 20px;">Add Category</button>
+        <button onclick="removeCategory()" style="font-size: 18px; padding: 10px 20px;">Remove Category</button>
+      </aside>
+      <main>
+        <!-- Começa aqui a tabela-->
+        <div class="table-container-category-tasks">
+          <table class="table-category-tasks"> 
+            <thead class="table-header-category-tasks">
+              <tr>
+                <th class="table-header-category-tasks">Id</th>
+                <th class="table-header-category-tasks">Name</th>
+              </tr>
+            </thead>
+            <tbody class="category-table-body"></tbody>
+          </table>
+      </main>
+    </div>
+    <footer>
+      <div class="footer-content">
+        <div class="label-left">&copy; Ricardo Elias</div>
+        <div class="label-right">Programação Avançada em Java</div>
+        <div class="label-left">&copy; José Sousa Castro</div>
+        <div class="label-right">Projeto 2</div>
+        <div class="label-left">&copy; Vasco Castro</div>
+      </div>
+    </footer>
+    <div id="categoryDetailsModal" class="modal-category">
+      <div class="modal-content-category">
+        <span class="close" onclick="closeCategoryDetailsModal(); disableEdit()">&times;</span>
+        <div id="categoryDetails">
+          <label for="categoryNameInput">Name:</label>
+          <input type="text" id="categoryNameInput" class="text-center" readonly>
+        </div>
+        <button id="enableEdit">Edit</button>
+        <button id="saveEdit">Save</button>
+      </div>
+    </div>
+    <div id="addCategoryModal" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="closeAddCategoryModal()">&times;</span>
+        <label for="categoryName">Name:</label>
+        <input type="text" id="categoryName" placeholder="Insert name" required>   
+        <button onclick="submitNewCategory()">Add</button>
+      </div>
+    </div>
+    <div id="removeCategoryModal" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="closeRemoveCategoryModal()">&times;</span>
+        <label for="categoryId">Id:</label>
+        <input type="text" id="categoryId" placeholder="Insert task Id" required>   
+        <button onclick="submitRemoveCategory()">Remove</button>
+      </div>
+    </div>
+    <script src="task-category.js" defer></script>
+  </body>
+</html>

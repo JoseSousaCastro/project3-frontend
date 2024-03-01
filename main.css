@@ -1472,7 +1472,8 @@ table {
 }
 
 /* Estilo para o conteúdo do modal */
-.modal-content-users {
+.modal-content-users,
+.modal-content-category {
   position: relative;
   background-color: #fefefe;
   margin: auto;
@@ -1511,16 +1512,21 @@ input {
   border-radius: 8px;
 }
 
-body.modal-users-open {
+body.modal-users-open,
+body.modal-category-open {
   overflow: hidden;
 }
 
 .modal-users-open main,
 .modal-users-open footer,
-.modal-users-open aside {
+.modal-users-open aside,
+.modal-category-open main,
+.modal-category-open footer,
+.modal-category-open aside {
   filter: blur(3px);
 }
-.modal-content-users button {
+.modal-content-users button,
+.modal-content-category button {
   padding: 10px 20px;
   margin: 10px;
   background-color: blue;
