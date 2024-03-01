@@ -1,140 +1,76 @@
-window.onload = function() {
-   
-  getFirstName();
+window.onload = function () {
+  //getFirstName();
   getPhotoUrl();
   getRetroList();
-
-  
 };
-  
-
-
 
 function cleanRetroFields() {
-  document.getElementById('warningMessage2').innerText = '';
-  document.getElementById('retroTitle').value = '';
-  document.getElementById('retroDate').value = '';
+  document.getElementById("warningMessage2").innerText = "";
+  document.getElementById("retroTitle").value = "";
+  document.getElementById("retroDate").value = "";
 }
 
-  async function getFirstName() {
-  
-    let firstNameRequest = "http://localhost:8080/project3-backend/rest/users/getFirstName";
-      
-      try {
-          const response = await fetch(firstNameRequest, {
-              method: 'GET',
-              headers: {
-                  'Content-Type': 'application/JSON',
-                  'Accept': '*/*',
-                  token: sessionStorage.getItem("token")
-              },    
-          });
-  
-          if (response.ok) {
-  
-            const data = await response.text();
-            console.log(data.firstName)
-            document.getElementById("first-name-label").innerText = data;
-  
-          } else if (!response.ok) {
-              alert("Invalid credentials")
-          }
-  
-      } catch (error) {
-          console.error('Error:', error);
-          alert("Something went wrong");
-      }
-  }
-  
-  async function getPhotoUrl() {
-  
-    let photoUrlRequest = "http://localhost:8080/project3-backend/rest/users/getPhotoUrl";
-      
-      try {
-          const response = await fetch(photoUrlRequest, {
-              method: 'GET',
-              headers: {
-                  'Content-Type': 'application/JSON',
-                  'Accept': '*/*',
-                  token: sessionStorage.getItem("token")
-              },    
-          });
-  
-          if (response.ok) {
-  
-            const data = await response.text();
-            document.getElementById("profile-pic").src = data;
-  
-          } else if (response.status === 401) {
-              alert("Invalid credentials")
-          } else if (response.status === 404) {
-            alert("teste 404")
-          }
-  
-      } catch (error) {
-          console.error('Error:', error);
-          alert("Something went wrong");
-      }
-  }
+async function getRetroList() {
+  console.log("getRetroList");
+  let retroListRequest =
+    "http://localhost:8080/project3-backend/rest/retrospective/all";
 
-  async function getRetroList() {
-  console.log("getRetroList")
-    let retroListRequest = "http://localhost:8080/project3-backend/rest/retrospective/all";
-      
-      try {
-          const response = await fetch(retroListRequest, {
-              method: 'GET',
-              headers: {
-                  'Content-Type': 'application/JSON',
-                  'Accept': '*/*',
-                  token: sessionStorage.getItem("token")                
-                },    
-          });
-  
-          if (response.ok) {
-  
-            const data = await response.json();
-            console.log(data)
+  try {
+    const response = await fetch(retroListRequest, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/JSON",
+        Accept: "*/*",
+        token: sessionStorage.getItem("token"),
+      },
+    });
 
-            data.forEach(retro => {
-              createRetroTableBody(retro);
-              console.log(retro.eventId);
-            });
-          } else if (response.status === 401) {
-            alert("Invalid credentials");
-          } else if (response.status === 404) {
-            alert("Error 404");
-          }
-      } catch (error) {
-        console.error('Error:', error);
-        alert("Something went wrong");
-      }
+    if (response.ok) {
+      const data = await response.json();
+      console.log(data);
+
+      data.forEach((retro) => {
+        createRetroTableBody(retro);
+        console.log(retro.eventId);
+      });
+    } else if (response.status === 401) {
+      alert("Invalid credentials");
+    } else if (response.status === 404) {
+      alert("Error 404");
+    }
+  } catch (error) {
+    console.error("Error:", error);
+    alert("Something went wrong");
+  }
 }
 
-function createRetro (title, date) {
+function createRetro(title, date) {
   let retro = {
     title: title,
-    date: date
-  }
+    date: date,
+  };
   return retro;
 }
 
 async function addRetrospectiveToBackend(title, date) {
   const retro = {
     title: title,
-    schedulingDate: date
-  }
+    schedulingDate: date,
+  };
 
   console.log(retro);
   try {
-    const response = await fetch('http://localhost:8080/project3-backend/rest/retrospective/add', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        token: sessionStorage.getItem("token"),
-      },
-      body: JSON.stringify(retro)
-    });
+    const response = await fetch(
+      "http://localhost:8080/project3-backend/rest/retrospective/add",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          token: sessionStorage.getItem("token"),
+        },
+        body: JSON.stringify(retro),
+      }
+    );
     if (response.ok) {
       removeAllRetroElements();
       getRetroList();
@@ -145,33 +81,28 @@ async function addRetrospectiveToBackend(title, date) {
       alert("Error 404");
     }
   } catch (error) {
-    console.error('Error:', error);
+    console.error("Error:", error);
     alert("Something went wrong");
   }
-    
 }
 
+document.getElementById("addRetroBTN").addEventListener("click", function () {
+  let date = document.getElementById("retroDate").value.toString();
+  let title = document.getElementById("retroTitle").value.trim();
 
+  if (date === "" || title === "") {
+    console.log("entrou no if para verificar se os campos estão preenchidos");
 
-
-document.getElementById("addRetroBTN").addEventListener("click", function() {
-  let date = document.getElementById('retroDate').value.toString();
-  let title = document.getElementById('retroTitle').value.trim();
-
-if (date === '' || title === '') {
-  console.log('entrou no if para verificar se os campos estão preenchidos');
-
-  document.getElementById('warningMessage2').innerText = 'Please fill in all fields';
-} else {
-
-  addRetrospectiveToBackend(title, date);
-}
+    document.getElementById("warningMessage2").innerText =
+      "Please fill in all fields";
+  } else {
+    addRetrospectiveToBackend(title, date);
+  }
 });
 
-
 function removeAllRetroElements() {
-  const retros = document.querySelectorAll('.retros-row');
-  retros.forEach(retro => retro.remove());
+  const retros = document.querySelectorAll(".retros-row");
+  retros.forEach((retro) => retro.remove());
 }
 
 function createRetroTableBody(retro) {
@@ -192,7 +123,11 @@ function createRetroTableBody(retro) {
   titleCell.appendChild(titleLink);
 
   let membersCell = document.createElement("td");
-  membersCell.textContent = retro.retrospectiveUsers ? retro.retrospectiveUsers.map(user => (user && user.username) ? user.username : '').join(", ") : '';
+  membersCell.textContent = retro.retrospectiveUsers
+    ? retro.retrospectiveUsers
+        .map((user) => (user && user.username ? user.username : ""))
+        .join(", ")
+    : "";
 
   row.appendChild(dateCell);
   row.appendChild(titleCell);
@@ -201,29 +136,53 @@ function createRetroTableBody(retro) {
   tbody.appendChild(row);
 }
 
-//LOGOUT 
-document.getElementById("logout-button-header").addEventListener('click', async function() {
+//LOGOUT
+document
+  .getElementById("logout-button-header")
+  .addEventListener("click", async function () {
+    let logoutRequest =
+      "http://localhost:8080/project3-backend/rest/users/logout";
 
-  let logoutRequest = "http://localhost:8080/project3-backend/rest/users/logout";
-    
-    try {   
-        const response = await fetch(logoutRequest, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/JSON',
-                'Accept': '*/*',
-            }, 
-        });
-        if (response.ok) {
-            
-          localStorage.removeItem("username");
-          localStorage.removeItem("password");
+    try {
+      const response = await fetch(logoutRequest, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/JSON",
+          Accept: "*/*",
+        },
+      });
+      if (response.ok) {
+        localStorage.removeItem("username");
+        localStorage.removeItem("password");
 
-          window.location.href="index.html";
-
-        } 
+        window.location.href = "index.html";
+      }
     } catch (error) {
-        console.error('Error:', error);
-        alert("Something went wrong");
+      console.error("Error:", error);
+      alert("Something went wrong");
     }
-})
+  });
+
+async function getPhotoUrl() {
+  const response = await fetch(
+    "http://localhost:8080/project3-backend/rest/users/userByToken",
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "*/*",
+        token: sessionStorage.getItem("token"),
+      },
+    }
+  );
+
+  if (response.ok) {
+    const user = await response.json();
+    console.log(user);
+    console.log(user.photoURL);
+    document.getElementById("profile-pic").src = user.photoURL;
+  } else if (response.stateId === 401) {
+    alert("Invalid credentials");
+  } else if (response.stateId === 404) {
+    alert("teste 404");
+  }
+}

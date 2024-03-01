@@ -1554,3 +1554,24 @@ input[readonly] {
   background-color: yellow;
   font-weight: bold;
 }
+
+.comment-container {
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-bottom: 10px;
+  background-color: #f5f5f5;
+  cursor: pointer;
+}
+
+.comment-container:hover {
+  background-color: #e0e0e0;
+}
+
+.comment-container i {
+  font-style: italic;
+  margin-right: 5px;
+}
+
+.comment-container b {
+  font-weight: bold;
+}
