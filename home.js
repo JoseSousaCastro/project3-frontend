@@ -53,7 +53,7 @@ function cleanAllTaskFields() {
   // Limpar os input fields depois de adicionar a task
   document.getElementById("taskName").value = "";
   document.getElementById("taskDescription").value = "";
-  document.getElementById("taskCategory").value = "";
+  document.getElementById("dropdown-task-categories").value = "";
   document.getElementById("task-startDate").value = "";
   document.getElementById("task-limitDate").value = "";
   removeSelectedPriorityButton();
@@ -233,10 +233,10 @@ document.getElementById("addTask").addEventListener("click", function () {
 
   let title = document.getElementById("taskName").value.trim();
   let description = document.getElementById("taskDescription").value.trim();
-  let category = document.getElementById("taskCategory").value.trim();
   let priority = taskPriority;
   let startDate = document.getElementById("task-startDate").value;
   let endDate = document.getElementById("task-limitDate").value;
+  let category = document.getElementById("dropdown-task-categories").value.trim();
 
   if (
     title === "" ||
