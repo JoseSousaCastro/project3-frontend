@@ -475,7 +475,7 @@ aside h3 {
 #label-startDate,
 #label-limitDate,
 #task-name-label,
-#task-description-label, 
+#task-description-label,
 #task-categories-label,
 #choose-user-label,
 #choose-category-label {
@@ -1188,7 +1188,6 @@ aside h3 {
 }
 #dropdown-task-categories {
   margin-top: 5px;
-
 }
 
 #dropdown-users {
@@ -1549,4 +1548,9 @@ body.modal-category-open {
 input[readonly] {
   background-color: #f0f0f0;
   color: #888;
+}
+
+.product-owner-highlight {
+  background-color: yellow;
+  font-weight: bold;
 }
