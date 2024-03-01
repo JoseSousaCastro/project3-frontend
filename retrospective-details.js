@@ -41,7 +41,7 @@ function getRetrospectiveIdFromURL() {
 }
 
 
-async function fillUsersDropdown(usernameValue, passwordValue) {
+async function fillUsersDropdown() {
   const dropdownUsers = document.getElementById('dropdown-users');
 
   // Adicionar a opção padrão
@@ -54,7 +54,7 @@ async function fillUsersDropdown(usernameValue, passwordValue) {
   dropdownUsers.appendChild(defaultOption);
 
   // Obter usuários do backend
-  const usersEndpoint = 'http://localhost:8080/jl_jc_pd_project2_war_exploded/rest/users/all';
+  const usersEndpoint = 'http://localhost:8080/project3-backend/rest/users/checkUsers';
 
   try {
     const response = await fetch(usersEndpoint, {
@@ -62,8 +62,7 @@ async function fillUsersDropdown(usernameValue, passwordValue) {
       headers: {
         'Content-Type': 'application/json',
         'Accept': '*/*',
-        'username': usernameValue,
-        'password': passwordValue
+        token: sessionStorage.getItem("token")
       },
     });
 
@@ -92,7 +91,7 @@ async function getRetrospectiveComments(retrospectiveId) {
   const usernameValue = localStorage.getItem('username');
   const passwordValue = localStorage.getItem('password');
 
-  const retrospectiveCommentsEndpoint = `http://localhost:8080/jl_jc_pd_project2_war_exploded/rest/retrospective/${retrospectiveId}/allComments`;
+  const retrospectiveCommentsEndpoint = `http://localhost:8080/project3-backend/rest/retrospective/${retrospectiveId}/allComments`;
   
   try {
     const response = await fetch(retrospectiveCommentsEndpoint, {
@@ -100,8 +99,7 @@ async function getRetrospectiveComments(retrospectiveId) {
       headers: {
         'Content-Type': 'application/json',
         'Accept': '*/*',
-        'username': usernameValue,
-        'password': passwordValue
+        token: sessionStorage.getItem("token")
       },
     });
 
@@ -121,7 +119,7 @@ async function getRetrospectiveComments(retrospectiveId) {
 }
 
 async function getRetrospectiveDetails(usernameValue, passwordValue, retrospectiveId) {
-  const retrospectiveEndpoint = `http://localhost:8080/jl_jc_pd_project2_war_exploded/rest/retrospective/${retrospectiveId}`;
+  const retrospectiveEndpoint = `http://localhost:8080/project3-backend/rest/retrospective/${retrospectiveId}`;
 
   try {
     const response = await fetch(retrospectiveEndpoint, {
@@ -129,8 +127,7 @@ async function getRetrospectiveDetails(usernameValue, passwordValue, retrospecti
       headers: {
         'Content-Type': 'application/json',
         'Accept': '*/*',
-        'username': usernameValue,
-        'password': passwordValue
+        token: sessionStorage.getItem("token")
       },
     });
 
@@ -159,7 +156,7 @@ async function getRetrospectiveDetails(usernameValue, passwordValue, retrospecti
 
 async function getFirstName(usernameValue, passwordValue) {
 
-  let firstNameRequest = "http://localhost:8080/jl_jc_pd_project2_war_exploded/rest/users/getFirstName";
+  let firstNameRequest = "http://localhost:8080/project3-backend/rest/users/getFirstName";
     
     try {
         const response = await fetch(firstNameRequest, {
@@ -167,8 +164,7 @@ async function getFirstName(usernameValue, passwordValue) {
             headers: {
                 'Content-Type': 'application/JSON',
                 'Accept': '*/*',
-                username: usernameValue,
-                password: passwordValue
+                token: sessionStorage.getItem("token")
             },    
         });
 
@@ -190,7 +186,7 @@ async function getFirstName(usernameValue, passwordValue) {
   async function getPhotoUrl(usernameValue, passwordValue) {
 
   
-    let photoUrlRequest = "http://localhost:8080/jl_jc_pd_project2_war_exploded/rest/users/getPhotoUrl";
+    let photoUrlRequest = "http://localhost:8080/project3-backend/rest/users/getPhotoUrl";
       
       try {
           const response = await fetch(photoUrlRequest, {
@@ -198,8 +194,7 @@ async function getFirstName(usernameValue, passwordValue) {
               headers: {
                   'Content-Type': 'application/JSON',
                   'Accept': '*/*',
-                  username: usernameValue,
-                  password: passwordValue
+                  token: sessionStorage.getItem("token")
               },    
           });
   
@@ -259,9 +254,6 @@ function parseCommentIdToString (commentStatus) {
 document.getElementById('addCommentBTN').addEventListener('click', async function(event) {
   event.preventDefault();
 
-  const usernameValue = localStorage.getItem('username');
-  const passwordValue = localStorage.getItem('password');
-
   const commentDescription = document.getElementById('commentDescription-retro').value;
   const commentCategory = document.getElementById('dropdown-categories').value;
 
@@ -273,7 +265,7 @@ document.getElementById('addCommentBTN').addEventListener('click', async functio
     document.getElementById('warningMessage2').innerText ='';
     const comment = createComment(commentDescription, commentCategory);
     const retrospectiveId = getRetrospectiveIdFromURL();
-    const retrospectiveCommentsEndpoint = `http://localhost:8080/jl_jc_pd_project2_war_exploded/rest/retrospective/${retrospectiveId}/addComment`;
+    const retrospectiveCommentsEndpoint = `http://localhost:8080/project3-backend/rest/retrospective/${retrospectiveId}/addComment`;
 
     try {
       const response = await fetch(retrospectiveCommentsEndpoint, {
@@ -281,8 +273,7 @@ document.getElementById('addCommentBTN').addEventListener('click', async functio
         headers: {
           'Content-Type': 'application/json',
           'Accept': '*/*',
-          'username': usernameValue,
-          'password': passwordValue
+          token: sessionStorage.getItem("token")
         },
         body: JSON.stringify(comment)
       });
@@ -292,7 +283,7 @@ document.getElementById('addCommentBTN').addEventListener('click', async functio
         removeAllCommentsElements();
 
         //loadComments();
-        addCommentToPanel(commentCategory, commentDescription, usernameValue);
+        addCommentToPanel(commentCategory, commentDescription, usernameValue); // substituir o usernameValue pelo user do token
 
         cleanAllCommentFields();
         //createCommentElement(comment);
@@ -312,7 +303,7 @@ document.getElementById('addCommentBTN').addEventListener('click', async functio
 
 
 
-function addAllCommentsToPanel(commentsArray) {
+function addAllCommentsToPanel(commentsArray) { // o usernmae tem de ser substituido pelo user do token
   commentsArray.forEach((comment) => {
 const commentCategory = comment.commentStatus;
 const commentDescription = comment.description;
@@ -323,7 +314,7 @@ addCommentToPanel(commentCategory, commentDescription, commentUser);
 
 
 function addCommentToPanel(commentCategory, commentDescription) {
-  const commentUser = localStorage.getItem('username');
+  const commentUser = localStorage.getItem('username'); // substituir pelo user do token
 
   const panelStrengths = document.getElementById('strengths');
   const panelChallenges = document.getElementById('challenges');
@@ -341,11 +332,11 @@ function addCommentToPanel(commentCategory, commentDescription) {
 }
 
 
-async function getUserByUsername(username) {
+async function getUserByUsername(username) { // rever esta função para usar o token
   const usernameValue = localStorage.getItem('username');
   const passwordValue = localStorage.getItem('password');
 
-  const endpoint = `http://localhost:8080/jl_jc_pd_project2_war_exploded/rest/users/${username}`;
+  const endpoint = `http://localhost:8080/project3-backend/rest/users/${username}`;
   try {
     const response = await fetch(endpoint, {
       method: 'GET',
@@ -387,7 +378,7 @@ function cleanAllCommentFields() {
   //LOGOUT 
 document.getElementById("logout-button-header").addEventListener('click', async function() {
 
-  let logoutRequest = "http://localhost:8080/jl_jc_pd_project2_war_exploded/rest/users/logout";
+  let logoutRequest = "http://localhost:8080/project3-backend/rest/users/logout";
     
     try {   
         const response = await fetch(logoutRequest, {

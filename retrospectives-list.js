@@ -7,12 +7,7 @@ window.onload = function() {
 };
   
 
-function getValuesFromLocalStorage() {
-  const usernameValue = localStorage.getItem('username');
-  const passwordValue = localStorage.getItem('password');
-  const userValues = [usernameValue, passwordValue];     
-  return userValues;
-}
+
 
 function cleanRetroFields() {
   document.getElementById('warningMessage2').innerText = '';
@@ -20,9 +15,9 @@ function cleanRetroFields() {
   document.getElementById('retroDate').value = '';
 }
 
-  async function getFirstName(usernameValue, passwordValue) {
+  async function getFirstName() {
   
-    let firstNameRequest = "http://localhost:8080/jl_jc_pd_project2_war_exploded/rest/users/getFirstName";
+    let firstNameRequest = "http://localhost:8080/project3-backend/rest/users/getFirstName";
       
       try {
           const response = await fetch(firstNameRequest, {
@@ -30,8 +25,7 @@ function cleanRetroFields() {
               headers: {
                   'Content-Type': 'application/JSON',
                   'Accept': '*/*',
-                  username: usernameValue,
-                  password: passwordValue
+                  token: sessionStorage.getItem("token")
               },    
           });
   
@@ -51,9 +45,9 @@ function cleanRetroFields() {
       }
   }
   
-  async function getPhotoUrl(usernameValue, passwordValue) {
+  async function getPhotoUrl() {
   
-    let photoUrlRequest = "http://localhost:8080/jl_jc_pd_project2_war_exploded/rest/users/getPhotoUrl";
+    let photoUrlRequest = "http://localhost:8080/project3-backend/rest/users/getPhotoUrl";
       
       try {
           const response = await fetch(photoUrlRequest, {
@@ -61,8 +55,7 @@ function cleanRetroFields() {
               headers: {
                   'Content-Type': 'application/JSON',
                   'Accept': '*/*',
-                  username: usernameValue,
-                  password: passwordValue
+                  token: sessionStorage.getItem("token")
               },    
           });
   
@@ -83,9 +76,9 @@ function cleanRetroFields() {
       }
   }
 
-  async function getRetroList(usernameValue, passwordValue) {
+  async function getRetroList() {
   console.log("getRetroList")
-    let retroListRequest = "http://localhost:8080/jl_jc_pd_project2_war_exploded/rest/retrospective/all";
+    let retroListRequest = "http://localhost:8080/project3-backend/rest/retrospective/all";
       
       try {
           const response = await fetch(retroListRequest, {
@@ -93,9 +86,8 @@ function cleanRetroFields() {
               headers: {
                   'Content-Type': 'application/JSON',
                   'Accept': '*/*',
-                  username: usernameValue,
-                  password: passwordValue
-              },    
+                  token: sessionStorage.getItem("token")                
+                },    
           });
   
           if (response.ok) {
@@ -121,22 +113,19 @@ function cleanRetroFields() {
 
 async function addRetrospectiveToBackend(title, date) {
   const retro = createRetro(title, date);
-  const usernameValue = getValuesFromLocalStorage()[0];
-  const passwordValue = getValuesFromLocalStorage()[1];
   try {
-    const response = await fetch("http://localhost:8080/jl_jc_pd_project2_war_exploded/rest/retrospective/add", {
+    const response = await fetch("http://localhost:8080/project3-backend/rest/retrospective/add", {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'Accept': '*/*',
-        'username': usernameValue,
-        'password': passwordValue
+        token: sessionStorage.getItem("token"),
       },
       body: JSON.stringify(retro)
     });
     if (response.ok) {
       removeAllRetroElements();
-      getRetroList(usernameValue, passwordValue);
+      getRetroList(usernameValue, passwordValue); // substituir por token
       cleanRetroFields();
     } else if (response.status === 401) {
       alert("Invalid credentials");
@@ -210,7 +199,7 @@ function createRetroTableBody(retro) {
 //LOGOUT 
 document.getElementById("logout-button-header").addEventListener('click', async function() {
 
-  let logoutRequest = "http://localhost:8080/jl_jc_pd_project2_war_exploded/rest/users/logout";
+  let logoutRequest = "http://localhost:8080/project3-backend/rest/users/logout";
     
     try {   
         const response = await fetch(logoutRequest, {
