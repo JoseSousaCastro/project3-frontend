@@ -5,6 +5,7 @@ window.onload = async function () {
     SCRUM_MASTER: "SCRUM_MASTER",
     PRODUCT_OWNER: "PRODUCT_OWNER",
   };
+  loadTasks();
 
   if (tokenValue === null) {
     window.location.href = "index.html";
@@ -92,7 +93,8 @@ panels.forEach((panel) => {
     const afterElement = getDragAfterElement(panel, e.clientY);
     const task = document.querySelector(".dragging");
 
-    const panelID = panel.id.toUpperCase;
+    const panelID = panel.id.toUpperCase();
+    console.log(panelID);
 
     if (afterElement == null) {
       panel.appendChild(task);
@@ -174,14 +176,7 @@ highButton.addEventListener("click", () =>
 );
 
 // Cria uma nova task com os dados inseridos pelo utilizador => Input para função newTask
-function createTask(
-  title,
-  description,
-  priority,
-  category,
-  startDate,
-  endDate
-) {
+function createTask(title, description, priority, category, startDate, endDate) {
   const task = {
     title: title,
     description: description,
@@ -206,10 +201,17 @@ async function newTask(task) {
       },
       body: JSON.stringify(task),
     });
+    if (!response.ok) {
+      // Handle error response
+      const errorMessage = await response.text();
+      throw new Error(errorMessage);
+    }
+
     const message = await response.text();
     alert(message);
   } catch (error) {
-    console.error("Error updating task status:", error);
+    console.error("Error updating task status:", error.message);
+    alert("An error occurred while adding the task: " + error.message);
   }
 }
 
@@ -249,31 +251,22 @@ document.getElementById("addTask").addEventListener("click", function () {
   let endDate = document.getElementById("task-limitDate").value;
   let category = document.getElementById("dropdown-task-categories").value.trim();
 
-
-  if (
-    title === "" ||
-    description === "" ||
-    category === "" ||
-    startDate === "" ||
-    endDate === "" ||
-    startDate > endDate ||
-    document.getElementsByClassName("selected").length === 0
-  ) {
-    document.getElementById("warningMessage2").innerText =
-      "Fill in all fields and define a priority";
+  if (title === "") {
+    document.getElementById("warningMessage2").innerText = "Please enter a title for the task.";
+  } else if (description === "") {
+    document.getElementById("warningMessage2").innerText = "Please enter a description for the task.";
+  } else if (category === "") {
+    document.getElementById("warningMessage2").innerText = "Please select a category for the task.";
+  } else if (startDate === "") {
+    document.getElementById("warningMessage2").innerText = "Please select a start date for the task.";
+  } else if (endDate === "") {
+    document.getElementById("warningMessage2").innerText = "Please select an end date for the task.";
+  } else if (startDate > endDate) {
+    document.getElementById("warningMessage2").innerText = "End date must be after start date.";
+  } else if (document.getElementsByClassName("selected").length === 0) {
+    document.getElementById("warningMessage2").innerText = "Please define a priority for the task.";
   } else {
-    let task = createTask(
-      title,
-      description,
-      category,
-      priority,
-      startDate,
-      endDate
-    );
-
-    console.log("prd " + task.priority);
- 
-
+    let task = createTask(title, description, priority, category, startDate, endDate);
     newTask(task).then(() => {
       removeAllTaskElements();
       loadTasks();
@@ -285,7 +278,7 @@ document.getElementById("addTask").addEventListener("click", function () {
 function createTaskElement(task) {
   const taskElement = document.createElement("div");
   taskElement.id = task.id;
-  task.priority = parsePriorityToString(task.priority);
+  task.priority = task.priority;
   taskElement.priority = task.priority;
   taskElement.classList.add("task");
   if (task.priority === "LOW_PRIORITY") {
@@ -354,7 +347,7 @@ document.addEventListener("click", function (event) {
   }
 });
 
-// Carrega as tarefas guardadas na local storage
+// Carrega todas as tarefas
 function loadTasks() {
   getAllTasks()
     .then((tasksArray) => {
@@ -364,7 +357,7 @@ function loadTasks() {
           console.error("Task element not created for task:", task);
           return;
         }
-        task.stateId = task.stateId.toUpperCase();
+        task.stateId = task.state.toLowerCase();
         const panel = document.getElementById(task.stateId);
         if (!panel) {
           console.error("Panel not found for stateId:", task.stateId);

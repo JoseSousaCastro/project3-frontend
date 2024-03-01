@@ -30,7 +30,7 @@
           <li id="users-infO">
             <a href="task-category.html" id="categoryMenu">Task Categories</a>
           </li>
-          <li id="users-infO">
+          <li id="recycle-info">
             <a href="task-recycle.html" id="recycleMenu">Task Recycle Bin</a>
           </li>
         </ul>
@@ -60,21 +60,10 @@
       <aside>
         <div class="add-task-container">
           <h3 id="addTask-h3">Add task</h3>
-          <label id="task-name-label">Title</label>
-          <input
-            type="text"
-            id="taskName"
-            placeholder="required"
-            maxlength="19"
-          />
-          <label id="task-description-label">Description</label>
+          <label class="labels-task-name" id="task-name-label">Title</label>
+          <input type="text" id="taskName" placeholder="required" maxlength="19"/>
+          <label class="labels-task-description" id="task-description-label">Description</label>
           <textarea id="taskDescription" placeholder="required"></textarea>
-          <input
-            type="text"
-            id="taskCategory"
-            placeholder="Category (required)"
-            maxlength="19"
-          />
           <div class="priority-buttons-home">
             <button class="priority-button-home low" id="low-button-home">
               Low
@@ -107,7 +96,7 @@
         <div class="titulo-main">
           <h2 class="main-home">To do</h2>
           <div class="panel" id="todo"></div>
-        </div>
+          </div>
         <div class="titulo-main">
           <h2 class="main-home">Doing</h2>
           <div class="panel" id="doing"></div>
