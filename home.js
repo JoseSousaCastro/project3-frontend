@@ -5,6 +5,7 @@ window.onload = async function () {
     SCRUM_MASTER: "SCRUM_MASTER",
     PRODUCT_OWNER: "PRODUCT_OWNER",
   };
+  loadTasks();
 
   if (tokenValue === null) {
     window.location.href = "index.html";
@@ -80,7 +81,8 @@ panels.forEach((panel) => {
     const afterElement = getDragAfterElement(panel, e.clientY);
     const task = document.querySelector(".dragging");
 
-    const panelID = panel.id.toUpperCase;
+    const panelID = panel.id.toUpperCase();
+    console.log(panelID);
 
     if (afterElement == null) {
       panel.appendChild(task);
@@ -162,14 +164,7 @@ highButton.addEventListener("click", () =>
 );
 
 // Cria uma nova task com os dados inseridos pelo utilizador => Input para função newTask
-function createTask(
-  title,
-  description,
-  priority,
-  category,
-  startDate,
-  endDate
-) {
+function createTask(title, description, priority, category, startDate, endDate) {
   const task = {
     title: title,
     description: description,
@@ -250,18 +245,7 @@ document.getElementById("addTask").addEventListener("click", function () {
     document.getElementById("warningMessage2").innerText =
       "Fill in all fields and define a priority";
   } else {
-    let task = createTask(
-      title,
-      description,
-      category,
-      priority,
-      startDate,
-      endDate
-    );
-
-    console.log("prd " + task.priority);
- 
-
+    let task = createTask(title, description, priority, category, startDate, endDate);
     newTask(task).then(() => {
       removeAllTaskElements();
       loadTasks();
@@ -273,7 +257,7 @@ document.getElementById("addTask").addEventListener("click", function () {
 function createTaskElement(task) {
   const taskElement = document.createElement("div");
   taskElement.id = task.id;
-  task.priority = parsePriorityToString(task.priority);
+  task.priority = task.priority;
   taskElement.priority = task.priority;
   taskElement.classList.add("task");
   if (task.priority === "LOW_PRIORITY") {
@@ -342,7 +326,7 @@ document.addEventListener("click", function (event) {
   }
 });
 
-// Carrega as tarefas guardadas na local storage
+// Carrega todas as tarefas
 function loadTasks() {
   getAllTasks()
     .then((tasksArray) => {
@@ -352,7 +336,7 @@ function loadTasks() {
           console.error("Task element not created for task:", task);
           return;
         }
-        task.stateId = task.stateId.toUpperCase();
+        task.stateId = task.state.toLowerCase();
         const panel = document.getElementById(task.stateId);
         if (!panel) {
           console.error("Panel not found for stateId:", task.stateId);
