@@ -229,14 +229,14 @@ async function getAllTasks() {
 
 // Event listener do botão add task para criar uma nova task e colocá-la no painel ToDo (default para qualquer task criada)
 document.getElementById("addTask").addEventListener("click", function () {
-  console.log("addTask button clicked");
-
+  
   let title = document.getElementById("taskName").value.trim();
   let description = document.getElementById("taskDescription").value.trim();
   let priority = taskPriority;
   let startDate = document.getElementById("task-startDate").value;
   let endDate = document.getElementById("task-limitDate").value;
   let category = document.getElementById("dropdown-task-categories").value.trim();
+
 
   if (
     title === "" ||
@@ -258,6 +258,9 @@ document.getElementById("addTask").addEventListener("click", function () {
       startDate,
       endDate
     );
+
+    console.log("prd " + task.priority);
+ 
 
     newTask(task).then(() => {
       removeAllTaskElements();
