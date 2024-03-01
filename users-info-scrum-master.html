@@ -25,20 +25,17 @@
           <li id="nav-retro">
             <a href="retrospectives-list.html">Retrospectives</a>
           </li>
-          <li id="users-info"><a href="all-users.html" >Users</a></li>
-          <li id="category-info"><a href="task-category.html" >Task Category</a></li>
-          <li id="recycle-info"><a href="task-recycle.html">Task Recycle Bin</a></li>
+          <li id="users-info"><a href="users-info-scrum-master.html" >Users</a></li>
         </ul>
       </nav>
       <div class="nav-menu-right">
-       
         <img
           src="multimedia/prf-img-placeholder.PNG"
           id="profile-pic"
           draggable="false"
         />
-        <label id="first-name"> firstName </label>
         <a href="edit-profile.html" id="first-name-label" draggable="false"></a>
+        <label id="first-name"> firstName </label>
         <button
           class="logout-button"
           id="logout-button-header"
@@ -52,10 +49,7 @@
     <div class="container">
       <!--Container para o aside e o main-->
       <aside>
-        <div style="text-align: center; margin-bottom: 20px;">
-          <img src="images/user_png.png" alt="Imagem" style="width: 100px; height: 100px;">
-        </div>
-        <button onclick="addNewUser()" style="font-size: 18px; padding: 10px 20px;">Add New User</button>
+        
       </aside>
       
       <main>
@@ -65,7 +59,6 @@
               <tr>
                 <th class="table-header-users">Username</th>
                 <th class="table-header-users">Role</th>
-                <th class="table-header-users">Deleted</th>
               </tr>
             </thead>
             <tbody class="retros-table-body"></tbody>
@@ -83,26 +76,14 @@
     </footer>
     <div id="userDetailsModal" class="modal-users">
       <div class="modal-content-users">
-        <span class="close" onclick="closeUserDetailsModal(); disableEdit()">&times;</span>
+        <span class="close" onclick="closeUserDetailsModal()">&times;</span>
         <div id="userDetails">
           <label for="usernameInput">Username:</label>
           <input type="text" id="usernameInput" class="text-center" readonly>
     
           <label for="roleInput">Role:</label>
-        <select id="roleInput" class="text-center" disabled>
-    <option value="DEVELOPER" selected>DEVELOPER</option>
-  <option value="SCRUM_MASTER">SCRUM_MASTER</option>
-  <option value="PRODUCT_OWNER">PRODUCT_OWNER</option>
-</select>
-
-<label for="deletedInput">Deleted:</label>
-<select id="deletedInput" class="text-center" disabled>
-  <option value="false" selected >No deleted</option>
-  <option value="true">Deleted</option>
-</select>
-
-    
-          <label for="firstNameInput">First Name:</label>
+          <input type="text" id="roleInput" class="text-center" readonly>
+<label for="firstNameInput">First Name:</label>
           <input type="text" id="firstNameInput" class="text-center" readonly>
     
           <label for="lastNameInput">Last Name:</label>
@@ -113,51 +94,7 @@
     
           <label for="phoneInput">Phone:</label>
           <input type="text" id="phoneInput" class="text-center" readonly>
-        </div>
-        <button onclick="enableEdit()">Edit</button>
-        <button onclick="disableEdit(); editProfile(); closeModal()">Save</button>
       </div>
-    </div>
-    <div id="addUserModal" class="modal">
-      <div class="modal-content">
-        <span class="close" onclick="closeAddUserModal()">&times;</span>
-        
-        <label for="username">Username:</label>
-        <input type="text" id="username" required>
-    
-        <label for="password">Password:</label>
-        <input type="password" id="password" required>
-    
-        <label for="email">Email:</label>
-        <input type="email" id="email" required>
-    
-        <label for="phone">Phone:</label>
-        <input type="tel" id="phone" required>
-    
-        <label for="firstName">First Name:</label>
-        <input type="text" id="firstName" required>
-    
-        <label for="lastName">Last Name:</label>
-        <input type="text" id="lastName" required>
-    
-        <label for="role">Role:</label>
-        <select id="role" required>
-          <option value="DEVELOPER" selected>DEVELOPER</option>
-          <option value="SCRUM_MASTER">SCRUM_MASTER</option>
-          <option value="PRODUCT_OWNER">PRODUCT_OWNER</option>
-        </select>
-    
-        
-    
-        <label for="photo">Photo URL:</label>
-        <input type="text" id="photo" required>
-    
-        <button onclick="submitNewUser()">Add User</button>
-      </div>
-    </div>
-    
-    
-    
-    <script src="all-users.js" defer></script>
+    <script src="users-info-scrum-master.js" defer></script>
   </body>
 </html>
