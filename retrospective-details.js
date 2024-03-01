@@ -224,22 +224,62 @@ async function addCommentToPanel(
   commentDescription,
   commentIdProfile
 ) {
-  console.log("HERE");
-  console.log(commentCategory);
-  console.log(commentDescription);
-
   const panelStrengths = document.getElementById("strengths");
   const panelChallenges = document.getElementById("challenges");
   const panelImprovements = document.getElementById("improvements");
 
   const user = await getFirstName();
 
+  const createCommentContainer = (category, description) => {
+    const container = document.createElement("div");
+    container.classList.add("comment-container");
+    container.innerHTML = `${description} <i>by</i> <b>${commentIdProfile}</b>`;
+    container.addEventListener("dblclick", () => {
+      openEditDeleteModal(category, description);
+    });
+    return container;
+  };
+
   if (commentCategory === "STRENGTHS") {
-    panelStrengths.innerHTML += `<div>${commentDescription} <i>by</i> <b>${commentIdProfile}</b></div>`;
+    panelStrengths.appendChild(
+      createCommentContainer(commentCategory, commentDescription)
+    );
   } else if (commentCategory === "CHALLENGES") {
-    panelChallenges.innerHTML += `<div>${commentDescription} <i>by</i> <b>${commentIdProfile}</b></div>`;
-  } else if (commentCategory === "IMPROVEMENT") {
-    panelImprovements.innerHTML += `<div>${commentDescription} <i>by</i> <b>${commentIdProfile}</b></div>`;
+    panelChallenges.appendChild(
+      createCommentContainer(commentCategory, commentDescription)
+    );
+  } else if (commentCategory === "IMPROVEMENTS") {
+    panelImprovements.appendChild(
+      createCommentContainer(commentCategory, commentDescription)
+    );
+  }
+}
+
+function openEditDeleteModal(category, description) {
+  const modal = document.createElement("div");
+  modal.classList.add("modal");
+
+  const content = document.createElement("div");
+  content.classList.add("modal-content");
+
+  content.innerHTML = `
+    <p>${category}</p>
+    <p>${description}</p>
+    
+    <button onclick="editComment('${category}', '${description}')">Editar</button>
+    <button onclick="deleteComment('${category}', '${description}')">Apagar</button>
+    <button class="close-modal-btn" onclick="closeModal()">Fechar</button>
+  `;
+
+  modal.appendChild(content);
+  document.body.appendChild(modal);
+  modal.style.display = "block";
+}
+
+function closeModal() {
+  const modal = document.querySelector(".modal");
+  if (modal) {
+    modal.style.display = "none";
   }
 }
 
