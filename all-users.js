@@ -279,3 +279,27 @@ async function submitNewUser() {
     }
   }
 }
+document
+  .getElementById("logout-button-header")
+  .addEventListener("click", async function () {
+    let logoutRequest =
+      "http://localhost:8080/project3-backend/rest/users/logout";
+
+    try {
+      const response = await fetch(logoutRequest, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/JSON",
+          Accept: "*/*",
+          token: sessionStorage.getItem("token"),
+        },
+      });
+      if (response.ok) {
+        sessionStorage.removeItem("token");
+        window.location.href = "index.html";
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      alert("Something went wrong");
+    }
+  });

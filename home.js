@@ -10,9 +10,9 @@ window.onload = async function () {
     window.location.href = "index.html";
   } else {
     try {
-      getFirstName(usernameValue, passwordValue);
-      getPhotoUrl(usernameValue, passwordValue);
-      loadTasks();
+      getFirstName();
+      getPhotoUrl();
+      //loadTasks();
     } catch (error) {
       console.error("An error occurred:", error);
     }
@@ -37,14 +37,26 @@ window.onload = async function () {
   }
 
   console.log("Role from sessionStorage:", sessionStorage.getItem("role"));
-  if (
-    sessionStorage.getItem("role") === UserRole.DEVELOPER ||
-    sessionStorage.getItem("role") === UserRole.SCRUM_MASTER
-  ) {
-    console.log("Devia disabled");
-    document.getElementById("users-info").style.display = "none";
-  } else {
-    console.log("HERE");
+  const role = sessionStorage.getItem("role");
+
+  switch (role) {
+    case UserRole.DEVELOPER:
+      document.getElementById("users-info").style.display = "none";
+      document.getElementById("users-info-scrum-master").style.display = "none";
+      break;
+
+    case UserRole.SCRUM_MASTER:
+      document.getElementById("users-info").style.display = "none";
+      document.getElementById("first-name-label").style.display = "none";
+      break;
+
+    case UserRole.PRODUCT_OWNER:
+      document.getElementById("first-name-label").style.display = "none";
+      document.getElementById("users-info-scrum-master").style.display = "none";
+      break;
+
+    default:
+      break;
   }
 };
 
@@ -424,58 +436,46 @@ document
     }
   });
 
-async function getFirstName(usernameValue, passwordValue) {
-  let firstNameRequest =
-    "http://localhost:8080/jl_jc_pd_project2_war_exploded/rest/users/getFirstName";
-
-  try {
-    const response = await fetch(firstNameRequest, {
-      method: "GET",
+async function getFirstName() {
+  const response = await fetch(
+    "http://localhost:8080/project3-backend/rest/users/userByToken",
+    {
       headers: {
-        "Content-Type": "application/JSON",
+        "Content-Type": "application/json",
         Accept: "*/*",
-        username: usernameValue,
-        password: passwordValue,
+        token: sessionStorage.getItem("token"),
       },
-    });
-
-    if (response.ok) {
-      const data = await response.text();
-      document.getElementById("first-name-label").innerText = data;
-    } else if (!response.ok) {
-      alert("Invalid credentials");
     }
-  } catch (error) {
-    console.error("Error:", error);
-    alert("Something went wrong");
+  );
+
+  if (response.ok) {
+    const user = await response.json();
+    document.getElementById("first-name").innerText = user.firstName;
+  } else if (!response.ok) {
+    alert("Invalid credentials");
   }
 }
 
-async function getPhotoUrl(usernameValue, passwordValue) {
-  let photoUrlRequest =
-    "http://localhost:8080/jl_jc_pd_project2_war_exploded/rest/users/getPhotoUrl";
-
-  try {
-    const response = await fetch(photoUrlRequest, {
-      method: "GET",
+async function getPhotoUrl() {
+  const response = await fetch(
+    "http://localhost:8080/project3-backend/rest/users/userByToken",
+    {
       headers: {
-        "Content-Type": "application/JSON",
+        "Content-Type": "application/json",
         Accept: "*/*",
-        username: usernameValue,
-        password: passwordValue,
+        token: sessionStorage.getItem("token"),
       },
-    });
-
-    if (response.ok) {
-      const data = await response.text();
-      document.getElementById("profile-pic").src = data;
-    } else if (response.stateId === 401) {
-      alert("Invalid credentials");
-    } else if (response.stateId === 404) {
-      alert("teste 404");
     }
-  } catch (error) {
-    console.error("Error:", error);
-    alert("Something went wrong");
+  );
+
+  if (response.ok) {
+    const user = await response.json();
+    console.log(user);
+    console.log(user.photoURL);
+    document.getElementById("profile-pic").src = user.photoURL;
+  } else if (response.stateId === 401) {
+    alert("Invalid credentials");
+  } else if (response.stateId === 404) {
+    alert("teste 404");
   }
 }
