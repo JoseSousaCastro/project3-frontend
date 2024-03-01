@@ -42,7 +42,7 @@ async function updateTask() {
     category: document.getElementById("endDate-editTask").value,
          
   };
-  let firstNameRequest = `http://localhost:8080/proj3_vc_re_jc/rest/tasks/update`;
+  let firstNameRequest = `http://localhost:8080/project3-backend/rest/tasks/update`;
   try {
     const response = await fetch(
       firstNameRequest,
@@ -120,7 +120,7 @@ async function getPhotoUrl(usernameValue, passwordValue) {
 }
 
 async function getAllTasks() {
-  let getTasks = `http://localhost:8080/proj3_vc_re_jc/rest/tasks/all`;
+  let getTasks = `http://localhost:8080/project3-backend/rest/tasks/all`;
 
   try {
     const response = await fetch(getTasks, {
