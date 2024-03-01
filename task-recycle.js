@@ -40,13 +40,11 @@ document.addEventListener("DOMContentLoaded", async function () {
         const row = document.createElement("tr");
         // Criar célula para o id da categoria
         const iDCell = document.createElement("td");
-        iDCell.className = "clickable";
         iDCell.textContent = task.id;
         iDCell.className = "clickable text-center";
   
         // Criar célula para o nome da categoria
         const nameCell = document.createElement("td");
-        nameCell.className = "clickable";
         nameCell.textContent = task.title;
         nameCell.className = "clickable text-center";
       

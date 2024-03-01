@@ -43,7 +43,6 @@ function showCategoryList(categoriesList) {
   
       // Criar célula para o id da categoria
       const iDCell = document.createElement("td");
-      iDCell.className = "clickable";
       iDCell.textContent = category.id;
       iDCell.className = "clickable text-center";
 
