@@ -1,8 +1,6 @@
 window.onload = function () {
   try {
-    //getFirstName(usernameValue, passwordValue);
-    //getPhotoUrl(usernameValue, passwordValue);
-    //loadUserData(usernameValue, passwordValue);
+    getPhotoUrl();
     userByToken();
     //clearInputValues();
   } catch (error) {
@@ -154,3 +152,27 @@ async function save_edit() {
     }
   }
 }
+async function getPhotoUrl() {
+  const response = await fetch(
+    "http://localhost:8080/project3-backend/rest/users/userByToken",
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "*/*",
+        token: sessionStorage.getItem("token"),
+      },
+    }
+  );
+
+  if (response.ok) {
+    const user = await response.json();
+    console.log(user);
+    console.log(user.photoURL);
+    document.getElementById("profile-pic").src = user.photoURL;
+  } else if (response.stateId === 401) {
+    alert("Invalid credentials");
+  } else if (response.stateId === 404) {
+    alert("teste 404");
+  }
+}
+a;
