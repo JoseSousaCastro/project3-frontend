@@ -1,12 +1,6 @@
 window.onload = async function() {
    
-  const usernameValue = localStorage.getItem('username')
-  const passwordValue = localStorage.getItem('password')
 
-
-  console.log('window on load está a funcionar!')
-  getFirstName(usernameValue, passwordValue);
-  getPhotoUrl(usernameValue, passwordValue);
 
   // Obter o ID da retrospectiva da URL
   const urlParams = new URLSearchParams(window.location.search);
@@ -15,7 +9,7 @@ window.onload = async function() {
 
   if (retrospectiveId) {
     // Obter detalhes da retrospectiva e atualizar a página
-    getRetrospectiveDetails(usernameValue, passwordValue, retrospectiveId);
+    getRetrospectiveDetails(retrospectiveId);
   } else {
     console.error('ID da retrospectiva não encontrado na URL.');
   }
@@ -24,7 +18,7 @@ window.onload = async function() {
   addAllCommentsToPanel(arrayComments);
 
 
-  fillUsersDropdown(usernameValue, passwordValue);
+  fillUsersDropdown();
   
 };
 

@@ -1,7 +1,8 @@
 window.onload = function() {
    
-  const usernameValue = localStorage.getItem('username')
-  const passwordValue = localStorage.getItem('password')
+  getFirstName();
+  getPhotoUrl();
+  getRetroList();
 
   
 };
@@ -97,7 +98,7 @@ function cleanRetroFields() {
 
             data.forEach(retro => {
               createRetroTableBody(retro);
-              console.log(retro);
+              console.log(retro.eventId);
             });
           } else if (response.status === 401) {
             alert("Invalid credentials");
@@ -110,22 +111,33 @@ function cleanRetroFields() {
       }
 }
 
+function createRetro (title, date) {
+  let retro = {
+    title: title,
+    date: date
+  }
+  return retro;
+}
 
 async function addRetrospectiveToBackend(title, date) {
-  const retro = createRetro(title, date);
+  const retro = {
+    title: title,
+    schedulingDate: date
+  }
+
+  console.log(retro);
   try {
-    const response = await fetch("http://localhost:8080/project3-backend/rest/retrospective/add", {
+    const response = await fetch('http://localhost:8080/project3-backend/rest/retrospective/add', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Accept': '*/*',
         token: sessionStorage.getItem("token"),
       },
       body: JSON.stringify(retro)
     });
     if (response.ok) {
       removeAllRetroElements();
-      getRetroList(usernameValue, passwordValue); // substituir por token
+      getRetroList();
       cleanRetroFields();
     } else if (response.status === 401) {
       alert("Invalid credentials");
@@ -140,16 +152,10 @@ async function addRetrospectiveToBackend(title, date) {
 }
 
 
-function createRetro (title, date) {
-  let retro = {
-    title: title,
-    date: date
-  }
-  return retro;
-}
+
 
 document.getElementById("addRetroBTN").addEventListener("click", function() {
-  let date = document.getElementById('retroDate').value;
+  let date = document.getElementById('retroDate').value.toString();
   let title = document.getElementById('retroTitle').value.trim();
 
 if (date === '' || title === '') {
@@ -157,13 +163,11 @@ if (date === '' || title === '') {
 
   document.getElementById('warningMessage2').innerText = 'Please fill in all fields';
 } else {
-  let retro = createRetro(title, date);
 
-  addRetrospectiveToBackend(retro.title, retro.date).then(() => {
-
-})
+  addRetrospectiveToBackend(title, date);
 }
 });
+
 
 function removeAllRetroElements() {
   const retros = document.querySelectorAll('.retros-row');
@@ -180,7 +184,8 @@ function createRetroTableBody(retro) {
   dateCell.textContent = retro.date;
   let titleCell = document.createElement("td");
   let titleLink = document.createElement("a");
-  titleLink.href = `retrospective-details.html?id=${retro.id}`;
+  const retroId = retro.eventId;
+  titleLink.href = `retrospective-details.html?id=${retroId}`;
   titleLink.textContent = retro.title;
   titleLink.classList.add("retro-link");
   titleLink.setAttribute("data-retro-id", retro.id);
