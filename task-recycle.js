@@ -38,7 +38,6 @@ document.addEventListener("DOMContentLoaded", async function () {
     document.querySelector(".recycle-table-body").innerHTML = "";
     tasks.forEach((task) => {
         const row = document.createElement("tr");
-    
         // Criar célula para o id da categoria
         const iDCell = document.createElement("td");
         iDCell.className = "clickable";
@@ -48,7 +47,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         // Criar célula para o nome da categoria
         const nameCell = document.createElement("td");
         nameCell.className = "clickable";
-        nameCell.textContent = task.name;
+        nameCell.textContent = task.title;
         nameCell.className = "clickable text-center";
       
         // Adicionar as células à linha
@@ -83,9 +82,7 @@ document.addEventListener("DOMContentLoaded", async function () {
   }
   
   async function submitRestoreTask() {
-    const idRestore = {
-      id: document.getElementById("restoreId").value,
-    };
+    const idRestore = document.getElementById("restoreId").value;
   
     try {
       const response = await fetch(
@@ -96,7 +93,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             "Content-Type": "application/json",
             Accept: "*/*",
             token: sessionStorage.getItem("token"),
-            id: idRestore,
+            taskId: idRestore,
           },
         }
       );
@@ -127,10 +124,7 @@ document.addEventListener("DOMContentLoaded", async function () {
   }
   
   async function submitRemoveTask() {
-    const idRemove = {
-      id: document.getElementById("removeId").value,
-    };
-  
+    const idRemove = document.getElementById("removeId").value;
     try {
       const response = await fetch(
         "http://localhost:8080/project3-backend/rest/tasks/remove",
@@ -140,7 +134,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             "Content-Type": "application/json",
             Accept: "*/*",
             token: sessionStorage.getItem("token"),
-            id: idRemove,
+            taskId: idRemove,
           },
         }
       );
