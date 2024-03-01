@@ -82,19 +82,19 @@
      <div id="restoreTaskModal" class="modal">
       <div class="modal-content">
         <span class="close" onclick="closeRestoreTaskModal()">&times;</span>
-        <label for="restoreTask">Name:</label>
-        <input type="text" id="restoreTask" placeholder="Insert Id" required>   
-        <button onclick="submitRestoreTask()">Add</button>
+        <label for="restoreId">Name:</label>
+        <input type="text" id="restoreId" placeholder="Insert task Id" required>   
+        <button onclick="submitRestoreTask()">Restore</button>
       </div>
     </div>
-    <div id="removeCategoryModal" class="modal">
+    <div id="removeTaskModal" class="modal">
       <div class="modal-content">
-        <span class="close" onclick="closeRemoveCategoryModal()">&times;</span>
-        <label for="categoryId">Id:</label>
-        <input type="text" id="categoryId" placeholder="Insert task Id" required>   
-        <button onclick="submitRemoveCategory()">Remove</button>
+        <span class="close" onclick="closeRemoveTaskModal()">&times;</span>
+        <label for="removeId">Id:</label>
+        <input type="text" id="removeId" placeholder="Insert task Id" required>   
+        <button onclick="submitRemoveTask()">Remove</button>
       </div>
     </div>
-    <script src="task-category.js" defer></script>
+    <script src="task-recycle.js" defer></script>
   </body>
 </html>
