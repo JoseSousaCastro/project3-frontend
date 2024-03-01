@@ -211,7 +211,7 @@ function createUserData() {
     lastName: lastName,
     phone: phone,
     photoURL: photoURL,
-    role: 100,
+    role: 'DEVELOPER',
     deleted: deleted,
   };
 }

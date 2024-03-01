@@ -54,8 +54,8 @@ function cleanAllTaskFields() {
   document.getElementById("taskName").value = "";
   document.getElementById("taskDescription").value = "";
   document.getElementById("taskCategory").value = "";
-  document.getElementById("taskStartDate").value = "";
-  document.getElementById("taskEndDate").value = "";
+  document.getElementById("task-startDate").value = "";
+  document.getElementById("task-limitDate").value = "";
   removeSelectedPriorityButton();
   taskPriority = null;
 }
