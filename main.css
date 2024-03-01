@@ -341,7 +341,7 @@ header {
 /* Definições da barra lateral aside */
 aside {
   max-width: 300px;
-  height: 720px;
+  height: 800px;
   float: left;
   background-color: var(--light-grey);
   text-align: center;
@@ -550,7 +550,7 @@ main {
   width: calc(100% - 300px);
   padding-left: 30px;
   padding-right: 30px;
-  height: 720px;
+  height: 800px;
   background-color: var(--white);
   display: flex;
   justify-content: space-between;
