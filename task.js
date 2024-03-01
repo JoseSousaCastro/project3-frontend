@@ -1,5 +1,8 @@
 window.onload = async function () {
   const tokenValue = sessionStorage.getItem("token");
+  const idTask = sessionStorage.getItem("taskId");
+  showTask(idTask);
+
 
   if (tokenValue === null) {
     window.location.href = "index.html";
@@ -29,24 +32,20 @@ const highButton = document.getElementById("high-button");
 async function updateTask() {
 
   const priority = returnPriorityFromSelectedButton();
-  const stateId = returnStateIdFromSelectedButton();
 
   const task = {
     id: taskId,
     title: document.getElementById("title-task").value,
     description: document.getElementById("description-task").value,
-    category: document.getElementById("category-task").value,
+    startDate: document.getElementById("startDate-editTask").value,
+    endDate: document.getElementById("endDate-editTask").value,
     priority: priority,
-    stateId: stateId,
-    description: document.getElementById("startDate-editTask").value,
-    category: document.getElementById("endDate-editTask").value,
+    category: document.getElementById("category-task").value,   
          
   };
-  let firstNameRequest = `http://localhost:8080/project3-backend/rest/tasks/update`;
+  let updateSelectedTask = `http://localhost:8080/project3-backend/rest/tasks/update`;
   try {
-    const response = await fetch(
-      firstNameRequest,
-      {
+    const response = await fetch( updateSelectedTask,{
         method: "PUT",
         headers: {
           "Content-Type": "application/JSON",
@@ -61,7 +60,7 @@ async function updateTask() {
   } catch (error) {
     console.error("An error occurred:", error);
     alert("Something went wrong");
-    throw error; // Propagar o erro para ser tratado no catch do bloco que chamou a função
+    throw error;
   }
 }
 
@@ -141,25 +140,12 @@ async function getAllTasks() {
 async function showTask(taskId) {
   const task = await findTaskById(taskId);
   if (task) {
-    document.getElementById("title-task").textContent = task.title; // Colocar o título no input title
-    document.getElementById("description-task").textContent = task.description; // Colocar a descrição na text area
-    document.getElementById("category-task").textContent = task.category; // Colocar a descrição na text area
     document.getElementById("tasktitle").innerHTML = task.title; // Colocar o título no título da página
+    document.getElementById("titulo-task").textContent = task.title; // Colocar o título no input title
+    document.getElementById("descricao-task").textContent = task.description; // Colocar a descrição na text area
+    document.getElementById("categoria-task").textContent = task.category; // Colocar a descrição na text area
     document.getElementById("startDate-editTask").value = task.startDate;
-    document.getElementById("endDate-editTask").value = task.limitDate;
-
-    let taskStateId = task.stateId;
-  
-    if (taskStateId == TODO) {
-      todoButton.classList.add("selected");
-      setStatusButtonSelected(todoButton);
-    } else if (taskStateId == DOING) {
-      doingButton.classList.add("selected");
-      setStatusButtonSelected(doingButton);
-    } else if (taskStateId == DONE) {
-      doneButton.classList.add("selected");
-      setStatusButtonSelected(doneButton);
-    }
+    document.getElementById("endDate-editTask").value = task.endDate;
 
     let taskPriority = task.priority;
 
@@ -175,16 +161,10 @@ async function showTask(taskId) {
     }
   } else {
     alert("Task not found");
-    sessionStorage.clear();
+    // sessionStorage.clear();
     window.location.href = "home.html";
   }
 }
-
-
-// Event listeners para os botões status
-todoButton.addEventListener("click", () => setStatusButtonSelected(todoButton));
-doingButton.addEventListener("click", () => setStatusButtonSelected(doingButton));
-doneButton.addEventListener("click", () => setStatusButtonSelected(doneButton));
 
 // Event listeners para os botões priority
 lowButton.addEventListener("click", () => setPriorityButtonSelected(lowButton));
@@ -206,19 +186,12 @@ cancelbutton.addEventListener("click", () => {
   // Event listener para o botão de confirmação
   const confirmButton = document.getElementById("confirm-cancel-button");
   confirmButton.addEventListener("click", () => {
-    sessionStorage.clear();
+    //sessionStorage.clear();
     window.location.href = "home.html";
   });
 
   cancelModal.style.display = "grid";
 });
-
-// Função para definir o estado no grupo de botões status
-function setStatusButtonSelected(button) {
-  const buttons = [todoButton, doingButton, doneButton];
-  buttons.forEach((btn) => btn.classList.remove("selected"));
-  button.classList.add("selected");
-}
 
 // Função para definir o estado no grupo de botões priority
 function setPriorityButtonSelected(button) {
@@ -231,6 +204,7 @@ async function findTaskById(taskId) {
   try {
     const tasksArray = await getAllTasks();
     const task = tasksArray.find((task_1) => task_1.id === taskId);
+    console.log(task.title)
     return task;
   } catch (error) {
     alert("Something went wrong while loading tasks");
@@ -261,18 +235,6 @@ function returnPriorityFromSelectedButton() {
   return priorityInt;
 } 
 
-function returnStateIdFromSelectedButton() {
-  const buttons = [todoButton, doingButton, doneButton];
-  let selectedButton = null;
-  buttons.forEach((btn) => {
-    if (btn.classList.contains("selected")) {
-      selectedButton = btn;
-    }
-  });
-  const stateIdInt = selectedButton.innerText.toUpperCase();
-  return stateIdInt;
-}
-
 // Event listener para o botão save
 const savebutton = document.getElementById("save-button");
 savebutton.addEventListener("click", async () => {
@@ -280,7 +242,6 @@ savebutton.addEventListener("click", async () => {
   try {
       await updateTask();
       alert("Task updated successfully");
-      sessionStorage.clear();
       window.location.href = "home.html";
    
   } catch (error) {

@@ -843,7 +843,8 @@ match ao arredondamento do painel (home.html) */
   text-transform: uppercase;
 }
 .main-task #titulo-task,
-.main-task #descricao-task {
+.main-task #descricao-task,
+.main-task #categoria-task {
   margin-left: 80px;
   width: 500px;
   padding: 20px;
@@ -856,7 +857,9 @@ match ao arredondamento do painel (home.html) */
   border-width: 2px;
   font-family: Arial, Helvetica, sans-serif;
 }
-.main-task #titulo-task {
+.main-task #titulo-task,
+.main-task #descricao-task,
+.main-task #categoria-task {
   margin-top: 14px;
   margin-bottom: 20px;
   height: 25px;
@@ -865,11 +868,7 @@ match ao arredondamento do painel (home.html) */
   font-size: 20px;
   font-weight: 500;
 }
-.main-task #descricao-task {
-  height: 260px;
-  font-size: 14px;
-  line-height: 1.4;
-}
+
 .text-task {
   scrollbar-color: var(--green2) var(--white);
 }
