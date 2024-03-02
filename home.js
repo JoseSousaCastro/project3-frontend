@@ -37,7 +37,7 @@ window.onload = async function () {
     alert("role not found");
   }
 
-  console.log("Role from sessionStorage:", sessionStorage.getItem("role"));
+  console.log("Role from sessionStorage: ", sessionStorage.getItem("role"));
   const role = sessionStorage.getItem("role");
 
   switch (role) {
@@ -66,9 +66,9 @@ function cleanAllTaskFields() {
   // Limpar os input fields depois de adicionar a task
   document.getElementById("taskName").value = "";
   document.getElementById("taskDescription").value = "";
-  document.getElementById("dropdown-task-categories").value = "";
   document.getElementById("task-startDate").value = "";
   document.getElementById("task-limitDate").value = "";
+  document.getElementById("dropdown-task-categories").value = "";
   removeSelectedPriorityButton();
   taskPriority = null;
 }
@@ -92,22 +92,22 @@ panels.forEach((panel) => {
     e.preventDefault();
     const afterElement = getDragAfterElement(panel, e.clientY);
     const task = document.querySelector(".dragging");
-
     const panelID = panel.id.toUpperCase();
-    console.log(panelID);
-
+    
     if (afterElement == null) {
       panel.appendChild(task);
-      task.stateId = panelID;
+      task.state = panelID;
     } else {
       panel.insertBefore(task, afterElement);
-      task.stateId = panelID;
+      task.state = panelID;
     }
-    updateTaskStatus(sessionStorage.getItem("token"), task.id, panelID);
+    updateTaskStatus(task.id, panelID);
   });
 });
 
 async function updateTaskStatus(taskId, newStatus) {
+  const state = {state: newStatus};
+  
   const updateTaskUrl = `http://localhost:8080/project3-backend/rest/tasks/status`;
   try {
     const response = await fetch(updateTaskUrl, {
@@ -118,7 +118,7 @@ async function updateTaskStatus(taskId, newStatus) {
         token: sessionStorage.getItem("token"),
         taskId: taskId,
       },
-      body: JSON.stringify(newStatus),
+      body: JSON.stringify(state),
     });
     const message = await response.text();
     console.log(message);
@@ -163,7 +163,6 @@ function removeSelectedPriorityButton() {
   const buttons = [lowButton, mediumButton, highButton];
   buttons.forEach((btn) => btn.classList.remove("selected"));
 }
-
  
 getCategories().then(categories => {
   // Get the select element
@@ -212,8 +211,6 @@ async function getCategories() {
     throw error; // Re-throw the error to handle it in the caller function if needed
   }
 }
-
-
 
 // Event listeners para os botões priority
 lowButton.addEventListener("click", () =>
@@ -514,7 +511,6 @@ async function getPhotoUrl() {
 
   if (response.ok) {
     const user = await response.json();
-    console.log(user);
     console.log(user.photoURL);
     document.getElementById("profile-pic").src = user.photoURL;
   } else if (response.stateId === 401) {
