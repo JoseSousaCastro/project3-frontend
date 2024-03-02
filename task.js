@@ -175,6 +175,7 @@ cancelbutton.addEventListener("click", () => {
   // Event listener para o botão de confirmação
   const confirmButton = document.getElementById("confirm-cancel-button");
   confirmButton.addEventListener("click", () => {
+    sessionStorage.setItem("taskId", "");
     window.location.href = "home.html";
   });
 

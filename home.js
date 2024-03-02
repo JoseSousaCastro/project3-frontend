@@ -60,6 +60,38 @@ window.onload = async function () {
   }
 };
 
+// Function to load all tasks
+async function loadTasks() {
+  try {
+    removeAllTaskElements();
+    const tasks = await getAllTasks();
+    displayTasks(tasks);
+  } catch (error) {
+    console.error("Error:", error);
+    alert("No tasks found");
+  }
+}
+
+// Function to display tasks on the UI
+function displayTasks(tasksArray) {
+  tasksArray.forEach((task) => {
+    const taskElement = createTaskElement(task);
+    if (!taskElement) {
+      console.error("Task element not created for task:", task);
+      return;
+    }
+    task.stateId = task.state.toLowerCase();
+    const panel = document.getElementById(task.stateId);
+    if (!panel) {
+      console.error("Panel not found for stateId:", task.stateId);
+      return;
+    }
+    panel.appendChild(taskElement);
+    attachDragAndDropListeners(taskElement);
+  });
+}
+
+
 function cleanAllTaskFields() {
   document.getElementById("warningMessage2").innerText = "";
   // Limpar os input fields depois de adicionar a task
@@ -169,7 +201,7 @@ getCategories().then(categories => {
 
   // Add a placeholder option
   let placeholderOption = document.createElement("option");
-  placeholderOption.text = "Choose category";
+  placeholderOption.text = "Choose an category";
   placeholderOption.disabled = true;
   placeholderOption.selected = true;
   dropdown.add(placeholderOption);
@@ -183,7 +215,6 @@ getCategories().then(categories => {
 }).catch(error => {
   console.error('Error fetching categories:', error);
 });
-
 
 async function getCategories() {
   let getCategories = `http://localhost:8080/project3-backend/rest/tasks/category/all`;
@@ -394,58 +425,6 @@ document.addEventListener("click", function (event) {
   }
 });
 
-// Carrega tarefas
-function loadTasks(taskType = "all", filterValue = null) {
-  let tasksPromise;
-
-  // Determine which type of tasks to load
-  switch (taskType) {
-    case "all":
-      tasksPromise = getAllTasks();
-      break;
-    case "user":
-      if (!filterValue) {
-        console.error("Username is required for loading user tasks");
-        return;
-      }
-      tasksPromise = getUserTasks(filterValue);
-      break;
-    case "category":
-      if (!filterValue) {
-        console.error("Category is required for loading category tasks");
-        return;
-      }
-      tasksPromise = getCategoryTasks(filterValue);
-      break;
-    default:
-      console.error("Invalid task type:", taskType);
-      return;
-  }
-
-  // Load tasks based on the selected task type
-  tasksPromise
-    .then((tasksArray) => {
-      tasksArray.forEach((task) => {
-        const taskElement = createTaskElement(task);
-        if (!taskElement) {
-          console.error("Task element not created for task:", task);
-          return;
-        }
-        task.stateId = task.state.toLowerCase();
-        const panel = document.getElementById(task.stateId);
-        if (!panel) {
-          console.error("Panel not found for stateId:", task.stateId);
-          return;
-        }
-        panel.appendChild(taskElement);
-        attachDragAndDropListeners(taskElement);
-      });
-    })
-    .catch((error) => {
-      console.error("Error:", error);
-      alert("Something went wrong while loading tasks");
-    });
-}
 
 function removeAllTaskElements() {
   const tasks = document.querySelectorAll(".task");
@@ -546,6 +525,25 @@ async function getPhotoUrl() {
   }
 }
 
+// Function to filter tasks by user
+async function filterByUser(selectedUser) {
+  try {
+    removeAllTaskElements();
+    const tasks = await getUserTasks(selectedUser);
+    displayTasks(tasks);
+  } catch (error) {
+    console.error("Error:", error);
+    alert("No tasks found for this user");
+  }
+}
+
+// Event listener for the filter button for users
+document.getElementById("filter-button-users").addEventListener("click", function () {
+  const selectedUser = document.getElementById("dropdown-users-select").value;
+  if (selectedUser !== "Choose an user") {
+    filterByUser(selectedUser);
+  }
+});
 
 getUsernames().then(usernames => {
   // Get the select element
@@ -567,7 +565,6 @@ getUsernames().then(usernames => {
 }).catch(error => {
   console.error('Error fetching users:', error);
 });
-
 
 async function getUsernames() {
   let getUsers = `http://localhost:8080/project3-backend/rest/users/username`;
@@ -594,20 +591,6 @@ async function getUsernames() {
     throw error; // Re-throw the error to handle it in the caller function if needed
   }
 }
-
-// Add event listener to the dropdown select element
-document.getElementById("dropdown-users-select").addEventListener("change", async function() {
-  const selectedUsername = this.value; // Get the selected username
-  if (selectedUsername !== "Choose an user") { // Ensure an actual user is selected
-    try {
-      // Load the tasks for the selected user
-      loadTasks("user", selectedUsername);
-    } catch (error) {
-      console.error('Error fetching tasks:', error);
-    }
-  }
-});
-
 
 // Function to fetch tasks for the selected username
 async function getUserTasks(username) {
@@ -637,8 +620,27 @@ async function getUserTasks(username) {
   }
 }
 
+// Function to filter tasks by category
+async function filterByCategory(selectedCategory) {
+  try {
+    removeAllTaskElements();
+    const tasks = await getCategoryTasks(selectedCategory);
+    displayTasks(tasks);
+  } catch (error) {
+    console.error("Error:", error);
+    alert("No tasks found for this category");
+  }
+}
 
-getCategoryTasks().then(categories => {
+// Event listener for the filter button for categories
+document.getElementById("filter-button-categories").addEventListener("click", function () {
+  const selectedCategory = document.getElementById("dropdown-category-select").value;
+  if (selectedCategory !== "Choose an category") {
+    filterByCategory(selectedCategory);
+  }
+});
+
+getCategories().then(categories => {
   // Get the select element
   let dropdown1 = document.getElementById("dropdown-category-select");
 
@@ -653,55 +655,15 @@ getCategoryTasks().then(categories => {
   categories.forEach(function(category) {
       let option = document.createElement("option");
       option.text = category.name;
-      dropdown.add(option);
+      dropdown1.add(option);
   });
 }).catch(error => {
   console.error('Error fetching categories:', error);
 });
 
 
-async function getCategoryTasks() {
-  let getCategories = `http://localhost:8080/project3-backend/rest/tasks/category/all`;
-  try {
-    const response = await fetch(
-      getCategories,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/JSON",
-          Accept: "*/*",
-          token: sessionStorage.getItem("token"),
-        },
-      }
-    );
-    if (response.ok) {
-      const categories = await response.json();
-      return categories; // Return the array of categories
-    } else {
-      throw new Error(`Failed to fetch categories: ${response.text()}`);
-    }
-  } catch (error) {
-    console.error("Error loading categories list:", error);
-    throw error;
-  }
-}
-
-// Add event listener to the dropdown select element
-document.getElementById("dropdown-category-select").addEventListener("change", async function() {
-  const selectedCategory = this.value; // Get the selected category
-  if (selectedCategory !== "Choose an category") { // Ensure an actual category is selected
-    try {
-      // Load the tasks for the selected category
-      loadTasks("category", selectedCategory);
-    } catch (error) {
-      console.error('Error fetching categories:', error);
-    }
-  }
-});
-
-
-// Function to fetch tasks for the selected username
-async function getCategoryTasks(taskId) {
+// Function to fetch tasks for the selected category
+async function getCategoryTasks(categoryName) {
   let getTasks = `http://localhost:8080/project3-backend/rest/tasks/categoryTasks`;
   try {
     const response = await fetch(
@@ -712,7 +674,7 @@ async function getCategoryTasks(taskId) {
           "Content-Type": "application/JSON",
           Accept: "*/*",
           token: sessionStorage.getItem("token"),
-          id: taskId,
+          categoryName: categoryName,
         },
       }
     );
