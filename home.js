@@ -394,9 +394,36 @@ document.addEventListener("click", function (event) {
   }
 });
 
-// Carrega todas as tarefas
-function loadTasks() {
-  getAllTasks()
+// Carrega tarefas
+function loadTasks(taskType = "all", filterValue = null) {
+  let tasksPromise;
+
+  // Determine which type of tasks to load
+  switch (taskType) {
+    case "all":
+      tasksPromise = getAllTasks();
+      break;
+    case "user":
+      if (!filterValue) {
+        console.error("Username is required for loading user tasks");
+        return;
+      }
+      tasksPromise = getUserTasks(filterValue);
+      break;
+    case "category":
+      if (!filterValue) {
+        console.error("Category is required for loading category tasks");
+        return;
+      }
+      tasksPromise = getCategoryTasks(filterValue);
+      break;
+    default:
+      console.error("Invalid task type:", taskType);
+      return;
+  }
+
+  // Load tasks based on the selected task type
+  tasksPromise
     .then((tasksArray) => {
       tasksArray.forEach((task) => {
         const taskElement = createTaskElement(task);
@@ -516,5 +543,187 @@ async function getPhotoUrl() {
     alert("Invalid credentials");
   } else if (response.stateId === 404) {
     alert("teste 404");
+  }
+}
+
+
+getUsernames().then(usernames => {
+  // Get the select element
+  let dropdown = document.getElementById("dropdown-users-select");
+
+  // Add a placeholder option
+  let placeholderOption = document.createElement("option");
+  placeholderOption.text = "Choose an user";
+  placeholderOption.disabled = true;
+  placeholderOption.selected = true;
+  dropdown.add(placeholderOption);
+
+  // Add options for categories
+  usernames.forEach(function(user) {
+      let option = document.createElement("option");
+      option.text = user.username;
+      dropdown.add(option);
+  });
+}).catch(error => {
+  console.error('Error fetching users:', error);
+});
+
+
+async function getUsernames() {
+  let getUsers = `http://localhost:8080/project3-backend/rest/users/username`;
+  try {
+    const response = await fetch(
+      getUsers,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/JSON",
+          Accept: "*/*",
+          token: sessionStorage.getItem("token"),
+        },
+      }
+    );
+    if (response.ok) {
+      const usernames = await response.json();
+      return usernames; // Return the array of users
+    } else {
+      throw new Error(`Failed to fetch users: ${response.text()}`);
+    }
+  } catch (error) {
+    console.error("Error loading users list:", error);
+    throw error; // Re-throw the error to handle it in the caller function if needed
+  }
+}
+
+// Add event listener to the dropdown select element
+document.getElementById("dropdown-users-select").addEventListener("change", async function() {
+  const selectedUsername = this.value; // Get the selected username
+  if (selectedUsername !== "Choose an user") { // Ensure an actual user is selected
+    try {
+      // Load the tasks for the selected user
+      loadTasks("user", selectedUsername);
+    } catch (error) {
+      console.error('Error fetching tasks:', error);
+    }
+  }
+});
+
+
+// Function to fetch tasks for the selected username
+async function getUserTasks(username) {
+  let getTasks = `http://localhost:8080/project3-backend/rest/tasks/userTasks`;
+  try {
+    const response = await fetch(
+      getTasks,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/JSON",
+          Accept: "*/*",
+          token: sessionStorage.getItem("token"),
+          username: username,
+        },
+      }
+    );
+    if (response.ok) {
+      const tasks = await response.json();
+      return tasks; // Return the array of tasks
+    } else {
+      throw new Error(`Failed to fetch tasks: ${response.text()}`);
+    }
+  } catch (error) {
+    console.error("Error loading tasks:", error);
+    throw error;
+  }
+}
+
+
+getCategoryTasks().then(categories => {
+  // Get the select element
+  let dropdown1 = document.getElementById("dropdown-category-select");
+
+  // Add a placeholder option
+  let placeholderOption1 = document.createElement("option");
+  placeholderOption1.text = "Choose an category";
+  placeholderOption1.disabled = true;
+  placeholderOption1.selected = true;
+  dropdown1.add(placeholderOption1);
+
+  // Add options for categories
+  categories.forEach(function(category) {
+      let option = document.createElement("option");
+      option.text = category.name;
+      dropdown.add(option);
+  });
+}).catch(error => {
+  console.error('Error fetching categories:', error);
+});
+
+
+async function getCategoryTasks() {
+  let getCategories = `http://localhost:8080/project3-backend/rest/tasks/category/all`;
+  try {
+    const response = await fetch(
+      getCategories,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/JSON",
+          Accept: "*/*",
+          token: sessionStorage.getItem("token"),
+        },
+      }
+    );
+    if (response.ok) {
+      const categories = await response.json();
+      return categories; // Return the array of categories
+    } else {
+      throw new Error(`Failed to fetch categories: ${response.text()}`);
+    }
+  } catch (error) {
+    console.error("Error loading categories list:", error);
+    throw error;
+  }
+}
+
+// Add event listener to the dropdown select element
+document.getElementById("dropdown-category-select").addEventListener("change", async function() {
+  const selectedCategory = this.value; // Get the selected category
+  if (selectedCategory !== "Choose an category") { // Ensure an actual category is selected
+    try {
+      // Load the tasks for the selected category
+      loadTasks("category", selectedCategory);
+    } catch (error) {
+      console.error('Error fetching categories:', error);
+    }
+  }
+});
+
+
+// Function to fetch tasks for the selected username
+async function getCategoryTasks(taskId) {
+  let getTasks = `http://localhost:8080/project3-backend/rest/tasks/categoryTasks`;
+  try {
+    const response = await fetch(
+      getTasks,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/JSON",
+          Accept: "*/*",
+          token: sessionStorage.getItem("token"),
+          id: taskId,
+        },
+      }
+    );
+    if (response.ok) {
+      const tasks = await response.json();
+      return tasks; // Return the array of tasks
+    } else {
+      throw new Error(`Failed to fetch tasks: ${response.text()}`);
+    }
+  } catch (error) {
+    console.error("Error loading tasks:", error);
+    throw error;
   }
 }
