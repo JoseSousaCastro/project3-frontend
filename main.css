@@ -1233,7 +1233,7 @@ aside h3 {
 }
 .retros-table-header {
   background-color: var(--green3);
-  color: var(--white);
+  color: var(--black);
   font-family: Arial, Helvetica, sans-serif;
   font-size: 17px;
   font-weight: bold;

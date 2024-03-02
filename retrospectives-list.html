@@ -42,6 +42,7 @@
           <button id="addRetroBTN">Add</button>
           <!--js para adicionar esta retro à lista, com o status Scheduled-->
           <p id="warningMessage2"></p>
+          <button id="addMembersBTN" onclick="openModal()">Add Members</button>
         </div>
       </aside>
       <main>
@@ -59,14 +60,28 @@
         </div>
       </main>
     </div>
+    <div id="myModal" class="modal">
+      <!-- Conteúdo do Modal -->
+      <div class="modal-content">
+        <span class="close" id="closeModal">&times;</span>
+
+        <label for="retroName">Retrospective Name:</label>
+        <input type="text" id="retroName" required />
+        <label for="memberName">Member Name:</label>
+        <input type="text" id="memberName" required />
+        <button id="createRetroBtn" onclick="addMember()">
+          Add member to retrospective
+        </button>
+      </div>
+    </div>
     <footer>
-        <div class="footer-content">
-            <div class="label-left">&copy; José Sousa Castro</div>
-            <div class="label-right">Programação Avançada em Java</div>
-            <div class="label-left">&copy; Ricardo Elias Luís</div>
-            <div class="label-right">Projeto 3</div>
-            <div class="label-left">&copy; Vasco Castro</div>
-        </div>
+      <div class="footer-content">
+        <div class="label-left">&copy; José Sousa Castro</div>
+        <div class="label-right">Programação Avançada em Java</div>
+        <div class="label-left">&copy; Ricardo Elias Luís</div>
+        <div class="label-right">Projeto 3</div>
+        <div class="label-left">&copy; Vasco Castro</div>
+      </div>
     </footer>
     <script src="retrospectives-list.js" defer></script>
   </body>

@@ -266,9 +266,9 @@ function openEditDeleteModal(category, description) {
     <p>${category}</p>
     <p>${description}</p>
     
-    <button onclick="editComment('${category}', '${description}')">Editar</button>
-    <button onclick="deleteComment('${category}', '${description}')">Apagar</button>
-    <button class="close-modal-btn" onclick="closeModal()">Fechar</button>
+    <button onclick="editComment()">Edit</button>
+    <button onclick="deleteComment()">Delete</button>
+    <button class="close-modal-btn" onclick="closeModal()">Close</button>
   `;
 
   modal.appendChild(content);
@@ -276,6 +276,25 @@ function openEditDeleteModal(category, description) {
   modal.style.display = "block";
 }
 
+async function deleteComment() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const id = urlParams.get("id");
+  const arrayComments = await getRetrospectiveComments(id);
+  console.log("******" + description);
+  console.log(id);
+  const response = await fetch(
+    `http://localhost:8080/project3-backend/rest/retrospective/${id}/deleteComment/${id2}`,
+    {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "*/*",
+        token: sessionStorage.getItem("token"),
+      },
+      body: JSON.stringify(comment),
+    }
+  );
+}
 function closeModal() {
   const modal = document.querySelector(".modal");
   if (modal) {
