@@ -11,6 +11,7 @@ function cleanRetroFields() {
 }
 
 async function getRetroList() {
+  removeAllRetroElements();
   console.log("getRetroList");
   let retroListRequest =
     "http://localhost:8080/project3-backend/rest/retrospective/all";
@@ -137,18 +138,18 @@ async function createRetroTableBody(retro) {
   if (response.ok) {
     const retroMembers = await response.json();
     console.log(retroMembers);
+
+    let membersCell = document.createElement("td");
+    membersCell.textContent = retroMembers;
+
+    row.appendChild(dateCell);
+    row.appendChild(titleCell);
+    row.appendChild(membersCell);
+
+    tbody.appendChild(row);
   } else {
     alert(response.status);
   }
-
-  let membersCell = document.createElement("td");
-  membersCell.textContent = retro.retroMembers;
-
-  row.appendChild(dateCell);
-  row.appendChild(titleCell);
-  row.appendChild(membersCell);
-
-  tbody.appendChild(row);
 }
 
 //LOGOUT
@@ -214,3 +215,74 @@ function closeModal() {
 }
 
 document.getElementById("closeModal").addEventListener("click", closeModal);
+
+async function addMember() {
+  const array = await getRetroListAll();
+  const arrayUsers = await fetchUsersAll();
+  const retroName = document.getElementById("retroName").value;
+  const userName = document.getElementById("memberName").value;
+
+  const userFound = arrayUsers.find((user) => user.username === userName);
+  const foundRetro = array.find((retro) => retro.title === retroName);
+  const id = foundRetro.eventId;
+  const id2 = userFound.id;
+
+  const response = await fetch(
+    `http://localhost:8080/project3-backend/rest/retrospective/${id}/addMember/${id2}`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "*/*",
+        token: sessionStorage.getItem("token"),
+      },
+    }
+  );
+  if (response.ok) {
+    getRetroList();
+    console.log("member add");
+  } else {
+    alert(response.status);
+  }
+}
+
+async function getRetroListAll() {
+  console.log("getRetroList");
+  let retroListRequest =
+    "http://localhost:8080/project3-backend/rest/retrospective/all";
+
+  const response = await fetch(retroListRequest, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/JSON",
+      Accept: "*/*",
+      token: sessionStorage.getItem("token"),
+    },
+  });
+
+  if (response.ok) {
+    const data = await response.json();
+    return data;
+  } else {
+    alert(response.status);
+  }
+}
+
+async function fetchUsersAll() {
+  const response = await fetch(
+    "http://localhost:8080/project3-backend/rest/users/checkUsers",
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "*/*",
+        token: sessionStorage.getItem("token"),
+      },
+    }
+  );
+
+  if (response.ok) {
+    const usersArray = await response.json();
+    return usersArray;
+  }
+}
