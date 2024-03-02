@@ -149,3 +149,29 @@ document.addEventListener("DOMContentLoaded", async function () {
       console.error('Error:', error);
     }
   }
+
+  async function removeAllUserTasks() {
+    
+    try {
+      const response = await fetch(
+        "http://localhost:8080/project3-backend/rest/tasks/updateDeleted/userTasks",
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "*/*",
+            token: sessionStorage.getItem("token"),
+          },
+        }
+      );
+      const message = await response.text(); // Get response body as text
+      if (response.ok) {
+          alert(message);
+          await refreshList(); // Refresh the displayed list
+      } else {
+        alert(message);
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
