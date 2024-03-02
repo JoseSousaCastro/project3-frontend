@@ -35,13 +35,13 @@
     <main class="main-task">
         <div class="detalhes-task">
             <div>
-                <textarea id="title-task">Task 1</textarea>
+                <textarea class="text-task"  id="titulo-task"></textarea>
             </div>
             <div>
-                <textarea class="text-task" id="description-task"></textarea>
+                <textarea class="text-task" id="descricao-task"></textarea>
             </div>
             <div>
-                <textarea class="text-task" id="category-task"></textarea>
+                <textarea class="text-task" id="categoria-task"></textarea>
             </div>
             <p id="warningMessage3"></p>
             <div class="task-save">
@@ -51,14 +51,6 @@
         </div>
         <div class="task-buttons">
             <div class="status-and-priority">
-                <div class="task-status">
-                    <h4 class="taskH4">status</h4>
-                    <div class="status-buttons">
-                        <button class="status-button todo" id="todo-button">ToDo</button>
-                        <button class="status-button doing" id="doing-button">Doing</button>
-                        <button class="status-button done" id="done-button">Done</button>
-                    </div>
-                </div>
                 <div class="task-priority">
                     <h4 class="taskH4">priority</h4>
                     <div class="priority-buttons">
@@ -68,10 +60,10 @@
                     </div>
                 </div>
                 <div class="startDateDiv">
-                    <label for="startDate-editTask">Start date: <input type="text" id="startDate-editTask" readonly></label> <!-- This label will be updated on JavaScript with the start date -->
+                    <label for="startDate-editTask">Start date: <input type="date" id="startDate-editTask"></label> <!-- This label will be updated on JavaScript with the start date -->
                 </div>
                 <div class="endDateDiv">
-                    <label for="endDate-editTask">End date: <input type="text" id="endDate-editTask" readonly></label> <!-- This label will be updated on JavaScript with the end date -->
+                    <label for="endDate-editTask">End date: <input type="date" id="endDate-editTask"></label> <!-- This label will be updated on JavaScript with the end date -->
                 </div>
             </div>
         </div>

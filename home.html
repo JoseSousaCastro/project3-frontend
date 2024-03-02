@@ -65,19 +65,11 @@
           <label class="labels-task-description" id="task-description-label">Description</label>
           <textarea id="taskDescription" placeholder="required"></textarea>
           <div class="priority-buttons-home">
-            <button class="priority-button-home low" id="low-button-home">
-              Low
-            </button>
-            <button class="priority-button-home medium" id="medium-button-home">
-              Medium
-            </button>
-            <button class="priority-button-home high" id="high-button-home">
-              High
-            </button>
+            <button class="priority-button-home low" id="low-button-home">Low</button>
+            <button class="priority-button-home medium" id="medium-button-home">Medium</button>
+            <button class="priority-button-home high" id="high-button-home">High</button>
           </div>
-          <label class="labels-task-dates" id="label-startDate"
-            >Start date</label
-          >
+          <label class="labels-task-dates" id="label-startDate">Start date</label>
           <input type="date" id="task-startDate" required />
           <label class="labels-task-dates" id="label-limitDate">End date</label>
           <input type="date" id="task-limitDate" required />
@@ -130,12 +122,7 @@
               <label id="choose-category-label">Filter tasks by category</label>
             </div>
             <div class="filters">
-            <select name="categories-list" id="dropdown-category-select">
-              <option value="" disabled selected hidden>--Choose a category--</option>
-              <option value="category1">category 1</option>
-              <option value="category2">category 2</option>
-              <option value="category3">category 3</option>
-            </select>
+            <select name="categories-list" id="dropdown-category-select"></select>
           </div>
           <div class="filters">
             <button id="filter-button-categories">Filter</button>
