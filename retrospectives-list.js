@@ -105,14 +105,15 @@ function removeAllRetroElements() {
   retros.forEach((retro) => retro.remove());
 }
 
-function createRetroTableBody(retro) {
+async function createRetroTableBody(retro) {
   let tbody = document.querySelector(".retros-table-body");
 
   let row = document.createElement("tr");
   row.classList.add("retros-row");
 
   let dateCell = document.createElement("td");
-  dateCell.textContent = retro.date;
+  dateCell.textContent = retro.schedulingDate;
+
   let titleCell = document.createElement("td");
   let titleLink = document.createElement("a");
   const retroId = retro.eventId;
@@ -121,13 +122,27 @@ function createRetroTableBody(retro) {
   titleLink.classList.add("retro-link");
   titleLink.setAttribute("data-retro-id", retro.id);
   titleCell.appendChild(titleLink);
+  console.log("***" + retro.members);
+
+  const response = await fetch(
+    `http://localhost:8080/project3-backend/rest/retrospective/${retroId}/allMembers`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        token: sessionStorage.getItem("token"),
+      },
+    }
+  );
+  if (response.ok) {
+    const retroMembers = await response.json();
+    console.log(retroMembers);
+  } else {
+    alert(response.status);
+  }
 
   let membersCell = document.createElement("td");
-  membersCell.textContent = retro.retrospectiveUsers
-    ? retro.retrospectiveUsers
-        .map((user) => (user && user.username ? user.username : ""))
-        .join(", ")
-    : "";
+  membersCell.textContent = retro.retroMembers;
 
   row.appendChild(dateCell);
   row.appendChild(titleCell);
@@ -186,3 +201,16 @@ async function getPhotoUrl() {
     alert("teste 404");
   }
 }
+// Abre o modal
+function openModal() {
+  const modal = document.getElementById("myModal");
+  modal.style.display = "block";
+}
+
+// Fecha o modal
+function closeModal() {
+  const modal = document.getElementById("myModal");
+  modal.style.display = "none";
+}
+
+document.getElementById("closeModal").addEventListener("click", closeModal);
