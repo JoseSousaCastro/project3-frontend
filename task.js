@@ -3,7 +3,9 @@ window.onload = async function () {
   const idTask = sessionStorage.getItem("taskId");
   console.log("taskId ==> " + idTask);
   showTask(idTask);
-
+ 
+ 
+  // Código de user para editar!!!!!
 
   if (tokenValue === null) {
     window.location.href = "index.html";
@@ -16,10 +18,6 @@ window.onload = async function () {
     }
   }
 };
-
-const LOW_PRIORITY = "Low";
-const MEDIUM_PRIORITY = "Medium";
-const HIGH_PRIORITY = "High";
 
 // Definir os botões de priority
 const lowButton = document.getElementById("low-button");
@@ -129,13 +127,13 @@ async function showTask(idTask) {
     document.getElementById("startDate-editTask").value = task.startDate;
     document.getElementById("endDate-editTask").value = task.endDate;
 
-    if (task.priority == LOW_PRIORITY) {
+    if (task.priority == "LOW_PRIORITY") {
       lowButton.classList.add("selected");
       setPriorityButtonSelected(lowButton);
-    } else if (task.priority == MEDIUM_PRIORITY) {
+    } else if (task.priority == "MEDIUM_PRIORITY") {
       mediumButton.classList.add("selected");
       setPriorityButtonSelected(mediumButton);
-    } else if (task.priority == HIGH_PRIORITY) {
+    } else if (task.priority == "HIGH_PRIORITY") {
       highButton.classList.add("selected");
       setPriorityButtonSelected(highButton);
     }
@@ -220,16 +218,17 @@ async function findTaskById(taskId) {
 function convertPriorityEnum(priority) {
   let newPriority;
   if (priority === undefined) {
-    newPriority = LOW_PRIORITY;
-  } else if (priority === "LOW") {
-    newPriority = LOW_PRIORITY;
-  } else if (priority === "MEDIUM") {
-    newPriority = MEDIUM_PRIORITY;
-  } else if (priority === "HIGH") {
-    newPriority = HIGH_PRIORITY;
+    newPriority = "LOW_PRIORITY"; // Use enum value directly
+  } else if (priority === "LOW_PRIORITY") {
+    newPriority = TaskPriority.LOW_PRIORITY;
+  } else if (priority === TaskPriority.MEDIUM_PRIORITY.toString()) {
+    newPriority = TaskPriority.MEDIUM_PRIORITY;
+  } else if (priority === TaskPriority.HIGH_PRIORITY.toString()) {
+    newPriority = TaskPriority.HIGH_PRIORITY;
   }
   return newPriority;
 }
+
 
 
 function returnPriorityFromSelectedButton() {

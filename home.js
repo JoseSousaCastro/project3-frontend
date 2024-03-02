@@ -5,7 +5,6 @@ window.onload = async function () {
     SCRUM_MASTER: "SCRUM_MASTER",
     PRODUCT_OWNER: "PRODUCT_OWNER",
   };
-  loadTasks();
 
   if (tokenValue === null) {
     window.location.href = "index.html";
@@ -13,7 +12,7 @@ window.onload = async function () {
     try {
       getFirstName();
       getPhotoUrl();
-      //loadTasks();
+      loadTasks();
     } catch (error) {
       console.error("An error occurred:", error);
     }
