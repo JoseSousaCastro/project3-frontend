@@ -4,8 +4,6 @@ window.onload = async function () {
   console.log("taskId ==> " + idTask);
   showTask(idTask);
 
-
-
     // Código de user para editar!!!!!
 
   if (tokenValue === null) {
@@ -29,16 +27,21 @@ const highButton = document.getElementById("high-button");
 
 async function updateTask() {
 
-  const priority = returnPriorityFromSelectedButton();
+  let title = document.getElementById("titulo-task").value.trim();
+  let description = document.getElementById("descricao-task").value.trim();
+  let priority = returnPriorityFromSelectedButton();
+  let startDate = document.getElementById("startDate-editTask").value;
+  let endDate = document.getElementById("endDate-editTask").value;
+  let category = document.getElementById("categoria-task").value;
 
   const task = {
     id: sessionStorage.getItem("taskId"),
-    title: document.getElementById("titulo-task").value,
-    description: document.getElementById("descricao-task").value,
-    startDate: document.getElementById("startDate-editTask").value,
-    endDate: document.getElementById("endDate-editTask").value,
+    title: title,
+    description: description,
+    startDate: startDate,
+    endDate: endDate,
     priority: priority,
-    category: document.getElementById("categoria-task").value,
+    category: category,
   };
   let updateSelectedTask = `http://localhost:8080/project3-backend/rest/tasks/update`;
   try {
