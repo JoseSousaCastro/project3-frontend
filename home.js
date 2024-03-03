@@ -43,11 +43,15 @@ window.onload = async function () {
     case UserRole.DEVELOPER:
       document.getElementById("users-info").style.display = "none";
       document.getElementById("users-info-scrum-master").style.display = "none";
+      document.getElementById("categoryMenu").style.display = "none";
+      document.getElementById("recycleMenu").style.display = "none";
+      document.getElementById("div-filters").style.display = "none";
       break;
 
     case UserRole.SCRUM_MASTER:
       document.getElementById("users-info").style.display = "none";
       document.getElementById("first-name-label").style.display = "none";
+      document.getElementById("categoryMenu").style.display = "none";
       break;
 
     case UserRole.PRODUCT_OWNER:

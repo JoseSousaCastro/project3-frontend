@@ -1,4 +1,3 @@
-
 document.addEventListener("DOMContentLoaded", async function () {
   try {
     const allCategories = await getCategories(); // Wait for the categories to be fetched
@@ -7,23 +6,64 @@ document.addEventListener("DOMContentLoaded", async function () {
     console.error("Error loading categories:", error);
     // Handle error loading categories
   }
-});
 
+  const UserRole = {
+    DEVELOPER: "DEVELOPER",
+    SCRUM_MASTER: "SCRUM_MASTER",
+    PRODUCT_OWNER: "PRODUCT_OWNER",
+  };
+
+  const response = await fetch(
+    "http://localhost:8080/project3-backend/rest/users/roleByToken",
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "*/*",
+        token: sessionStorage.getItem("token"),
+      },
+    }
+  );
+  if (response.ok) {
+    const data = await response.json();
+    const role = data.role;
+    sessionStorage.setItem("role", role);
+  } else {
+    alert("role not found");
+  }
+
+  const role = sessionStorage.getItem("role");
+  switch (role) {
+    case UserRole.DEVELOPER:
+      document.getElementById("buttonN").style.display = "none";
+      document.getElementById("buttonNN").style.display = "none";
+
+      break;
+
+    case UserRole.SCRUM_MASTER:
+      document.getElementById("buttonN").style.display = "none";
+      document.getElementById("buttonNN").style.display = "none";
+      break;
+
+    case UserRole.PRODUCT_OWNER:
+      break;
+
+    default:
+      break;
+  }
+});
 
 async function getCategories() {
   let getCategories = `http://localhost:8080/project3-backend/rest/tasks/category/all`;
   try {
-    const response = await fetch(
-      getCategories,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/JSON",
-          Accept: "*/*",
-          token: sessionStorage.getItem("token"),
-        },
-      }
-    );
+    const response = await fetch(getCategories, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/JSON",
+        Accept: "*/*",
+        token: sessionStorage.getItem("token"),
+      },
+    });
     if (response.ok) {
       const categories = await response.json();
       return categories; // Return the array of categories
@@ -35,41 +75,40 @@ async function getCategories() {
     throw error; // Re-throw the error to handle it in the caller function if needed
   }
 }
-  
+
 function showCategoryList(categoriesList) {
   document.querySelector(".category-table-body").innerHTML = "";
   categoriesList.forEach((category) => {
-      const row = document.createElement("tr");
-  
-      // Criar célula para o id da categoria
-      const iDCell = document.createElement("td");
-      iDCell.textContent = category.id;
-      iDCell.className = "clickable text-center";
+    const row = document.createElement("tr");
 
-      // Criar célula para o nome da categoria
-      const categoryNameCell = document.createElement("td");
-      categoryNameCell.className = "clickable";
-      categoryNameCell.textContent = category.name;
-      categoryNameCell.className = "clickable text-center";
-    
-      // Adicionar as células à linha
-      row.appendChild(iDCell); 
-      row.appendChild(categoryNameCell);
-  
-      // Adicionar a linha à tabela
-      document.querySelector(".category-table-body").appendChild(row);
-  
-      // Adicionar evento de clique para exibir detalhes do usuário
-      categoryNameCell.addEventListener("dblclick", () => {
-        showCategoryDetails(category.name);
-      });
+    // Criar célula para o id da categoria
+    const iDCell = document.createElement("td");
+    iDCell.textContent = category.id;
+    iDCell.className = "clickable text-center";
 
+    // Criar célula para o nome da categoria
+    const categoryNameCell = document.createElement("td");
+    categoryNameCell.className = "clickable";
+    categoryNameCell.textContent = category.name;
+    categoryNameCell.className = "clickable text-center";
+
+    // Adicionar as células à linha
+    row.appendChild(iDCell);
+    row.appendChild(categoryNameCell);
+
+    // Adicionar a linha à tabela
+    document.querySelector(".category-table-body").appendChild(row);
+
+    // Adicionar evento de clique para exibir detalhes do usuário
+    categoryNameCell.addEventListener("dblclick", () => {
+      showCategoryDetails(category.name);
     });
+  });
 }
-  
+
 async function showCategoryDetails(categoryName) {
   const modal = document.getElementById("categoryDetailsModal");
-  document.getElementById("categoryNameInput").value = categoryName;  
+  document.getElementById("categoryNameInput").value = categoryName;
   modal.style.display = "block";
 }
 
@@ -90,7 +129,8 @@ let currentCategoryId;
 editbutton.addEventListener("click", async () => {
   // Ensure the list of categories is fetched before proceeding
   const listCategories = await getCategories();
-  const currentCategoryName = document.getElementById("categoryNameInput").value;
+  const currentCategoryName =
+    document.getElementById("categoryNameInput").value;
 
   // Find the category ID based on the current category name
   listCategories.forEach((category) => {
@@ -113,7 +153,6 @@ saveButton.addEventListener("click", () => {
   document.getElementById("categoryNameInput").setAttribute("readonly", true);
 });
 
-
 async function editCategory(categoryId, categoryName) {
   const categoryDto = {
     id: categoryId,
@@ -134,9 +173,9 @@ async function editCategory(categoryId, categoryName) {
     );
     const message = await response.text(); // Get response body as text
     if (response.ok) {
-        alert(message);
-        closeModal(); // Close the modal
-        await refreshCategoryList(); // Refresh the category list
+      alert(message);
+      closeModal(); // Close the modal
+      await refreshCategoryList(); // Refresh the category list
     } else {
       throw new Error(message);
     }
@@ -187,18 +226,17 @@ async function submitNewCategory() {
     );
     const message = await response.text(); // Get response body as text
     if (response.ok) {
-        alert(message);
-        closeAddCategoryModal(); // Close the modal
-        await refreshCategoryList(); // Refresh the category list
+      alert(message);
+      closeAddCategoryModal(); // Close the modal
+      await refreshCategoryList(); // Refresh the category list
     } else {
       alert(message);
       document.getElementById("categoryName").value = "";
     }
   } catch (error) {
-    console.error('Error:', error);
+    console.error("Error:", error);
   }
 }
-
 
 function removeCategory() {
   const modal = document.getElementById("removeCategoryModal");
@@ -231,14 +269,14 @@ async function submitRemoveCategory() {
     );
     const message = await response.text(); // Get response body as text
     if (response.ok) {
-        alert(message);
-        closeRemoveCategoryModal(); // Close the modal
-        await refreshCategoryList(); // Refresh the category list
+      alert(message);
+      closeRemoveCategoryModal(); // Close the modal
+      await refreshCategoryList(); // Refresh the category list
     } else {
       alert(message);
       document.getElementById("categoryId").value = "";
     }
   } catch (error) {
-    console.error('Error:', error);
+    console.error("Error:", error);
   }
 }

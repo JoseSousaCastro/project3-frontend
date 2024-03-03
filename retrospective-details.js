@@ -13,8 +13,6 @@ window.onload = async function () {
 
   const arrayComments = await getRetrospectiveComments(retrospectiveId);
   addAllCommentsToPanel(arrayComments);
-
-  //fillUsersDropdown();
 };
 
 async function display() {
@@ -294,7 +292,7 @@ function openEditDeleteModal(category, description) {
     <input type="text" id="descriptionInput" value="${description}" />
 
     <button onclick="editComment('${description}');closeModal();">Edit</button>
-    <button onclick="deleteComment('${description}');closeModal();">Delete</button>
+    <button id="deletebutooN" onclick="deleteComment('${description}');closeModal();">Delete</button>
     <button class="close-modal-btn" onclick="closeModal()">Close</button>
   `;
 

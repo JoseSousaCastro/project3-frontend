@@ -1,7 +1,49 @@
-window.onload = function () {
+window.onload = async function () {
   //getFirstName();
   getPhotoUrl();
   getRetroList();
+  const UserRole = {
+    DEVELOPER: "DEVELOPER",
+    SCRUM_MASTER: "SCRUM_MASTER",
+    PRODUCT_OWNER: "PRODUCT_OWNER",
+  };
+
+  const response = await fetch(
+    "http://localhost:8080/project3-backend/rest/users/roleByToken",
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "*/*",
+        token: sessionStorage.getItem("token"),
+      },
+    }
+  );
+  if (response.ok) {
+    const data = await response.json();
+    const role = data.role;
+    sessionStorage.setItem("role", role);
+  } else {
+    alert("role not found");
+  }
+
+  const role = sessionStorage.getItem("role");
+  switch (role) {
+    case UserRole.DEVELOPER:
+      document.getElementById("addMembersBTN").style.display = "none";
+      document.getElementById("asideId").style.display = "none";
+      break;
+
+    case UserRole.SCRUM_MASTER:
+      document.getElementById("addMembersBTN").style.display = "none";
+      break;
+
+    case UserRole.PRODUCT_OWNER:
+      break;
+
+    default:
+      break;
+  }
 };
 
 function cleanRetroFields() {
