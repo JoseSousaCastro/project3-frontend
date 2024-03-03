@@ -30,134 +30,103 @@
           <li id="recycle-info"><a href="task-recycle.html">Task Recycle Bin</a></li>
         </ul>
       </nav>
-      <div class="nav-menu-right">
-       
-        <img
-          src="multimedia/prf-img-placeholder.PNG"
-          id="profile-pic"
-          draggable="false"
-        />
+      <div class="nav-menu-right">       
+        <img src="multimedia/prf-img-placeholder.PNG" id="profile-pic" draggable="false"/>
         <label id="first-name"> firstName </label>
         <a href="edit-profile.html" id="first-name-label" draggable="false"></a>
-        <button
-          class="logout-button"
-          id="logout-button-header"
-          draggable="false"
-        >
+        <button class="logout-button" id="logout-button-header" draggable="false">
           <img src="multimedia/logout.png" alt="Logout Icon" />
           Logout
         </button>
       </div>
     </header>
-    <div class="container">
+    <div class="container" id="goBack">
       <!--Container para o aside e o main-->
       <aside>
-        <div style="text-align: center; margin-bottom: 20px;">
-          <img src="images/user_png.png" alt="Imagem" style="width: 100px; height: 100px;">
+        <div id="aside-symbol">
+          <img id="aside-symbol-pic" src="multimedia/symbol-05.png">
         </div>
-        <button onclick="addNewUser()" style="font-size: 18px; padding: 10px 20px;">Add New User</button>
+        <button id="all-users-add-user-button" onclick="addNewUser()">Add New User</button>
       </aside>
       
       <main>
-        <div class="table-container-users">
-          <table class="retros-table-users">
-            <thead class="retros-table-header-users">
+        <div class="table-container-users table-container" id="table-all-users-div">
+          <table class="table-all-users" id="table-all-users">
+            <thead class="table-header-all-users" id="table-all-users-header">
               <tr>
                 <th class="table-header-users">Username</th>
                 <th class="table-header-users">Role</th>
                 <th class="table-header-users">Deleted</th>
               </tr>
             </thead>
-            <tbody class="retros-table-body"></tbody>
+            <tbody class="users-table-body"></tbody>
           </table>
+        </div>
       </main>
     </div>
-    <footer>
+    <footer id="goBack">
       <div class="footer-content">
-        <div class="label-left">&copy; Ricardo Elias</div>
-        <div class="label-right">Programação Avançada em Java</div>
         <div class="label-left">&copy; José Sousa Castro</div>
-        <div class="label-right">Projeto 2</div>
+        <div class="label-right">Programação Avançada em Java</div>
+        <div class="label-left">&copy; Ricardo Elias</div>
+        <div class="label-right">Projeto 3</div>
         <div class="label-left">&copy; Vasco Castro</div>
       </div>
     </footer>
-    <div id="userDetailsModal" class="modal-users">
-      <div class="modal-content-users">
-        <span class="close" onclick="closeUserDetailsModal(); disableEdit()">&times;</span>
-        <div id="userDetails">
-          <label for="usernameInput">Username:</label>
-          <input type="text" id="usernameInput" class="text-center" readonly>
-    
-          <label for="roleInput">Role:</label>
-        <select id="roleInput" class="text-center" disabled>
-    <option value="DEVELOPER" selected>DEVELOPER</option>
-  <option value="SCRUM_MASTER">SCRUM_MASTER</option>
-  <option value="PRODUCT_OWNER">PRODUCT_OWNER</option>
-</select>
-
-<label for="deletedInput">Deleted:</label>
-<select id="deletedInput" class="text-center" disabled>
-  <option value="false" selected >No deleted</option>
-  <option value="true">Deleted</option>
-</select>
-
-    
-          <label for="firstNameInput">First Name:</label>
-          <input type="text" id="firstNameInput" class="text-center" readonly>
-    
-          <label for="lastNameInput">Last Name:</label>
-          <input type="text" id="lastNameInput" class="text-center" readonly>
-    
-          <label for="emailInput">Email:</label>
-          <input type="text" id="emailInput" class="text-center" readonly>
-    
-          <label for="phoneInput">Phone:</label>
-          <input type="text" id="phoneInput" class="text-center" readonly>
-        </div>
-        <button onclick="enableEdit()">Edit</button>
-        <button onclick="disableEdit(); editProfile(); closeModal()">Save</button>
+    <div id="userDetailsModal">
+      <div id="modal-content-users">
+        <span id="close-userDetailsModal" onclick="closeUserDetailsModal(); disableEdit()">&times;</span>
+          <label id="usernameInput-label-userDetailsModal" for="usernameInput">Username:</label>
+          <input type="text" id="usernameInput-userDetailsModal" readonly>
+          <label id="roleInput-label-userDetailsModal" for="roleInput">Role:</label>
+          <select id="roleInput-userDetailsModal" disabled>
+            <option value="DEVELOPER" selected>DEVELOPER</option>
+            <option value="SCRUM_MASTER">SCRUM_MASTER</option>
+            <option value="PRODUCT_OWNER">PRODUCT_OWNER</option>
+          </select>
+          <label id="deletedInput-label-userDetailsModal" for="deletedInput">Deleted:</label>
+          <select id="deletedInput-userDetailsModal" disabled>
+            <option value="false" selected >No deleted</option>
+            <option value="true">Deleted</option>
+          </select>
+          <label id="firstNameInput-label-userDetailsModal" for="firstNameInput">First Name:</label>
+          <input type="text" id="firstNameInput-userDetailsModal" readonly>
+          <label id="lastNameInput-label-userDetailsModal" for="lastNameInput">Last Name:</label>
+          <input type="text" id="lastNameInput-userDetailsModal" readonly>
+          <label id="emailInput-label-userDetailsModal" for="emailInput">Email:</label>
+          <input type="text" id="emailInput-userDetailsModal" readonly>
+          <label id="phoneInput-label-userDetailsModal" for="phoneInput">Phone:</label>
+          <input type="text" id="phoneInput-userDetailsModal" readonly>
+        <button id="edit-userDetailsModal" onclick="enableEdit()">Edit</button>
+        <button id="save-userDetailsModal" onclick="disableEdit(); editProfile(); closeModal()">Save</button>
       </div>
     </div>
-    <div id="addUserModal" class="modal">
-      <div class="modal-content">
-        <span class="close" onclick="closeAddUserModal()">&times;</span>
-        
-        <label for="username">Username:</label>
-        <input type="text" id="username" required>
-    
-        <label for="password">Password:</label>
-        <input type="password" id="password" required>
-    
-        <label for="email">Email:</label>
-        <input type="email" id="email" required>
-    
-        <label for="phone">Phone:</label>
-        <input type="tel" id="phone" required>
-    
-        <label for="firstName">First Name:</label>
-        <input type="text" id="firstName" required>
-    
-        <label for="lastName">Last Name:</label>
-        <input type="text" id="lastName" required>
-    
-        <label for="role">Role:</label>
-        <select id="role" required>
+    <div id="addUserModal">
+      <div id="modal-content-addUsers">
+        <span id="close-addUserModal" onclick="closeAddUserModal()">&times;</span>
+        <label id="username-label-addUserModal" for="username">Username:</label>
+        <input type="text" id="username-label-addUserModal" required>
+        <label id="password-label-addUserModal" for="password">Password:</label>
+        <input type="password" id="password-label-addUserModal" required>
+        <label id="email-label-addUserModal" for="email">Email:</label>
+        <input type="email" id="email-label-addUserModal" required>
+        <label id="phone-label-addUserModal" for="phone">Phone:</label>
+        <input type="tel" id="phone-label-addUserModal" required>
+        <label id="firstName-label-addUserModal" for="firstName">First Name:</label>
+        <input type="text" id="firstName-label-addUserModal" required>
+        <label id="lastName-label-addUserModal" for="lastName">Last Name:</label>
+        <input type="text" id="lastName-label-addUserModal" required>
+        <label id="role-label-addUserModal" for="role">Role:</label>
+        <select id="role-select-addUserModal" required>
           <option value="DEVELOPER" selected>DEVELOPER</option>
           <option value="SCRUM_MASTER">SCRUM_MASTER</option>
           <option value="PRODUCT_OWNER">PRODUCT_OWNER</option>
         </select>
-    
-        
-    
-        <label for="photo">Photo URL:</label>
-        <input type="text" id="photo" required>
-    
-        <button onclick="submitNewUser()">Add User</button>
+        <label id="photo-label-addUserModal" for="photo">Photo URL:</label>
+        <input type="text" id="photo-label-addUserModal" required>
+        <button id="addUser-addUserModal" onclick="submitNewUser()">Add User</button>
       </div>
     </div>
-    
-    
-    
     <script src="all-users.js" defer></script>
   </body>
 </html>

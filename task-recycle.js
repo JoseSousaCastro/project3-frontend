@@ -106,6 +106,11 @@ async function refreshList() {
   } catch (error) {
     console.error("Error loading categories:", error);
     // Handle error loading categories
+  
+  function restoreTask() {
+    const modal = document.getElementById("restoreTaskModal");
+    modal.style.display = "flex";
+    document.getElementById("restoreId").value = "";
   }
 }
 
@@ -148,32 +153,42 @@ async function submitRestoreTask() {
   } catch (error) {
     console.error("Error:", error);
   }
-}
-
-function removeTask() {
-  const modal = document.getElementById("removeTaskModal");
-  modal.style.display = "block";
-  document.getElementById("removeId").value = "";
-}
-
-function closeRemoveTaskModal() {
-  const modal = document.getElementById("removeTaskModal");
-  modal.style.display = "none";
-}
-
-async function submitRemoveTask() {
-  const idRemove = document.getElementById("removeId").value;
-  try {
-    const response = await fetch(
-      "http://localhost:8080/project3-backend/rest/tasks/remove",
-      {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "*/*",
-          token: sessionStorage.getItem("token"),
-          taskId: idRemove,
-        },
+  
+  
+  function removeTask() {
+    const modal = document.getElementById("removeTaskModal");
+    modal.style.display = "flex";
+    document.getElementById("removeId").value = "";
+  }
+  
+  function closeRemoveTaskModal() {
+    const modal = document.getElementById("removeTaskModal");
+    modal.style.display = "none";
+  }
+  
+  async function submitRemoveTask() {
+    const idRemove = document.getElementById("removeId").value;
+    try {
+      const response = await fetch(
+        "http://localhost:8080/project3-backend/rest/tasks/remove",
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "*/*",
+            token: sessionStorage.getItem("token"),
+            taskId: idRemove,
+          },
+        }
+      );
+      const message = await response.text(); // Get response body as text
+      if (response.ok) {
+          alert(message);
+          closeRemoveTaskModal(); // Close the modal
+          await refreshList(); // Refresh the displayed list
+      } else {
+        alert(message);
+        document.getElementById("removeId").value = "";
       }
     );
     const message = await response.text(); // Get response body as text

@@ -487,10 +487,14 @@ aside h3 {
   font-weight: bold;
   text-transform: uppercase;
 }
+
 #div-filters {
   margin-top: 60px;
   display: flex;
   flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  text-align: center;  
 }
 .filters {
   margin-top: 5px;
@@ -536,6 +540,50 @@ aside h3 {
   background-color: var(--green3);
   color: var(--green1);
 }
+
+/* task category e task recycle bin*/
+#task-category-add-button,
+#task-category-remove-button,
+#task-recycle-restore-button,
+#task-recycle-remove-button,
+#task-recycle-remove-all-button,
+#all-users-add-user-button {
+  text-align: center;
+  margin-top: 40px;
+  margin-inline: 40px;
+  padding-inline: 10px;
+  width: 120px;
+  height: 50px;
+  text-transform: uppercase;
+  font-size: 14px;
+  font-weight: bold;
+  background-color: var(--done);
+  color: var(--green3);
+  border-radius: 5px;
+  transition: background-color 0.3s, color 0.3s;
+  cursor: pointer;
+}
+#task-category-add-button:hover,
+#task-category-remove-button:hover,
+#task-recycle-restore-button:hover,
+#task-recycle-remove-button:hover,
+#task-recycle-remove-all-button:hover,
+#all-users-add-user-button:hover {
+  background-color: var(--green3);
+  color: var(--green1);
+}
+#aside-symbol {
+  margin-block: 50px;
+  margin-bottom: 20px;  
+}
+#aside-symbol-pic {
+  width: 180px;
+  height: auto;
+}
+
+
+
+
 /* Mensagem de erro por não preenchimento de 1 dos 2 campos, ou do botão de priority */
 #warningMessage2 {
   color: var(--warningMessages);
@@ -759,7 +807,7 @@ match ao arredondamento do painel (home.html) */
   text-align: center;
   top: 0;
   white-space: nowrap;
-  background-color: rgb(0 0 0 / 80%);
+  background-color: color-mix(var(--green3), var(--white) 80%);
   backdrop-filter: blur(5px);
   display: none;
   place-items: center;
@@ -802,6 +850,187 @@ match ao arredondamento do painel (home.html) */
   text-align: center;
   grid-column: 1 / 3;
 }
+
+#myModal-retros-list,
+#userDetailsModal,
+#userDetailsModal-sm
+#addUserModal,
+#categoryDetailsModal,
+#addCategoryModal,
+#removeCategoryModal,
+#restoreTaskModal,
+#removeTaskModal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--green3-rgb);
+  backdrop-filter: blur(5px);
+  z-index: 1;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+#userDetailsModal,
+#userDetailsModal-sm {
+  z-index: 50;
+  position: fixed;
+}
+
+#modal-content-retros-list,
+#modal-content-addUsers,
+#modal-content-categoryDetailsModal,
+#modal-content-addCategoryModal,
+#modal-content-removeCategoryModal,
+#modal-content-restoreTaskModal,
+#modal-content-removeTaskModal {
+  background-color: var(--green3);
+  width: 400px;
+  height: 360px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  position: relative;
+}
+#modal-content-users,
+#modal-content-users-sm {
+  background-color: var(--green3);
+  height: fit-content;
+  width: 500px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  position: relative;
+  z-index: 50;
+}
+#modal-content-addUsers {
+  height: fit-content;
+}
+#goBack {
+  z-index: 0;
+}
+
+#modal-content-categoryDetailsModal,
+#modal-content-addCategoryModal,
+#modal-content-removeCategoryModal,
+#modal-content-restoreTaskModal,
+#modal-content-removeTaskModal {
+  height: 200px;
+  width: 400px;
+}
+
+#closeModal-retros-list,
+#close-userDetailsModal,
+#close-userDetailsModal-sm,
+#close-addUserModal,
+#close-categoryDetailsModal,
+#close-addCategoryModal,
+#close-removeCategoryModal,
+#close-restoreTaskModal,
+#close-removeTaskModal {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 20px;
+  cursor: pointer;
+  color: var(--white);
+}
+
+/* Estilo para as labels */
+#modal-content-retros-list label,
+#modal-content-users label,
+#modal-content-users-sm label,
+#modal-content-addUsers label,
+#modal-content-categoryDetailsModal label,
+#modal-content-addCategoryModal label,
+#modal-content-removeCategoryModal label,
+#modal-content-restoreTaskModal label,
+#modal-content-removeTaskModal label {
+  color: var(--white);
+  font-size: 15px;
+  margin-block: 10px;
+}
+
+/* Estilo para os input texts */
+#modal-content-retros-list input,
+#modal-content-users input,
+#modal-content-users-sm input,
+#modal-content-addUsers input,
+#role-select-addUserModal,
+#roleInput-userDetailsModal,
+#deletedInput-userDetailsModal,
+#modal-content-categoryDetailsModal input,
+#modal-content-addCategoryModal input,
+#modal-content-removeCategoryModal input,
+#modal-content-restoreTaskModal input,
+#modal-content-removeTaskModal input {
+  width: 200px;
+  padding: 8px;
+  margin-bottom: 10px;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  border: var(--green1) 1px solid;
+}
+
+/* Estilo para o botão */
+#addMember-modal-retros-list,
+#edit-userDetailsModal,
+#save-userDetailsModal,
+#addUser-addUserModal,
+#enableEdit-categoryDetailsModal,
+#saveEdit-categoryDetailsModal,
+#add-categoryDetailsModal,
+#remove-categoryDetailsModal,
+#restore-restoreTaskModal,
+#remove-removeTaskModal {
+  width: 180px;
+  height: 50px;
+  margin-block: 30px;
+  font-size: 14px;
+  font-weight: bold;
+  text-transform: uppercase;
+  background-color: var(--green1);
+  color: var(--green3);
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+#edit-userDetailsModal,
+#save-userDetailsModal,
+#addUser-addUserModal,
+#enableEdit-categoryDetailsModal,
+#saveEdit-categoryDetailsModal,
+#add-categoryDetailsModal,
+#remove-categoryDetailsModal,
+#restore-restoreTaskModal,
+#remove-removeTaskModal {
+  width: 100px;
+  height: 30px;
+}
+#edit-userDetailsModal {
+  margin-top: 20px;
+  margin-bottom: 0px;
+}
+#save-userDetailsModal {
+  margin-block: 20px;
+}
+
+#hr-div-filters {
+  width: 60%;
+  margin-block: 5px;
+  border: var(--green2) 1px solid;
+}
+
+
+
 /* Media para ecrãs pequenos */
 @media (max-width: 768px) {
   main {
@@ -1186,14 +1415,15 @@ aside h3 {
   border-top-right-radius: 5px;
 }
 #dropdown-task-categories {
-  margin-top: 5px;
+  margin-top: 0px;
 }
 
 #dropdown-users {
   background-color: var(--todo);
 }
 #addCommentBTN,
-#addRetroBTN {
+#addRetroBTN,
+#addMembersBTN {
   margin-top: 30px;
   width: 150px;
   height: 32px;
@@ -1206,11 +1436,13 @@ aside h3 {
   transition: background-color 0.3s, color 0.3s;
   cursor: pointer;
 }
-#addRetroBTN {
+#addRetroBTN,
+#addMembersBTN {
   margin-top: 15px;
 }
 #addCommentBTN:hover,
-#addRetroBTN:hover {
+#addRetroBTN:hover,
+#addMembersBTN:hover {
   background-color: var(--green3);
   color: var(--green1);
 }
@@ -1224,14 +1456,22 @@ aside h3 {
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
 }
-.retros-table {
+.retros-table,
+.table-category-tasks,
+.table-recycle,
+.table-all-users,
+.table-all-users-sm {
   width: fit-content;
   height: fit-content;
   border-collapse: collapse;
   padding: 5px;
   border-collapse: separate;
 }
-.retros-table-header {
+.retros-table-header,
+.table-header-category-tasks,
+.table-header-recycle,
+.table-header-all-users,
+.table-header-all-users-sm {
   background-color: var(--green3);
   color: var(--black);
   font-family: Arial, Helvetica, sans-serif;
@@ -1242,15 +1482,23 @@ aside h3 {
   position: sticky;
   top: 0;
 }
-.table-header {
+.table-header,
+.table-header-category,
+.table-header-recycle,
+.table-header-users {
   text-align: center;
   padding: 5px;
   width: 700px;
+  color: var(--todo);
   letter-spacing: 1px;
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
 }
-.retros-table-body {
+.retros-table-body,
+.category-table-body,
+.recycle-table-body,
+.users-table-body,
+.users-table-body-sm {
   color: var(--green3);
   font-size: 13px;
   text-align: center;
@@ -1258,15 +1506,44 @@ aside h3 {
   width: 700px;
   height: 30px;
 }
-.retros-table-body tr {
+.retros-table-body tr,
+.category-table-body tr,
+.recycle-table-body tr,
+.users-table-body tr,
+.users-table-body-sm tr {
   font-size: 15px;
   line-height: 1.5;
   height: 30px;
 }
-.retros-table-body tr:nth-child(even) {
+.retros-table-body a:-webkit-any-link,
+.category-table-body a:-webkit-any-link,
+.recycle-table-body a:-webkit-any-link,
+.users-table-body a:-webkit-any-link
+.users-table-body-sm a:-webkit-any-link {
+  color: var(--green2);
+  font-weight: 600;
+  text-decoration: underline;
+}
+
+.username-cell {
+  cursor: pointer;
+  text-decoration: underline;
+  color: var(--green2);
+  font-weight: 600;
+}
+
+.retros-table-body tr:nth-child(even),
+.category-table-body tr:nth-child(even),
+.recycle-table-body tr:nth-child(even),
+.users-table-body tr:nth-child(even),
+.users-table-body-sm tr:nth-child(even){
   background-color: #c8e4e77c;
 }
-.retros-table-body tr:nth-child(odd) {
+.retros-table-body tr:nth-child(odd), 
+.category-table-body tr:nth-child(odd),
+.recycle-table-body tr:nth-child(odd),
+.users-table-body tr:nth-child(odd),
+.users-table-body-sm tr:nth-child(odd){
   background-color: var(--white);
 }
 
@@ -1412,31 +1689,7 @@ aside h3 {
 }
 
 /*--------------NOVO--------------------*/
-th,
-td {
-  border: 1px solid #ddd;
-  padding: 8px;
-  text-align: left;
-}
 
-th {
-  background-color: #f2f2f2;
-}
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 20px;
-  table-layout: fixed;
-}
-
-.clickable {
-  cursor: pointer;
-}
-
-.clickable:hover {
-  text-decoration: underline;
-}
 
 .user-photo img {
   max-width: 50px;
@@ -1444,11 +1697,6 @@ table {
   border-radius: 50%;
 }
 
-#users-table {
-  background-color: orange;
-  max-height: 100px;
-  overflow-y: auto;
-}
 
 .users-list-container {
   overflow: auto;
@@ -1456,121 +1704,3 @@ table {
   background-color: yellow;
 }
 
-.text-center {
-  text-align: center;
-}
-
-.table-header-users {
-  text-align: center;
-}
-
-/* Estilo para o modal */
-.modal-users,
-.modal-category {
-  display: none;
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 1;
-  background-color: rgba(0, 0, 0, 0.5); /* Fundo escuro para desfoque */
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-}
-
-/* Estilo para o conteúdo do modal */
-.modal-content-users,
-.modal-content-category {
-  position: relative;
-  background-color: #fefefe;
-  margin: auto;
-  padding: 20px;
-  border: 1px solid #888;
-  border-radius: 8px;
-  max-width: 400px;
-  width: 100%;
-  text-align: center;
-}
-
-/* Estilo para o botão de fechar */
-.close {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  font-size: 20px;
-  font-weight: bold;
-  color: #333;
-  cursor: pointer;
-}
-
-/* Estilo para os rótulos e inputs */
-label {
-  display: block;
-  margin-bottom: 8px;
-  font-weight: bold;
-}
-
-input {
-  width: 100%;
-  padding: 8px;
-  margin-bottom: 16px;
-  box-sizing: border-box;
-  border: 1px solid black;
-  border-radius: 8px;
-}
-
-body.modal-users-open,
-body.modal-category-open {
-  overflow: hidden;
-}
-
-.modal-users-open main,
-.modal-users-open footer,
-.modal-users-open aside,
-.modal-category-open main,
-.modal-category-open footer,
-.modal-category-open aside {
-  filter: blur(3px);
-}
-.modal-content-users button,
-.modal-content-category button {
-  padding: 10px 20px;
-  margin: 10px;
-  background-color: blue;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-input[readonly] {
-  background-color: #f0f0f0;
-  color: #888;
-}
-
-.product-owner-highlight {
-  background-color: yellow;
-  font-weight: bold;
-}
-
-.comment-container {
-  border: 1px solid #ccc;
-  padding: 10px;
-  margin-bottom: 10px;
-  background-color: #f5f5f5;
-  cursor: pointer;
-}
-
-.comment-container:hover {
-  background-color: #e0e0e0;
-}
-
-.comment-container i {
-  font-style: italic;
-  margin-right: 5px;
-}
-
-.comment-container b {
-  font-weight: bold;
-}

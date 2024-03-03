@@ -50,20 +50,20 @@
     <div class="container">
       <!--Container para o aside e o main-->
       <aside>
-        <div style="text-align: center; margin-bottom: 20px;">
-          <img src="images/user_png.png" alt="Imagem" style="width: 100px; height: 100px;">
+        <div id="aside-symbol">
+          <img id="aside-symbol-pic" src="multimedia/symbol-05.png">
         </div>
-        <button id="buttonN" onclick="addCategory()" style="font-size: 18px; padding: 10px 20px;">Add Category</button>
-        <button id="buttonNN"onclick="removeCategory()" style="font-size: 18px; padding: 10px 20px;">Remove Category</button>
+        <button id="task-category-add-button" onclick="addCategory()">Add Category</button>
+        <button id="task-category-remove-button" onclick="removeCategory()">Remove Category</button>
       </aside>
       <main>
         <!-- Começa aqui a tabela-->
-        <div class="table-container-category-tasks">
-          <table class="table-category-tasks"> 
-            <thead class="table-header-category-tasks">
+        <div class="table-container-category-tasks table-container" id="table-task-category-div">
+          <table class="table-category-tasks" id="table-task-category"> 
+            <thead class="table-header-category-tasks" id="table-task-category-header">
               <tr>
-                <th class="table-header-category-tasks">Id</th>
-                <th class="table-header-category-tasks">Name</th>
+                <th class="table-header-category">Id</th>
+                <th class="table-header-category">Name</th>
               </tr>
             </thead>
             <tbody class="category-table-body"></tbody>
@@ -72,38 +72,36 @@
     </div>
     <footer>
       <div class="footer-content">
-        <div class="label-left">&copy; Ricardo Elias</div>
-        <div class="label-right">Programação Avançada em Java</div>
         <div class="label-left">&copy; José Sousa Castro</div>
-        <div class="label-right">Projeto 2</div>
+        <div class="label-right">Programação Avançada em Java</div>
+        <div class="label-left">&copy; Ricardo Elias</div>
+        <div class="label-right">Projeto 3</div>
         <div class="label-left">&copy; Vasco Castro</div>
       </div>
     </footer>
     <div id="categoryDetailsModal" class="modal-category">
-      <div class="modal-content-category">
-        <span class="close" onclick="closeCategoryDetailsModal(); disableEdit()">&times;</span>
-        <div id="categoryDetails">
+      <div id="modal-content-categoryDetailsModal">
+        <span id="close-categoryDetailsModal" onclick="closeCategoryDetailsModal(); disableEdit()">&times;</span>
           <label for="categoryNameInput">Name:</label>
           <input type="text" id="categoryNameInput" class="text-center" readonly>
-        </div>
-        <button id="enableEdit">Edit</button>
-        <button id="saveEdit">Save</button>
+        <button id="enableEdit-categoryDetailsModal">Edit</button>
+        <button id="saveEdit-categoryDetailsModal">Save</button>
       </div>
     </div>
-    <div id="addCategoryModal" class="modal">
-      <div class="modal-content">
-        <span class="close" onclick="closeAddCategoryModal()">&times;</span>
+    <div id="addCategoryModal">
+      <div id="modal-content-addCategoryModal">
+        <span id="close-addCategoryModal" onclick="closeAddCategoryModal()">&times;</span>
         <label for="categoryName">Name:</label>
         <input type="text" id="categoryName" placeholder="Insert name" required>   
-        <button onclick="submitNewCategory()">Add</button>
+        <button id="add-categoryDetailsModal" onclick="submitNewCategory()">Add</button>
       </div>
     </div>
-    <div id="removeCategoryModal" class="modal">
-      <div class="modal-content">
-        <span class="close" onclick="closeRemoveCategoryModal()">&times;</span>
+    <div id="removeCategoryModal">
+      <div id="modal-content-removeCategoryModal">
+        <span id="close-removeCategoryModal" onclick="closeRemoveCategoryModal()">&times;</span>
         <label for="categoryId">Id:</label>
         <input type="text" id="categoryId" placeholder="Insert task Id" required>   
-        <button onclick="submitRemoveCategory()">Remove</button>
+        <button id="remove-categoryDetailsModal" onclick="submitRemoveCategory()">Remove</button>
       </div>
     </div>
     <script src="task-category.js" defer></script>
