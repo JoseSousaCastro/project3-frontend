@@ -17,6 +17,27 @@ window.onload = async function () {
   //fillUsersDropdown();
 };
 
+async function display() {
+  const panels = document.querySelectorAll(".panel");
+
+  panels.forEach((panel) => {
+    panel.innerHTML = "";
+  });
+  const urlParams = new URLSearchParams(window.location.search);
+  const retrospectiveId = urlParams.get("id");
+  console.log("ID da retrospectiva:", retrospectiveId);
+
+  if (retrospectiveId) {
+    // Obter detalhes da retrospectiva e atualizar a página
+    getRetrospectiveDetails(retrospectiveId);
+  } else {
+    console.error("ID da retrospectiva não encontrado na URL.");
+  }
+
+  const arrayComments = await getRetrospectiveComments(retrospectiveId);
+  addAllCommentsToPanel(arrayComments);
+}
+
 function getRetrospectiveIdFromURL() {
   const urlParams = new URLSearchParams(window.location.search);
   return urlParams.get("id");
@@ -204,6 +225,7 @@ document
         //loadComments();
         addCommentToPanel(comment.category, comment.comment, comment.userId);
         cleanAllCommentFields();
+        display();
         //createCommentElement(comment);
       } else if (response.status === 401) {
         alert("Invalid credentials5");
@@ -271,7 +293,7 @@ function openEditDeleteModal(category, description) {
     <label for="descriptionInput">Description:</label>
     <input type="text" id="descriptionInput" value="${description}" />
 
-    <button onclick="editComment()">Edit</button>
+    <button onclick="editComment('${description}');closeModal();">Edit</button>
     <button onclick="deleteComment('${description}');closeModal();">Delete</button>
     <button class="close-modal-btn" onclick="closeModal()">Close</button>
   `;
@@ -279,6 +301,121 @@ function openEditDeleteModal(category, description) {
   modal.appendChild(content);
   document.body.appendChild(modal);
   modal.style.display = "block";
+}
+
+const categoryMapping = {
+  STRENGTHS: 100,
+  CHALLENGES: 200,
+  IMPROVEMENTS: 300,
+};
+
+async function editComment(description) {
+  const urlParams = new URLSearchParams(window.location.search);
+  const id = urlParams.get("id");
+  const arrayComments = await getRetrospectiveCommentsss(id);
+  console.log("ARRAY", arrayComments);
+  const commentToDelete = arrayComments.find(
+    (comment) => comment.comment === description
+  );
+  console.log(commentToDelete);
+  const id2 = commentToDelete.commentId;
+  const descriptionValue = document
+    .getElementById("descriptionInput")
+    .value.trim();
+  const user = await getUser();
+  console.log("user" + user);
+  const idOfUser = user.id;
+  console.log("TUTU" + idOfUser);
+  console.log(commentToDelete);
+  console.log("TATA" + commentToDelete.userId);
+
+  if (descriptionValue === "" || idOfUser != commentToDelete.userId) {
+    alert("description cannot be empty or this commentary is not yours");
+    return;
+  }
+
+  if (document.getElementById("editInput").value === "STRENGTHS") {
+    const commentary = {
+      comment: document.getElementById("descriptionInput").value,
+      category: categoryMapping.STRENGTHS,
+      eventId: commentToDelete.eventId,
+      userId: commentToDelete.userId,
+    };
+
+    const response = await fetch(
+      `http://localhost:8080/project3-backend/rest/retrospective/${id}/editComment/${id2}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "*/*",
+          token: sessionStorage.getItem("token"),
+        },
+        body: JSON.stringify(commentary),
+      }
+    );
+
+    if (response.ok) {
+      display();
+      console.log("retro edited");
+    } else {
+      console.log("not edited " + response.status);
+    }
+  } else if (document.getElementById("editInput").value === "CHALLENGES") {
+    const commentary = {
+      comment: document.getElementById("descriptionInput").value,
+      category: categoryMapping.CHALLENGES,
+      eventId: commentToDelete.eventId,
+      userId: commentToDelete.userId,
+    };
+
+    const response = await fetch(
+      `http://localhost:8080/project3-backend/rest/retrospective/${id}/editComment/${id2}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "*/*",
+          token: sessionStorage.getItem("token"),
+        },
+        body: JSON.stringify(commentary),
+      }
+    );
+
+    if (response.ok) {
+      display();
+      console.log("retro edited");
+    } else {
+      console.log("not edited " + response.status);
+    }
+  } else if (document.getElementById("editInput").value === "IMPROVEMENTS") {
+    const commentary = {
+      comment: document.getElementById("descriptionInput").value,
+      category: categoryMapping.IMPROVEMENTS,
+      eventId: commentToDelete.eventId,
+      userId: commentToDelete.userId,
+    };
+
+    const response = await fetch(
+      `http://localhost:8080/project3-backend/rest/retrospective/${id}/editComment/${id2}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "*/*",
+          token: sessionStorage.getItem("token"),
+        },
+        body: JSON.stringify(commentary),
+      }
+    );
+
+    if (response.ok) {
+      display();
+      console.log("retro edited");
+    } else {
+      console.log("not edited " + response.status);
+    }
+  }
 }
 
 async function getRetrospectiveCommentsss(id) {
@@ -394,4 +531,25 @@ async function getFirstName() {
 function closeModal() {
   const modal = document.getElementById("myModal");
   modal.style.display = "none";
+}
+
+async function getUser() {
+  const response = await fetch(
+    "http://localhost:8080/project3-backend/rest/users/userByToken",
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "*/*",
+        token: sessionStorage.getItem("token"),
+      },
+    }
+  );
+
+  if (response.ok) {
+    const user = await response.json();
+    console.log(user);
+    return user;
+  } else if (!response.ok) {
+    alert("Invalid credentials");
+  }
 }
