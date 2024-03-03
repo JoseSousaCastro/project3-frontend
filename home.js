@@ -629,25 +629,26 @@ async function getUserTasks(username) {
 
 // Function to filter tasks by category
 async function filterByCategory(selectedCategory) {
-  try {
-    removeAllTaskElements();
-    const tasks = await getCategoryTasks(selectedCategory);
-    displayTasks(tasks);
-  } catch (error) {
-    console.error("Error:", error);
-    alert("No tasks found for this category");
-  }
+  removeAllTaskElements();
+  console.log("entrei2");
+  const tasks = await getCategoryTasks(selectedCategory);
+  console.log("passou");
+  displayTasks(tasks);
 }
 
-// Event listener for the filter button for categories
 document
   .getElementById("filter-button-categories")
-  .addEventListener("click", function () {
+  .addEventListener("click", function (event) {
+    event.preventDefault(); // Impede o comportamento padrão de envio do formulário
+
     const selectedCategory = document.getElementById(
       "dropdown-category-select"
     ).value;
     if (selectedCategory !== "Choose an category") {
       filterByCategory(selectedCategory);
+      console.log("entrei");
+    } else {
+      console.log("não entrei");
     }
   });
 
@@ -676,25 +677,22 @@ getCategories()
 
 // Function to fetch tasks for the selected category
 async function getCategoryTasks(categoryName) {
+  console.log(categoryName);
   let getTasks = `http://localhost:8080/project3-backend/rest/tasks/categoryTasks`;
-  try {
-    const response = await fetch(getTasks, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/JSON",
-        Accept: "*/*",
-        token: sessionStorage.getItem("token"),
-        categoryName: categoryName,
-      },
-    });
-    if (response.ok) {
-      const tasks = await response.json();
-      return tasks; // Return the array of tasks
-    } else {
-      throw new Error(`Failed to fetch tasks: ${response.text()}`);
-    }
-  } catch (error) {
-    console.error("Error loading tasks:", error);
-    throw error;
+  const response = await fetch(getTasks, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/JSON",
+      Accept: "*/*",
+      token: sessionStorage.getItem("token"),
+      categoryName: categoryName,
+    },
+  });
+  if (response.ok) {
+    const tasks = await response.json();
+    console.log(tasks);
+    return tasks; // Return the array of tasks
+  } else {
+    console.log(response.status);
   }
 }
