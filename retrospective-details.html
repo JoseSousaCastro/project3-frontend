@@ -2,91 +2,98 @@
     linha 12 - alterar o título para o nome da retro
 -->
 
-
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title id="retro-title">Retrospective 1</title> <!--Alterar o título para o nome da retro-->
-    <link  type="text/css" rel="stylesheet" href="main.css">
-    <link rel="icon" href="multimedia/favicon.png" type="image/x-icon">
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title id="retro-title">Retrospective 1</title>
+    <!--Alterar o título para o nome da retro-->
+    <link type="text/css" rel="stylesheet" href="main.css" />
+    <link rel="icon" href="multimedia/favicon.png" type="image/x-icon" />
+  </head>
+  <body>
     <header>
-        <img src="multimedia/logo-scrum-05.png" id="logo-header" height="50">
-        <nav class="nav-menu-left">
-            <ul>
-                <li id="nav-home"><a href="home.html">My Scrum</a></li>
-                <li id="nav-retro"><a href="retrospectives-list.html">Retrospectives</a></li>
-            </ul>
-        </nav>
-        <div class="nav-menu-right">
-            <img src="multimedia/JSC_close up.png" id="profile-pic">
-            <a href="edit-profile.html" id="first-name-label">Profile</a>
-            <button class="logout-button" id="logout-button-header">
-                <img src="multimedia/logout.png" alt="Logout Icon">
-                Logout
-            </button>
-        </div>
+      <img src="multimedia/logo-scrum-05.png" id="logo-header" height="50" />
+      <nav class="nav-menu-left">
+        <ul>
+          <li id="nav-home"><a href="home.html">My Scrum</a></li>
+          <li id="nav-retro">
+            <a href="retrospectives-list.html">Retrospectives</a>
+          </li>
+        </ul>
+      </nav>
+      <div class="nav-menu-right">
+        <img src="multimedia/JSC_close up.png" id="profile-pic" />
+        <a href="edit-profile.html" id="first-name-label">Profile</a>
+        <button class="logout-button" id="logout-button-header">
+          <img src="multimedia/logout.png" alt="Logout Icon" />
+          Logout
+        </button>
+      </div>
     </header>
-    <div class="container"> <!--Container para o aside e o main-->
-    <aside>
+    <div class="container">
+      <!--Container para o aside e o main-->
+      <aside>
         <div class="retro-each">
-            <h3 id="retro-title-aside">getRetroName</h3>
-            <p id="retro-date-each">getDate</p>
-            <hr id="horizontalLine">
-                <div class="retro-comment">
-                    <form action="" id="dropdown-menu">
-                        <label id="addComment">Add comment</label>
-                        <label id="max-length">Max length: 250 characters</label>
-                        <textarea id="commentDescription-retro" placeholder="Description (required)" maxlength="250" required></textarea>
-                        <select name="categories" id="dropdown-categories" required>
-                            <option value="" disabled selected hidden>--Choose a category--</option>
-                            <option value="strengths">Strengths</option>
-                            <option value="challenges">Challenges</option>
-                            <option value="improvements">Improvements</option>
-                        </select>
-                        <input type="submit" value="Add comment" id="addCommentBTN">
-                    </form>
-                </div>
-            <p id="warningMessage2"></p>
+          <h3 id="retro-title-aside">getRetroName</h3>
+          <p id="retro-date-each">getDate</p>
+          <hr id="horizontalLine" />
+          <div class="retro-comment">
+            <form action="" id="dropdown-menu">
+              <label id="addComment">Add comment</label>
+              <label id="max-length">Max length: 250 characters</label>
+              <textarea
+                id="commentDescription-retro"
+                placeholder="Description (required)"
+                maxlength="250"
+                required
+              ></textarea>
+              <select name="categories" id="dropdown-categories" required>
+                <option value="" disabled selected hidden>
+                  --Choose a category--
+                </option>
+                <option value="strengths">Strengths</option>
+                <option value="challenges">Challenges</option>
+                <option value="improvements">Improvements</option>
+              </select>
+              <input type="submit" value="Add comment" id="addCommentBTN" />
+            </form>
+          </div>
+          <p id="warningMessage2"></p>
         </div>
-    </aside>
-    <main>
+      </aside>
+      <main>
         <div class="titulo-retro">
-            <h2 class="sci-title">Strengths</h2>
-            <div class="panel-strengths" id="strengths">
-            </div>
+          <h2 class="sci-title">Strengths</h2>
+          <div class="panel" id="strengths"></div>
         </div>
         <div class="titulo-retro">
-            <h2 class="sci-title">Challenges</h2>
-            <div class="panel-challenges" id="challenges">
-            </div>
+          <h2 class="sci-title">Challenges</h2>
+          <div class="panel" id="challenges"></div>
         </div>
-            <div class="titulo-retro">
-            <h2 class="sci-title">Improvements</h2>
-            <div class="panel-improvements" id="improvements">
-            </div>
+        <div class="titulo-retro">
+          <h2 class="sci-title">Improvements</h2>
+          <div class="panel" id="improvements"></div>
         </div>
         <div id="delete-modal" class="modal">
-            <div class="modal-content">
-                <p>Are you sure you want to delete this comment?</p>
-                <button id="delete-button">Delete</button>
-                <button id="cancel-delete-button">Cancel</button>
-            </div>
+          <div class="modal-content">
+            <p>Are you sure you want to delete this comment?</p>
+            <button id="delete-button">Delete</button>
+            <button id="cancel-delete-button">Cancel</button>
+          </div>
         </div>
-    </main>
+      </main>
     </div>
     <footer>
-        <div class="footer-content">
-            <div class="label-left">&copy; José Sousa Castro</div>
-            <div class="label-right">Programação Avançada em Java</div>
-            <div class="label-left">&copy; Ricardo Elias Luís</div>
-            <div class="label-right">Projeto 3</div>
-            <div class="label-left">&copy; Vasco Castro</div>
-        </div>
+      <div class="footer-content">
+        <div class="label-left">&copy; José Sousa Castro</div>
+        <div class="label-right">Programação Avançada em Java</div>
+        <div class="label-left">&copy; Ricardo Elias Luís</div>
+        <div class="label-right">Projeto 3</div>
+        <div class="label-left">&copy; Vasco Castro</div>
+      </div>
     </footer>
     <script src="retrospective-details.js" defer></script>
-</body>
+  </body>
 </html>
