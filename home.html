@@ -61,20 +61,39 @@
         <div class="add-task-container">
           <h3 id="addTask-h3">Add task</h3>
           <label class="labels-task-name" id="task-name-label">Title</label>
-          <input type="text" id="taskName" placeholder="required" maxlength="19"/>
-          <label class="labels-task-description" id="task-description-label">Description</label>
+          <input
+            type="text"
+            id="taskName"
+            placeholder="required"
+            maxlength="19"
+          />
+          <label class="labels-task-description" id="task-description-label"
+            >Description</label
+          >
           <textarea id="taskDescription" placeholder="required"></textarea>
           <div class="priority-buttons-home">
-            <button class="priority-button-home low" id="low-button-home">Low</button>
-            <button class="priority-button-home medium" id="medium-button-home">Medium</button>
-            <button class="priority-button-home high" id="high-button-home">High</button>
+            <button class="priority-button-home low" id="low-button-home">
+              Low
+            </button>
+            <button class="priority-button-home medium" id="medium-button-home">
+              Medium
+            </button>
+            <button class="priority-button-home high" id="high-button-home">
+              High
+            </button>
           </div>
-          <label class="labels-task-dates" id="label-startDate">Start date</label>
+          <label class="labels-task-dates" id="label-startDate"
+            >Start date</label
+          >
           <input type="date" id="task-startDate" required />
           <label class="labels-task-dates" id="label-limitDate">End date</label>
           <input type="date" id="task-limitDate" required />
           <label id="task-categories-label">Category</label>
-          <select name="task-categories" id="dropdown-task-categories" required></select>
+          <select
+            name="task-categories"
+            id="dropdown-task-categories"
+            required
+          ></select>
           <button id="addTask">Add task</button>
           <p id="warningMessage2"></p>
         </div>
@@ -83,7 +102,7 @@
         <div class="titulo-main">
           <h2 class="main-home">To do</h2>
           <div class="panel" id="todo"></div>
-          </div>
+        </div>
         <div class="titulo-main">
           <h2 class="main-home">Doing</h2>
           <div class="panel" id="doing"></div>
@@ -102,27 +121,31 @@
         <div id="div-filters">
           <div id="user-selection">
             <div class="filters">
-            <label id="choose-user-label">Filter tasks by user</label>
-          </div>
-          <div class="filters">
-          <select name="users-list" id="dropdown-users-select">
-            </select>
-          </div>
-          <div class="filters">
-          <button id="filter-button-users">Filter</button>
-        </div>
-      </div>
-          <div id="category-selection">
-            <form id="category-selection-form">
-            <div class="filters">
-              <label id="choose-category-label">Filter tasks by category</label>
+              <label id="choose-user-label">Filter tasks by user</label>
             </div>
             <div class="filters">
-            <select name="categories-list" id="dropdown-category-select"></select>
+              <select name="users-list" id="dropdown-users-select"></select>
+            </div>
+            <div class="filters">
+              <button id="filter-button-users">Filter</button>
+            </div>
           </div>
-          <div class="filters">
-            <button id="filter-button-categories">Filter</button>
-          </div>
+          <div id="category-selection">
+            <form id="category-selection-form">
+              <div class="filters">
+                <label id="choose-category-label"
+                  >Filter tasks by category</label
+                >
+              </div>
+              <div class="filters">
+                <select
+                  name="categories-list"
+                  id="dropdown-category-select"
+                ></select>
+              </div>
+              <div class="filters">
+                <button id="filter-button-categories">Filter</button>
+              </div>
             </form>
           </div>
         </div>
