@@ -62,14 +62,9 @@ window.onload = async function () {
 
 // Function to load all tasks
 async function loadTasks() {
-  try {
-    removeAllTaskElements();
-    const tasks = await getAllTasks();
-    displayTasks(tasks);
-  } catch (error) {
-    console.error("Error:", error);
-    alert("No tasks found");
-  }
+  removeAllTaskElements();
+  const tasks = await getAllTasks();
+  displayTasks(tasks);
 }
 
 // Function to display tasks on the UI
@@ -90,7 +85,6 @@ function displayTasks(tasksArray) {
     attachDragAndDropListeners(taskElement);
   });
 }
-
 
 function cleanAllTaskFields() {
   document.getElementById("warningMessage2").innerText = "";
@@ -124,7 +118,7 @@ panels.forEach((panel) => {
     const afterElement = getDragAfterElement(panel, e.clientY);
     const task = document.querySelector(".dragging");
     const panelID = panel.id.toUpperCase();
-    
+
     if (afterElement == null) {
       panel.appendChild(task);
       task.state = panelID;
@@ -137,8 +131,8 @@ panels.forEach((panel) => {
 });
 
 async function updateTaskStatus(taskId, newStatus) {
-  const state = {state: newStatus};
-  
+  const state = { state: newStatus };
+
   const updateTaskUrl = `http://localhost:8080/project3-backend/rest/tasks/status`;
   try {
     const response = await fetch(updateTaskUrl, {
@@ -194,42 +188,41 @@ function removeSelectedPriorityButton() {
   const buttons = [lowButton, mediumButton, highButton];
   buttons.forEach((btn) => btn.classList.remove("selected"));
 }
- 
-getCategories().then(categories => {
-  // Get the select element
-  let dropdown = document.getElementById("dropdown-task-categories");
 
-  // Add a placeholder option
-  let placeholderOption = document.createElement("option");
-  placeholderOption.text = "Choose an category";
-  placeholderOption.disabled = true;
-  placeholderOption.selected = true;
-  dropdown.add(placeholderOption);
+getCategories()
+  .then((categories) => {
+    // Get the select element
+    let dropdown = document.getElementById("dropdown-task-categories");
 
-  // Add options for categories
-  categories.forEach(function(category) {
+    // Add a placeholder option
+    let placeholderOption = document.createElement("option");
+    placeholderOption.text = "Choose an category";
+    placeholderOption.disabled = true;
+    placeholderOption.selected = true;
+    dropdown.add(placeholderOption);
+
+    // Add options for categories
+    categories.forEach(function (category) {
       let option = document.createElement("option");
       option.text = category.name;
       dropdown.add(option);
+    });
+  })
+  .catch((error) => {
+    console.error("Error fetching categories:", error);
   });
-}).catch(error => {
-  console.error('Error fetching categories:', error);
-});
 
 async function getCategories() {
   let getCategories = `http://localhost:8080/project3-backend/rest/tasks/category/all`;
   try {
-    const response = await fetch(
-      getCategories,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/JSON",
-          Accept: "*/*",
-          token: sessionStorage.getItem("token"),
-        },
-      }
-    );
+    const response = await fetch(getCategories, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/JSON",
+        Accept: "*/*",
+        token: sessionStorage.getItem("token"),
+      },
+    });
     if (response.ok) {
       const categories = await response.json();
       return categories; // Return the array of categories
@@ -254,7 +247,14 @@ highButton.addEventListener("click", () =>
 );
 
 // Cria uma nova task com os dados inseridos pelo utilizador => Input para função newTask
-function createTask(title, description, priority, category, startDate, endDate) {
+function createTask(
+  title,
+  description,
+  priority,
+  category,
+  startDate,
+  endDate
+) {
   const task = {
     title: title,
     description: description,
@@ -321,30 +321,45 @@ async function getAllTasks() {
 
 // Event listener do botão add task para criar uma nova task e colocá-la no painel ToDo (default para qualquer task criada)
 document.getElementById("addTask").addEventListener("click", function () {
-  
   let title = document.getElementById("taskName").value.trim();
   let description = document.getElementById("taskDescription").value.trim();
   let priority = taskPriority;
   let startDate = document.getElementById("task-startDate").value;
   let endDate = document.getElementById("task-limitDate").value;
-  let category = document.getElementById("dropdown-task-categories").value.trim();
+  let category = document
+    .getElementById("dropdown-task-categories")
+    .value.trim();
 
   if (title === "") {
-    document.getElementById("warningMessage2").innerText = "Please enter a title for the task.";
+    document.getElementById("warningMessage2").innerText =
+      "Please enter a title for the task.";
   } else if (description === "") {
-    document.getElementById("warningMessage2").innerText = "Please enter a description for the task.";
+    document.getElementById("warningMessage2").innerText =
+      "Please enter a description for the task.";
   } else if (category === "") {
-    document.getElementById("warningMessage2").innerText = "Please select a category for the task.";
+    document.getElementById("warningMessage2").innerText =
+      "Please select a category for the task.";
   } else if (startDate === "") {
-    document.getElementById("warningMessage2").innerText = "Please select a start date for the task.";
+    document.getElementById("warningMessage2").innerText =
+      "Please select a start date for the task.";
   } else if (endDate === "") {
-    document.getElementById("warningMessage2").innerText = "Please select an end date for the task.";
+    document.getElementById("warningMessage2").innerText =
+      "Please select an end date for the task.";
   } else if (startDate > endDate) {
-    document.getElementById("warningMessage2").innerText = "End date must be after start date.";
+    document.getElementById("warningMessage2").innerText =
+      "End date must be after start date.";
   } else if (document.getElementsByClassName("selected").length === 0) {
-    document.getElementById("warningMessage2").innerText = "Please define a priority for the task.";
+    document.getElementById("warningMessage2").innerText =
+      "Please define a priority for the task.";
   } else {
-    let task = createTask(title, description, priority, category, startDate, endDate);
+    let task = createTask(
+      title,
+      description,
+      priority,
+      category,
+      startDate,
+      endDate
+    );
     newTask(task).then(() => {
       removeAllTaskElements();
       loadTasks();
@@ -424,7 +439,6 @@ document.addEventListener("click", function (event) {
     });
   }
 });
-
 
 function removeAllTaskElements() {
   const tasks = document.querySelectorAll(".task");
@@ -527,59 +541,55 @@ async function getPhotoUrl() {
 
 // Function to filter tasks by user
 async function filterByUser(selectedUser) {
-  try {
-    removeAllTaskElements();
-    const tasks = await getUserTasks(selectedUser);
-    displayTasks(tasks);
-  } catch (error) {
-    console.error("Error:", error);
-    alert("No tasks found for this user");
-  }
+  removeAllTaskElements();
+  const tasks = await getUserTasks(selectedUser);
+  displayTasks(tasks);
 }
 
 // Event listener for the filter button for users
-document.getElementById("filter-button-users").addEventListener("click", function () {
-  const selectedUser = document.getElementById("dropdown-users-select").value;
-  if (selectedUser !== "Choose an user") {
-    filterByUser(selectedUser);
-  }
-});
+document
+  .getElementById("filter-button-users")
+  .addEventListener("click", function () {
+    const selectedUser = document.getElementById("dropdown-users-select").value;
+    if (selectedUser !== "Choose an user") {
+      filterByUser(selectedUser);
+    }
+  });
 
-getUsernames().then(usernames => {
-  // Get the select element
-  let dropdown = document.getElementById("dropdown-users-select");
+getUsernames()
+  .then((usernames) => {
+    // Get the select element
+    let dropdown = document.getElementById("dropdown-users-select");
 
-  // Add a placeholder option
-  let placeholderOption = document.createElement("option");
-  placeholderOption.text = "Choose an user";
-  placeholderOption.disabled = true;
-  placeholderOption.selected = true;
-  dropdown.add(placeholderOption);
+    // Add a placeholder option
+    let placeholderOption = document.createElement("option");
+    placeholderOption.text = "Choose an user";
+    placeholderOption.disabled = true;
+    placeholderOption.selected = true;
+    dropdown.add(placeholderOption);
 
-  // Add options for categories
-  usernames.forEach(function(user) {
+    // Add options for categories
+    usernames.forEach(function (user) {
       let option = document.createElement("option");
       option.text = user.username;
       dropdown.add(option);
+    });
+  })
+  .catch((error) => {
+    console.error("Error fetching users:", error);
   });
-}).catch(error => {
-  console.error('Error fetching users:', error);
-});
 
 async function getUsernames() {
   let getUsers = `http://localhost:8080/project3-backend/rest/users/username`;
   try {
-    const response = await fetch(
-      getUsers,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/JSON",
-          Accept: "*/*",
-          token: sessionStorage.getItem("token"),
-        },
-      }
-    );
+    const response = await fetch(getUsers, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/JSON",
+        Accept: "*/*",
+        token: sessionStorage.getItem("token"),
+      },
+    });
     if (response.ok) {
       const usernames = await response.json();
       return usernames; // Return the array of users
@@ -596,18 +606,15 @@ async function getUsernames() {
 async function getUserTasks(username) {
   let getTasks = `http://localhost:8080/project3-backend/rest/tasks/userTasks`;
   try {
-    const response = await fetch(
-      getTasks,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/JSON",
-          Accept: "*/*",
-          token: sessionStorage.getItem("token"),
-          username: username,
-        },
-      }
-    );
+    const response = await fetch(getTasks, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/JSON",
+        Accept: "*/*",
+        token: sessionStorage.getItem("token"),
+        username: username,
+      },
+    });
     if (response.ok) {
       const tasks = await response.json();
       return tasks; // Return the array of tasks
@@ -633,51 +640,53 @@ async function filterByCategory(selectedCategory) {
 }
 
 // Event listener for the filter button for categories
-document.getElementById("filter-button-categories").addEventListener("click", function () {
-  const selectedCategory = document.getElementById("dropdown-category-select").value;
-  if (selectedCategory !== "Choose an category") {
-    filterByCategory(selectedCategory);
-  }
-});
+document
+  .getElementById("filter-button-categories")
+  .addEventListener("click", function () {
+    const selectedCategory = document.getElementById(
+      "dropdown-category-select"
+    ).value;
+    if (selectedCategory !== "Choose an category") {
+      filterByCategory(selectedCategory);
+    }
+  });
 
-getCategories().then(categories => {
-  // Get the select element
-  let dropdown1 = document.getElementById("dropdown-category-select");
+getCategories()
+  .then((categories) => {
+    // Get the select element
+    let dropdown1 = document.getElementById("dropdown-category-select");
 
-  // Add a placeholder option
-  let placeholderOption1 = document.createElement("option");
-  placeholderOption1.text = "Choose an category";
-  placeholderOption1.disabled = true;
-  placeholderOption1.selected = true;
-  dropdown1.add(placeholderOption1);
+    // Add a placeholder option
+    let placeholderOption1 = document.createElement("option");
+    placeholderOption1.text = "Choose an category";
+    placeholderOption1.disabled = true;
+    placeholderOption1.selected = true;
+    dropdown1.add(placeholderOption1);
 
-  // Add options for categories
-  categories.forEach(function(category) {
+    // Add options for categories
+    categories.forEach(function (category) {
       let option = document.createElement("option");
       option.text = category.name;
       dropdown1.add(option);
+    });
+  })
+  .catch((error) => {
+    console.error("Error fetching categories:", error);
   });
-}).catch(error => {
-  console.error('Error fetching categories:', error);
-});
-
 
 // Function to fetch tasks for the selected category
 async function getCategoryTasks(categoryName) {
   let getTasks = `http://localhost:8080/project3-backend/rest/tasks/categoryTasks`;
   try {
-    const response = await fetch(
-      getTasks,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/JSON",
-          Accept: "*/*",
-          token: sessionStorage.getItem("token"),
-          categoryName: categoryName,
-        },
-      }
-    );
+    const response = await fetch(getTasks, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/JSON",
+        Accept: "*/*",
+        token: sessionStorage.getItem("token"),
+        categoryName: categoryName,
+      },
+    });
     if (response.ok) {
       const tasks = await response.json();
       return tasks; // Return the array of tasks

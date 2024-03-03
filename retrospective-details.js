@@ -83,7 +83,7 @@ async function getRetrospectiveComments(retrospectiveId) {
 
     if (response.ok) {
       const comments = await response.json();
-      console.log(comments);
+      console.log("************" + comments);
       return comments;
     } else if (response.status === 401) {
       alert("Invalid credentials2");
@@ -256,18 +256,23 @@ async function addCommentToPanel(
 }
 
 function openEditDeleteModal(category, description) {
+  const modalId = "myModal";
   const modal = document.createElement("div");
+  modal.id = modalId;
   modal.classList.add("modal");
 
   const content = document.createElement("div");
   content.classList.add("modal-content");
 
   content.innerHTML = `
-    <p>${category}</p>
-    <p>${description}</p>
-    
+    <label for="editInput">Category:</label>
+    <input type="text" id="editInput" value="${category}" />
+
+    <label for="descriptionInput">Description:</label>
+    <input type="text" id="descriptionInput" value="${description}" />
+
     <button onclick="editComment()">Edit</button>
-    <button onclick="deleteComment()">Delete</button>
+    <button onclick="deleteComment('${description}');closeModal();">Delete</button>
     <button class="close-modal-btn" onclick="closeModal()">Close</button>
   `;
 
@@ -276,10 +281,38 @@ function openEditDeleteModal(category, description) {
   modal.style.display = "block";
 }
 
-async function deleteComment() {
+async function getRetrospectiveCommentsss(id) {
+  const response = await fetch(
+    "http://localhost:8080/project3-backend/rest/retrospective/commentById",
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "*/*",
+        token: sessionStorage.getItem("token"),
+        id: id,
+      },
+    }
+  );
+  if (response.ok) {
+    const arrayComments = await response.json();
+    console.log(JSON.stringify(arrayComments));
+    return arrayComments;
+  } else {
+    alert(response.status);
+  }
+}
+async function deleteComment(description) {
   const urlParams = new URLSearchParams(window.location.search);
   const id = urlParams.get("id");
-  const arrayComments = await getRetrospectiveComments(id);
+  const arrayComments = await getRetrospectiveCommentsss(id);
+  console.log("array comments" + arrayComments);
+  const commentToDelete = arrayComments.find(
+    (comment) => comment.comment === description
+  );
+  const id2 = commentToDelete.commentId;
+  console.log(commentToDelete);
+  console.log("*****" + id2);
   console.log("******" + description);
   console.log(id);
   const response = await fetch(
@@ -291,14 +324,10 @@ async function deleteComment() {
         Accept: "*/*",
         token: sessionStorage.getItem("token"),
       },
-      body: JSON.stringify(comment),
     }
   );
-}
-function closeModal() {
-  const modal = document.querySelector(".modal");
-  if (modal) {
-    modal.style.display = "none";
+  if (response.ok) {
+    console.log("commentary deleted");
   }
 }
 
@@ -360,4 +389,9 @@ async function getFirstName() {
   } else if (!response.ok) {
     alert("Invalid credentials");
   }
+}
+
+function closeModal() {
+  const modal = document.getElementById("myModal");
+  modal.style.display = "none";
 }
