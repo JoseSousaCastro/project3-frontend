@@ -17,6 +17,8 @@ document.addEventListener("DOMContentLoaded", function () {
   fetchUsers();
 });
 
+
+
 async function fetchUsers() {
   try {
     const response = await fetch(
@@ -44,7 +46,7 @@ async function fetchUsers() {
 }
 
 function showUsersList(array) {
-  document.querySelector(".retros-table-body").innerHTML = "";
+  document.querySelector(".users-table-body-sm").innerHTML = "";
   array.forEach((user) => {
     if (user.deleted) {
     } else {
@@ -52,25 +54,26 @@ function showUsersList(array) {
 
       // Criar célula para o nome de usuário
       const usernameCell = document.createElement("td");
-      usernameCell.className = "clickable";
+      //usernameCell.className = "clickable";
       usernameCell.textContent = user.username;
-      usernameCell.className = "clickable text-center";
+      usernameCell.className = "username-cell";
 
       // Criar célula para a função do usuário (role)
       const roleCell = document.createElement("td");
       const roleText = roleMapping[user.role] || "Unknown Role";
       roleCell.textContent = roleText;
-      roleCell.className = "text-center";
+      //roleCell.className = "text-center";
 
       // Adicionar as células à linha
       row.appendChild(usernameCell);
       row.appendChild(roleCell);
 
       // Adicionar a linha à tabela
-      document.querySelector(".retros-table-body").appendChild(row);
+      document.querySelector(".users-table-body-sm").appendChild(row);
 
       // Adicionar evento de clique para exibir detalhes do usuário
-      usernameCell.addEventListener("dblclick", () => {
+      usernameCell.addEventListener("click", () => {
+        console.log("entras aqui?");
         showUserDetails(user.id);
       });
     }
@@ -81,18 +84,19 @@ async function showUserDetails(idUser) {
   const user = await findUserById(idUser);
   if (user) {
     console.log(user.firstName);
-    const modal = document.getElementById("userDetailsModal");
+    const modal = document.getElementById("userDetailsModal-sm");
+    console.log("abres o modal?", modal);
     //const userDetailsContainer = document.getElementById("userDetails");
 
-    document.getElementById("usernameInput").value = user.username;
-    document.getElementById("roleInput").value =
+    document.getElementById("usernameInput-userDetailsModal-sm").value = user.username;
+    document.getElementById("roleInput-userDetailsModal-sm").value =
       roleMapping[user.role] || "Unknown Role";
-    document.getElementById("firstNameInput").value = user.firstName;
-    document.getElementById("lastNameInput").value = user.lastName;
-    document.getElementById("emailInput").value = user.email;
-    document.getElementById("phoneInput").value = user.phone;
+    document.getElementById("firstNameInput-userDetailsModal-sm").value = user.firstName;
+    document.getElementById("lastNameInput-userDetailsModal-sm").value = user.lastName;
+    document.getElementById("emailInput-userDetailsModal-sm").value = user.email;
+    document.getElementById("phoneInput-userDetailsModal-sm").value = user.phone;
 
-    modal.style.display = "block";
+    modal.style.display = "flex";
   }
 }
 
@@ -116,12 +120,12 @@ async function findUserById(idUser) {
 }
 
 function closeUserDetailsModal() {
-  const modal = document.getElementById("userDetailsModal");
+  const modal = document.getElementById("userDetailsModal-sm");
   modal.style.display = "none";
 }
 
 function closeModal() {
-  const modal = document.getElementById("userDetailsModal");
+  const modal = document.getElementById("userDetailsModal-sm");
   modal.style.display = "none";
 }
 
@@ -192,3 +196,12 @@ async function getFirstName() {
     alert("Invalid credentials");
   }
 }
+
+document.getElementById("userDetailsModal-sm").addEventListener("click", function(event) {
+  const modalContent = document.getElementById("modal-content-users-sm");
+
+  // Verifica se o clique ocorreu fora do modal content
+  if (!modalContent.contains(event.target)) {
+    closeModal();
+  }
+});

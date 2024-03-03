@@ -70,7 +70,7 @@ document.addEventListener("DOMContentLoaded", async function () {
   
   function restoreTask() {
     const modal = document.getElementById("restoreTaskModal");
-    modal.style.display = "block";
+    modal.style.display = "flex";
     document.getElementById("restoreId").value = "";
   }
   
@@ -112,7 +112,7 @@ document.addEventListener("DOMContentLoaded", async function () {
   
   function removeTask() {
     const modal = document.getElementById("removeTaskModal");
-    modal.style.display = "block";
+    modal.style.display = "flex";
     document.getElementById("removeId").value = "";
   }
   

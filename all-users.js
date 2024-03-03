@@ -44,7 +44,7 @@ async function fetchUsers() {
 }
 
 function showUsersList(array) {
-  document.querySelector(".retros-table-body").innerHTML = "";
+  document.querySelector(".users-table-body").innerHTML = "";
   array.forEach((user) => {
     if (user.deleted) {
     } else {
@@ -52,21 +52,21 @@ function showUsersList(array) {
 
       // Criar célula para o nome de usuário
       const usernameCell = document.createElement("td");
-      usernameCell.className = "clickable";
+      //usernameCell.className = "clickable";
       usernameCell.textContent = user.username;
-      usernameCell.className = "clickable text-center";
+      usernameCell.className = "username-cell";
 
       // Criar célula para a função do usuário (role)
       const roleCell = document.createElement("td");
       const roleText = roleMapping[user.role] || "Unknown Role";
       roleCell.textContent = roleText;
-      roleCell.className = "text-center";
+      //roleCell.className = "text-center";
 
       // Criar célula para o status de exclusão do usuário
       const deletedCell = document.createElement("td");
       const deletedText = deletedMapping[user.deleted] || "Unknown";
       deletedCell.textContent = deletedText;
-      deletedCell.className = "text-center";
+      //deletedCell.className = "text-center";
 
       // Adicionar as células à linha
       row.appendChild(usernameCell);
@@ -82,10 +82,10 @@ function showUsersList(array) {
       }
 
       // Adicionar a linha à tabela
-      document.querySelector(".retros-table-body").appendChild(row);
+      document.querySelector(".users-table-body").appendChild(row);
 
       // Adicionar evento de clique para exibir detalhes do usuário
-      usernameCell.addEventListener("dblclick", () => {
+      usernameCell.addEventListener("click", () => {
         showUserDetails(user.id);
       });
     }
@@ -98,17 +98,17 @@ async function showUserDetails(idUser) {
     const modal = document.getElementById("userDetailsModal");
     //const userDetailsContainer = document.getElementById("userDetails");
 
-    document.getElementById("usernameInput").value = user.username;
-    document.getElementById("roleInput").value =
+    document.getElementById("usernameInput-userDetailsModal").value = user.username;
+    document.getElementById("roleInput-userDetailsModal").value =
       roleMapping[user.role] || "Unknown Role";
-    document.getElementById("deletedInput").value =
+    document.getElementById("deletedInput-userDetailsModal").value =
       deletedMapping[user.deleted] || "Unknown";
-    document.getElementById("firstNameInput").value = user.firstName;
-    document.getElementById("lastNameInput").value = user.lastName;
-    document.getElementById("emailInput").value = user.email;
-    document.getElementById("phoneInput").value = user.phone;
+    document.getElementById("firstNameInput-userDetailsModal").value = user.firstName;
+    document.getElementById("lastNameInput-userDetailsModal").value = user.lastName;
+    document.getElementById("emailInput-userDetailsModal").value = user.email;
+    document.getElementById("phoneInput-userDetailsModal").value = user.phone;
 
-    modal.style.display = "block";
+    modal.style.display = "flex";
   }
 }
 
@@ -137,34 +137,34 @@ function closeUserDetailsModal() {
 }
 
 function enableEdit() {
-  document.getElementById("usernameInput").removeAttribute("readonly");
-  document.getElementById("roleInput").removeAttribute("disabled");
-  document.getElementById("deletedInput").removeAttribute("disabled");
-  document.getElementById("firstNameInput").removeAttribute("readonly");
-  document.getElementById("lastNameInput").removeAttribute("readonly");
-  document.getElementById("emailInput").removeAttribute("readonly");
-  document.getElementById("phoneInput").removeAttribute("readonly");
+  document.getElementById("usernameInput-userDetailsModal").removeAttribute("readonly");
+  document.getElementById("roleInput-userDetailsModal").removeAttribute("disabled");
+  document.getElementById("deletedInput-label-userDetailsModal").removeAttribute("disabled");
+  document.getElementById("firstNameInput-userDetailsModal").removeAttribute("readonly");
+  document.getElementById("lastNameInput-userDetailsModal").removeAttribute("readonly");
+  document.getElementById("emailInput-userDetailsModal").removeAttribute("readonly");
+  document.getElementById("phoneInput-userDetailsModal").removeAttribute("readonly");
 }
 
 function disableEdit() {
-  document.getElementById("usernameInput").setAttribute("readonly", true);
-  document.getElementById("roleInput").setAttribute("disabled", true);
-  document.getElementById("deletedInput").setAttribute("disabled", true);
-  document.getElementById("firstNameInput").setAttribute("readonly", true);
-  document.getElementById("lastNameInput").setAttribute("readonly", true);
-  document.getElementById("emailInput").setAttribute("readonly", true);
-  document.getElementById("phoneInput").setAttribute("readonly", true);
+  document.getElementById("usernameInput-userDetailsModal").setAttribute("readonly", true);
+  document.getElementById("roleInput-userDetailsModal").setAttribute("disabled", true);
+  document.getElementById("deletedInput-label-userDetailsModal").setAttribute("disabled", true);
+  document.getElementById("firstNameInput-userDetailsModal").setAttribute("readonly", true);
+  document.getElementById("lastNameInput-userDetailsModal").setAttribute("readonly", true);
+  document.getElementById("emailInput-userDetailsModal").setAttribute("readonly", true);
+  document.getElementById("phoneInput-userDetailsModal").setAttribute("readonly", true);
 }
 
 async function editProfile() {
   const userDto = {
-    username: document.getElementById("usernameInput").value,
-    firstName: document.getElementById("firstNameInput").value,
-    lastName: document.getElementById("lastNameInput").value,
-    email: document.getElementById("emailInput").value,
-    phone: document.getElementById("phoneInput").value,
-    deleted: document.getElementById("deletedInput").value,
-    role: document.getElementById("roleInput").value,
+    username: document.getElementById("usernameInput-userDetailsModal").value,
+    firstName: document.getElementById("firstNameInput-userDetailsModal").value,
+    lastName: document.getElementById("lastNameInput-userDetailsModal").value,
+    email: document.getElementById("emailInput-userDetailsModal").value,
+    phone: document.getElementById("phoneInput-userDetailsModal").value,
+    deleted: document.getElementById("deletedInput-userDetailsModal").value,
+    role: document.getElementById("roleInput-userDetailsModal").value,
   };
 
   const response = await fetch(
@@ -194,7 +194,7 @@ function closeModal() {
 
 function addNewUser() {
   const modal = document.getElementById("addUserModal");
-  modal.style.display = "block";
+  modal.style.display = "flex";
 }
 
 function closeAddUserModal() {
@@ -204,32 +204,32 @@ function closeAddUserModal() {
 
 async function submitNewUser() {
   const username = document
-    .getElementById("username")
+    .getElementById("username-label-addUserModal")
     .value.trim()
     .replace(/\s+/g, "");
   const password = document
-    .getElementById("password")
+    .getElementById("password-label-addUserModal")
     .value.trim()
     .replace(/\s+/g, "");
   const email = document
-    .getElementById("email")
+    .getElementById("email-label-addUserModal")
     .value.trim()
     .replace(/\s+/g, "");
   const phone = document
-    .getElementById("phone")
+    .getElementById("phone-label-addUserModal")
     .value.trim()
     .replace(/\s+/g, "");
   const firstName = document
-    .getElementById("firstName")
+    .getElementById("firstName-label-addUserModal")
     .value.trim()
     .replace(/\s+/g, "");
   const lastName = document
-    .getElementById("lastName")
+    .getElementById("lastName-label-addUserModal")
     .value.trim()
     .replace(/\s+/g, "");
-  const role = document.getElementById("role").value.trim().replace(/\s+/g, "");
+  const role = document.getElementById("role-select-addUserModal").value.trim().replace(/\s+/g, "");
   const photoURL = document
-    .getElementById("photo")
+    .getElementById("photo-label-addUserModal")
     .value.trim()
     .replace(/\s+/g, "");
 
@@ -357,3 +357,22 @@ async function getFirstName() {
     alert("Invalid credentials");
   }
 }
+
+
+document.getElementById("userDetailsModal").addEventListener("click", function(event) {
+  const modalContent = document.getElementById("modal-content-users");
+
+  // Verifica se o clique ocorreu fora do modal content
+  if (!modalContent.contains(event.target)) {
+    closeModal();
+  }
+});
+document.getElementById("addUserModal").addEventListener("click", function(event) {
+  const modalContent = document.getElementById("modal-content-addUsers");
+
+  // Verifica se o clique ocorreu fora do modal content
+  if (!modalContent.contains(event.target)) {
+    closeModal();
+  }
+});
+

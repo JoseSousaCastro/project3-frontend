@@ -204,23 +204,32 @@ async function getPhotoUrl() {
 }
 // Abre o modal
 function openModal() {
-  const modal = document.getElementById("myModal");
-  modal.style.display = "block";
+  const modal = document.getElementById("myModal-retros-list");
+  modal.style.display = "flex";
 }
 
 // Fecha o modal
 function closeModal() {
-  const modal = document.getElementById("myModal");
+  const modal = document.getElementById("myModal-retros-list");
   modal.style.display = "none";
 }
 
-document.getElementById("closeModal").addEventListener("click", closeModal);
+document.getElementById("myModal-retros-list").addEventListener("click", function(event) {
+  const modalContent = document.getElementById("modal-content-retros-list");
+
+  // Verifica se o clique ocorreu fora do modal content
+  if (!modalContent.contains(event.target)) {
+    closeModal();
+  }
+});
+
+document.getElementById("closeModal-retros-list").addEventListener("click", closeModal);
 
 async function addMember() {
   const array = await getRetroListAll();
   const arrayUsers = await fetchUsersAll();
-  const retroName = document.getElementById("retroName").value;
-  const userName = document.getElementById("memberName").value;
+  const retroName = document.getElementById("input-retroName-modal-retros-list").value;
+  const userName = document.getElementById("input-memberName-modal-retros-list").value;
 
   const userFound = arrayUsers.find((user) => user.username === userName);
   const foundRetro = array.find((retro) => retro.title === retroName);
@@ -286,3 +295,5 @@ async function fetchUsersAll() {
     return usersArray;
   }
 }
+
+

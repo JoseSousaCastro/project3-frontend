@@ -70,7 +70,7 @@ function showCategoryList(categoriesList) {
 async function showCategoryDetails(categoryName) {
   const modal = document.getElementById("categoryDetailsModal");
   document.getElementById("categoryNameInput").value = categoryName;  
-  modal.style.display = "block";
+  modal.style.display = "flex";
 }
 
 function closeCategoryDetailsModal() {
@@ -83,7 +83,7 @@ function closeModal() {
   modal.style.display = "none";
 }
 
-let editbutton = document.getElementById("enableEdit");
+let editbutton = document.getElementById("enableEdit-categoryDetailsModal");
 let currentCategoryId;
 
 // Event listener for edit button click
@@ -102,7 +102,7 @@ editbutton.addEventListener("click", async () => {
   document.getElementById("categoryNameInput").removeAttribute("readonly");
 });
 
-let saveButton = document.getElementById("saveEdit");
+let saveButton = document.getElementById("saveEdit-categoryDetailsModal");
 // Event listener for save button click
 saveButton.addEventListener("click", () => {
   // Retrieve the new name from the input field
@@ -158,7 +158,7 @@ async function refreshCategoryList() {
 
 function addCategory() {
   const modal = document.getElementById("addCategoryModal");
-  modal.style.display = "block";
+  modal.style.display = "flex";
   document.getElementById("categoryName").value = "";
 }
 
@@ -202,7 +202,7 @@ async function submitNewCategory() {
 
 function removeCategory() {
   const modal = document.getElementById("removeCategoryModal");
-  modal.style.display = "block";
+  modal.style.display = "flex";
   document.getElementById("categoryId").value = "";
 }
 

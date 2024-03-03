@@ -50,18 +50,18 @@
     <div class="container">
       <!--Container para o aside e o main-->
       <aside>
-        <div style="text-align: center; margin-bottom: 20px;">
-          <img src="images/user_png.png" alt="Imagem" style="width: 100px; height: 100px;">
+        <div id="aside-symbol">
+          <img id="aside-symbol-pic" src="multimedia/symbol-05.png">
         </div>
-        <button onclick="restoreTask()" style="font-size: 18px; padding: 10px 20px;">Restore Task</button>
-        <button onclick="removeTask()" style="font-size: 18px; padding: 10px 20px;">Remove Task</button>
-        <button onclick="removeAllUserTasks()" style="font-size: 18px; padding: 10px 20px;">Remove All User Tasks</button>
+        <button id="task-recycle-restore-button" onclick="restoreTask()">Restore Task</button>
+        <button id="task-recycle-remove-button" onclick="removeTask()">Remove Task</button>
+        <button id="task-recycle-remove-all-button" onclick="removeAllUserTasks()">Remove All User Tasks</button>
       </aside>
       <main>
         <!-- Começa aqui a tabela-->
-        <div class="table-container-recycle">
-          <table class="table-recycle"> 
-            <thead class="table-header-recycle">
+        <div class="table-container-recycle table-container" id="table-task-recycle-div">
+          <table class="table-recycle" id="table-task-recycle"> 
+            <thead class="table-header-recycle" id="table-task-recycle-header">
               <tr>
                 <th class="table-header-recycle">Id</th>
                 <th class="table-header-recycle">Name</th>
@@ -73,27 +73,27 @@
     </div>
     <footer>
       <div class="footer-content">
-        <div class="label-left">&copy; Ricardo Elias</div>
-        <div class="label-right">Programação Avançada em Java</div>
         <div class="label-left">&copy; José Sousa Castro</div>
-        <div class="label-right">Projeto 2</div>
+        <div class="label-right">Programação Avançada em Java</div>
+        <div class="label-left">&copy; Ricardo Elias</div>
+        <div class="label-right">Projeto 3</div>
         <div class="label-left">&copy; Vasco Castro</div>
       </div>
     </footer>
-     <div id="restoreTaskModal" class="modal">
-      <div class="modal-content">
-        <span class="close" onclick="closeRestoreTaskModal()">&times;</span>
+     <div id="restoreTaskModal">
+      <div id="modal-content-restoreTaskModal">
+        <span id="close-restoreTaskModal" onclick="closeRestoreTaskModal()">&times;</span>
         <label for="restoreId">Name:</label>
         <input type="text" id="restoreId" placeholder="Insert task Id" required>   
-        <button onclick="submitRestoreTask()">Restore</button>
+        <button id="restore-restoreTaskModal" onclick="submitRestoreTask()">Restore</button>
       </div>
     </div>
-    <div id="removeTaskModal" class="modal">
-      <div class="modal-content">
-        <span class="close" onclick="closeRemoveTaskModal()">&times;</span>
+    <div id="removeTaskModal">
+      <div id="modal-content-removeTaskModal">
+        <span id="close-removeTaskModal" onclick="closeRemoveTaskModal()">&times;</span>
         <label for="removeId">Id:</label>
         <input type="text" id="removeId" placeholder="Insert task Id" required>   
-        <button onclick="submitRemoveTask()">Remove</button>
+        <button id="remove-removeTaskModal" onclick="submitRemoveTask()">Remove</button>
       </div>
     </div>
     <script src="task-recycle.js" defer></script>
