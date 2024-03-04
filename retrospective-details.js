@@ -1,4 +1,13 @@
 window.onload = async function () {
+  try {
+    getFirstName();
+    getPhotoUrl();
+    //clearInputValues();
+  } catch (error) {
+    console.error("An error occurred:", error);
+  }
+
+
   // Obter o ID da retrospectiva da URL
   const urlParams = new URLSearchParams(window.location.search);
   const retrospectiveId = urlParams.get("id");
@@ -551,3 +560,67 @@ async function getUser() {
     alert("Invalid credentials");
   }
 }
+
+
+
+async function getFirstName() {
+  const response = await fetch(
+    "http://localhost:8080/project3-backend/rest/users/userByToken",
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "*/*",
+        token: sessionStorage.getItem("token"),
+      },
+    }
+  );
+
+  if (response.ok) {
+    const user = await response.json();
+    document.getElementById("first-name").innerText = user.firstName;
+  } else if (!response.ok) {
+    alert("Invalid credentials");
+  }
+}
+
+
+async function getFirstName() {
+  const response = await fetch(
+    "http://localhost:8080/project3-backend/rest/users/userByToken",
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "*/*",
+        token: sessionStorage.getItem("token"),
+      },
+    }
+  );
+  if (response.ok) {
+    const user = await response.json();
+    document.getElementById("first-name").innerText = user.firstName;
+  } else if (!response.ok) {
+    alert("Invalid credentials");
+  }
+}
+
+async function getPhotoUrl() {
+  const response = await fetch(
+    "http://localhost:8080/project3-backend/rest/users/userByToken",
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "*/*",
+        token: sessionStorage.getItem("token"),
+      },
+    }
+  );
+  if (response.ok) {
+    const user = await response.json();
+    console.log(user.photoURL);
+    document.getElementById("profile-pic").src = user.photoURL;
+  } else if (response.stateId === 401) {
+    alert("Invalid credentials");
+  } else if (response.stateId === 404) {
+    alert("teste 404");
+  }
+};

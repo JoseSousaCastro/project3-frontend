@@ -1,5 +1,5 @@
 window.onload = async function () {
-  //getFirstName();
+  getFirstName();
   getPhotoUrl();
   getRetroList();
   const UserRole = {
@@ -338,4 +338,23 @@ async function fetchUsersAll() {
   }
 }
 
+
+async function getFirstName() {
+  const response = await fetch(
+    "http://localhost:8080/project3-backend/rest/users/userByToken",
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "*/*",
+        token: sessionStorage.getItem("token"),
+      },
+    }
+  );
+  if (response.ok) {
+    const user = await response.json();
+    document.getElementById("first-name").innerText = user.firstName;
+  } else if (!response.ok) {
+    alert("Invalid credentials");
+  }
+};
 

@@ -1,5 +1,6 @@
 window.onload = function () {
   try {
+    getFirstName();
     getPhotoUrl();
     userByToken();
     //clearInputValues();
@@ -174,5 +175,24 @@ async function getPhotoUrl() {
   } else if (response.stateId === 404) {
     alert("teste 404");
   }
+};
+
+async function getFirstName() {
+  const response = await fetch(
+    "http://localhost:8080/project3-backend/rest/users/userByToken",
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "*/*",
+        token: sessionStorage.getItem("token"),
+      },
+    }
+  );
+
+  if (response.ok) {
+    const user = await response.json();
+    document.getElementById("first-name").innerText = user.firstName;
+  } else if (!response.ok) {
+    alert("Invalid credentials");
+  }
 }
-a;
